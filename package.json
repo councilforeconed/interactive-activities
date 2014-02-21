@@ -1,0 +1,22 @@
+{
+  "name": "cee",
+  "version": "0.0.0",
+  "description": "Interactive educational activities by Bocoup and the Council for Economic Education",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bocoup/cee.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/bocoup/cee/issues"
+  },
+  "homepage": "https://github.com/bocoup/cee",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "express": "~3.4.8"
+  }
+}
