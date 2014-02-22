@@ -9,19 +9,22 @@ define(function(require) {
 
     routes: {
       '': 'index',
-      'activity/:activity': 'activity'
+      'activity/:activity/': 'activity'
     },
 
     index: function() {
       var view = new ActivitiesView();
       var data = JSON.parse(document.getElementById('activity-data').innerHTML);
       view.render(data);
+      this.$el.empty();
       this.$el.append(view.el);
     },
 
     activity: function(activity) {
-      console.log(activity);
       this.$el.empty();
+      require(['../activity/' + activity + '/scripts/main'], function() {
+        console.log('loaded');
+      });
     }
   });
 
