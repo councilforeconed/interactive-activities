@@ -2,8 +2,9 @@
   "name": "cee",
   "version": "0.0.0",
   "description": "Interactive educational activities by Bocoup and the Council for Economic Education",
-  "main": "index.js",
+  "main": "src/server/index.js",
   "scripts": {
+    "install": "bower install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,8 @@
   "homepage": "https://github.com/bocoup/cee",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "express": "~3.4.8"
-  }
+    "express": "~3.4.8",
+    "jade": "~1.1.5"
+  },
+  "dependencies": {}
 }
