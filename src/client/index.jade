@@ -1,0 +1,10 @@
+doctype html
+html(lang="en")
+  head
+    title Interactive Activities - Council for Economic Education
+  body
+    h1
+      a(href='#') CEE's Interactive Activities
+    div#main
+    script#activity-data(type='text/json')!= JSON.stringify(activities)
+    script(src='/bower_components/requirejs/require.js', data-main='/scripts/amd-config')

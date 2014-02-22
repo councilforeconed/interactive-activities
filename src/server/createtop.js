@@ -7,11 +7,13 @@ var _debug = require('debug')('cee');
 var express = require('express');
 var when = require('when');
 var whenNode = require('when/node/function');
+var jade = require('jade');
 
 // Locally defined libs.
 var findServerScripts = require('./findserverscripts').findServerScripts;
 var ServerManager = require('./servermanager');
 var whenListening = require('./common').whenListening;
+var getActivities = require('./get-activities');
 
 // Start a server and return a promise of when that server is ready.
 //
@@ -39,7 +41,7 @@ module.exports.createTop = function(options, debug) {
       }
 
       return when.map(scripts, function(script) {
-        var name = /src\/activities\/(\w+)\/index.js/.exec(script)[1];
+        var name = /src\/activities\/([-\w]+)\/index.js/.exec(script)[1];
         return manager.launch(name, script);
       });
     })
@@ -59,6 +61,24 @@ module.exports.createTop = function(options, debug) {
     // becomes /status.
     req.url = req.params[0] || '/';
     manager.proxyWeb(req.params.name, [req, res]);
+  });
+
+  app.configure('development', function() {
+    // In order to properly support pushState, serve the index HTML file for
+    // any request to a directory.
+    app.get(/\/$/, function(req, res, next) {
+      res.render('index.jade', { activities: getActivities() });
+      res.end();
+    });
+    app.use('/bower_components', express.static('bower_components'));
+    app.use('/', express.static('src/client'));
+    app.set('view engine', 'jade');
+    app.set('views', 'src/client');
+  });
+
+  app.configure('production', function() {
+    console.error('Production mode not yet implemented.');
+    process.exit(1);
   });
 
   app.get('/status', function(req, res, next) {
@@ -85,7 +105,7 @@ module.exports.createTop = function(options, debug) {
     // TODO: Some of this could be replaced with a specialty express app
     // for websocket connections that would be able to use express's
     // path matching.
-    var match = /\/activities\/(\w+)(.*)/.exec(req.url);
+    var match = /\/activities\/([-\w]+)(.*)/.exec(req.url);
     var name = match[1];
     var newUrl = match[2];
     req.url = newUrl;

@@ -48,7 +48,7 @@ var walk = function(p, cb) {
 module.exports.findServerScripts = function() {
   var scripts = [];
   return walk('src/activities', function(file) {
-      if (/src\/activities\/\w+\/index.js/.test(file)) {
+      if (/src\/activities\/[-\w]+\/index.js/.test(file)) {
         scripts.push(file);
       }
     })
