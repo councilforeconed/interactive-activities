@@ -1,3 +1,8 @@
+'use strict';
+
 module.exports = function(grunt) {
-  grunt.registerTask('default', []);
+  grunt.loadTasks('build');
+
+  grunt.registerTask('dev', ['server:hang']);
+  grunt.registerTask('default', ['dev']);
 };

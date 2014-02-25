@@ -7,5 +7,6 @@ require({
     underscore: '/bower_components/lodash/dist/lodash',
     jade: '/bower_components/require-jade/jade'
   },
+  //packages: ['activity/money-creation'],
   deps: ['../scripts/main']
 });
