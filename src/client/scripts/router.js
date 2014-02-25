@@ -1,6 +1,6 @@
 define(function(require) {
   var Backbone = require('backbone');
-  var ActivitiesView = require('activity/collection-view');
+  var ActivitiesView = require('components/activity/collection-view');
 
   var Router = Backbone.Router.extend({
     initialize: function(options) {
@@ -22,7 +22,7 @@ define(function(require) {
 
     activity: function(activity) {
       this.$el.empty();
-      require(['../activity/' + activity + '/scripts/main'], function() {
+      require(['activities/' + activity + '/scripts/main'], function() {
         console.log('loaded');
       });
     }
