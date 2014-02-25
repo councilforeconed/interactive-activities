@@ -54,6 +54,8 @@ module.exports.createTop = function(options, debug) {
 
   // Create the express application.
   var app = express();
+  var indexData;
+  var staticDir;
 
   // Route normal web traffic to /activities/:name to children.
   app.all('/activities/:name*', function(req, res, next) {
@@ -63,22 +65,38 @@ module.exports.createTop = function(options, debug) {
     manager.proxyWeb(req.params.name, [req, res]);
   });
 
+  app.set('view engine', 'jade');
+  app.set('views', 'src/client');
+
   app.configure('development', function() {
-    // In order to properly support pushState, serve the index HTML file for
-    // any request to a directory.
-    app.get(/\/$/, function(req, res, next) {
-      res.render('index.jade', { activities: getActivities() });
-      res.end();
-    });
-    app.use('/bower_components', express.static('bower_components'));
-    app.use('/', express.static('src/client'));
-    app.set('view engine', 'jade');
-    app.set('views', 'src/client');
+    staticDir = 'src';
+    app.use('/static/bower_components', express.static('bower_components'));
+    indexData = {
+      dev: true,
+      get activities() {
+        return getActivities();
+      }
+    };
   });
 
   app.configure('production', function() {
-    console.error('Production mode not yet implemented.');
-    process.exit(1);
+    staticDir = 'out';
+    indexData = { dev: false, activities: getActivities() };
+  });
+
+  app.use('/static', express.static(staticDir + '/client'));
+  // In order to properly support pushState, serve the index HTML file for
+  // GET requests to any directory.
+  app.get(/\/$/, function(req, res) {
+    res.render('index.jade', indexData);
+    res.end();
+  });
+  app.get('/static/activities/:activity/*', function(req, res) {
+    var activity = req.params.activity;
+    var path = req.params[0];
+    res.sendfile(path, {
+      root: './' + staticDir + '/activities/' + activity + '/client'
+    });
   });
 
   app.get('/status', function(req, res, next) {

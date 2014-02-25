@@ -24,11 +24,6 @@ module.exports = function(options, debug) {
     process.send({ name: 'listening-on', port: server.address().port });
   });
 
-  app.get('*', function(req, res) {
-    var path = req.params[0];
-    res.sendfile(path, { root: __dirname + '/../client' });
-  });
-
   process.send('ok');
 
   return common.whenListening(server, debug);

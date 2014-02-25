@@ -7,4 +7,7 @@ html(lang="en")
       a(href='#') CEE's Interactive Activities
     div#main
     script#activity-data(type='text/json')!= JSON.stringify(activities)
-    script(src='/bower_components/requirejs/require.js', data-main='/scripts/amd-config')
+    if dev
+      script(src='/static/bower_components/requirejs/require.js', data-main='/static/scripts/amd-config')
+    else
+      script(src='/static/scripts/main.js')

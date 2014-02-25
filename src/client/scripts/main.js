@@ -1,7 +1,7 @@
 define(function(require) {
   var $ = require('jquery');
   var Backbone = require('backbone');
-  var Router = require('../scripts/router');
+  var Router = require('./router');
   var router = new Router({
     $el: $("#main")
   });
