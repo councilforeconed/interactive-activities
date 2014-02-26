@@ -18,6 +18,15 @@ suite('top server', function() {
     server = createTop()
       .then(function(_server) {
         server = _server;
+        // In case we are shutting down due to an error, make sure the servers
+        // are closed.
+        process.on('uncaughtException', function(e) {
+          _server.close(function(e) {
+            if (e && e.message !== 'Not running') {
+              console.error('error while closing server', e.stack || e);
+            }
+          });
+        });
       })
       .then(done, done);
   });
@@ -25,7 +34,14 @@ suite('top server', function() {
   // Tear that server down so we have a clean one for the next test.
   teardown(function(done) {
     if (server) {
-      server.close(done);
+      server.close(function(e) {
+        if (e && e.message !== 'Not running') {
+          console.error('error while closing server', e.stack || e);
+          done();
+        } else {
+          done(e);
+        }
+      });
     } else {
       done();
     }
@@ -66,6 +82,7 @@ suite('top server', function() {
   test('websocket to example says good bye', function(done) {
     var host = 'localhost:' + server.address().port;
     var goodByeReceived = false;
+
     socketio_client
       .connect('http://' + host, {
         resource: 'activities/example/socket.io'
