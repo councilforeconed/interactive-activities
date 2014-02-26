@@ -15,8 +15,22 @@
     "url": "https://github.com/bocoup/cee/issues"
   },
   "homepage": "https://github.com/bocoup/cee",
+  "dependencies": {
+    "debug": "~0.7.4",
+    "express": "~3.4.8",
+    "http-proxy": "~1.0.2",
+    "lodash": "~2.4.1",
+    "socket.io": "~0.9.16",
+    "when": "~2.8.0"
+  },
   "devDependencies": {
+    "chai": "~1.9.0",
     "grunt": "~0.4.2",
-    "express": "~3.4.8"
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-testem": "~0.5.1",
+    "load-grunt-tasks": "~0.4.0",
+    "mocha": "~1.17.1",
+    "request": "~2.34.0",
+    "socket.io-client": "~0.9.16"
   }
 }
