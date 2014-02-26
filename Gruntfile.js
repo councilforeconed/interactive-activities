@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['requirejs']);
   grunt.registerTask('dev', ['server:hang']);
   grunt.registerTask('prod', ['build', 'server:hang']);
+  grunt.registerTask('test', ['testem']);
 
   grunt.registerTask('default', ['dev']);
 };
