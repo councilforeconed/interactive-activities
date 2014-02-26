@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
@@ -17,6 +19,13 @@ module.exports = function(grunt) {
         src: ['src/index.js', 'src/server/*.js']
       },
 
+      server_activities: {
+        options: {
+          node: true
+        },
+        src: ['src/activities/*/{index,server/**/*}.js']
+      },
+
       server_test: {
         options: {
           node: true
@@ -34,4 +43,5 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['jshint', 'testem']);
+  grunt.registerTask('test', ['jshint', 'testem']);
 };
