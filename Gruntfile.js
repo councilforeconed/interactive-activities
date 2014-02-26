@@ -3,30 +3,31 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     jshint: {
+      gruntfile: {
+        options: {
+          node: true
+        },
+        src: ['Gruntfile.js']
+      },
+
       server: {
         options: {
           node: true
         },
         src: ['src/index.js', 'src/server/*.js']
+      },
+
+      server_test: {
+        options: {
+          node: true
+        },
+        src: ['test/server/*.js']
       }
     },
 
     testem: {
       server: {
-        options: {
-          launchers: {
-            Mocha: {
-              command: [
-                'node_modules/.bin/mocha',
-                '--ui tdd',
-                '--reporter tap',
-                'test/server/test_*.js'
-              ].join(' '),
-              protocol: 'tap'
-            }
-          },
-          launch_in_ci: ['Mocha']
-        },
+        options: require('./testem.json'),
         src: 'test/server/*.html'
       }
     }
