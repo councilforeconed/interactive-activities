@@ -43,7 +43,7 @@ app.get('/static/activities/:activity/*', function(req, res) {
   var activity = req.params.activity;
   var path = req.params[0];
   res.sendfile(path, {
-    root: './' + staticDir + '/activities/' + activity + '/client'
+    root: './' + staticDir + '/activities/' + activity
   });
 });
 

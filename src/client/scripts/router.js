@@ -21,9 +21,10 @@ define(function(require) {
     },
 
     activity: function(activity) {
-      this.$el.empty();
-      require(['activities/' + activity + '/scripts/main'], function() {
-        console.log('loaded');
+      var $el = this.$el;
+      $el.empty();
+      require(['activities/' + activity + '/client/scripts/main'], function(View) {
+        new View({ el: $el }).render();
       });
     }
   });
