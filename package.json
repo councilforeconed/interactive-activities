@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/bocoup/cee",
   "dependencies": {
+    "commander": "~2.1.0",
     "debug": "~0.7.4",
     "express": "~3.4.8",
     "http-proxy": "~1.0.2",

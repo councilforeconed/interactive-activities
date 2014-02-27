@@ -3,12 +3,16 @@
 'use strict';
 
 // Third party libs.
-var argv = require('optimist').argv;
 var debug = require('debug')('cee:example');
 
 // Locally defined libs.
 var common = require('../../server/common');
 var createServer = require('./server/server').createServer;
+
+var argv = require('commander')
+  .option('-p, --port', 'Port to listen to.')
+  .option('-b, --hostname', 'Hostname to bind to.')
+  .parse(process.argv);
 
 createServer(argv, debug)
   .then(function(server) {
