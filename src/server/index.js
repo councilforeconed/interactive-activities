@@ -32,6 +32,7 @@ app.configure('production', function() {
     res.end();
   });
   app.use('/static', express.static(staticDir + '/client'));
+  app.use('/static/bower_components', express.static(staticDir + '/bower_components'));
 
 
   app.set('view engine', 'jade');

@@ -12,6 +12,7 @@ module.exports = function(grunt) {
           _: '../../bower_components/lodash/dist/lodash',
           backbone: '../../bower_components/backbone/backbone',
           jade: '../../bower_components/require-jade/jade',
+          'socket.io': '../../bower_components/socket.io-client/dist/socket.io',
 
           activities: '../activities'
         },
@@ -60,7 +61,7 @@ function generateRjsModules() {
       // Activities will only be run in the context of the site application, so
       // optimized builds should omit any modules required by the "main"
       // module.
-      exclude: ['scripts/main']
+      exclude: ['scripts/main', 'socket.io']
     };
   });
 
