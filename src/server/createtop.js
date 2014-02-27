@@ -81,6 +81,7 @@ module.exports.createTop = function(options, debug) {
 
   app.configure('production', function() {
     staticDir = 'out';
+    app.use('/static/bower_components', express.static(staticDir + '/bower_components'));
     indexData = { dev: false, activities: getActivities() };
   });
 

@@ -9,6 +9,7 @@
     "requirejs": "~2.1.11",
     "jquery": "~2.1.0",
     "lodash": "~2.4.1",
-    "require-jade": "~0.0.3"
+    "require-jade": "~0.0.3",
+    "socket.io-client": "~0.9.16"
   }
 }
