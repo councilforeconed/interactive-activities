@@ -29,7 +29,6 @@
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-testem": "~0.5.1",
-    "load-grunt-tasks": "~0.4.0",
     "mocha": "~1.17.1",
     "request": "~2.34.0",
     "socket.io-client": "~0.9.16"
