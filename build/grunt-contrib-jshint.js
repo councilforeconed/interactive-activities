@@ -1,15 +1,22 @@
 module.exports = function(grunt) {
   grunt.config.set('jshint', {
-    gruntfile: {
+    build: {
+      src: ['Gruntfile.js', 'build/*.js'],
       options: {
-        node: true
+        jshintrc: 'build/.jshintrc'
+      }
+    },
+
+    client: {
+      options: {
+        jshintrc: 'src/client/.jshintrc',
       },
-      src: ['Gruntfile.js']
+      src: ['src/client/**/*.js']
     },
 
     server: {
       options: {
-        node: true
+        jshintrc: 'src/server/.jshintrc'
       },
       src: ['src/index.js', 'src/server/*.js']
     },
@@ -23,7 +30,7 @@ module.exports = function(grunt) {
 
     server_test: {
       options: {
-        node: true
+        jshintrc: 'test/server/.jshintrc'
       },
       src: ['test/server/*.js']
     }
