@@ -1,5 +1,7 @@
 // @file Test ServerManager.
 
+'use strict';
+
 // Third party libs.
 var _ = require('lodash');
 var assert = require('chai').assert;

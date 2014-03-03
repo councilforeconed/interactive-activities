@@ -1,4 +1,5 @@
 // @file Test findServerScripts.
+'use strict';
 
 // Third party libs.
 var assert = require('chai').assert;

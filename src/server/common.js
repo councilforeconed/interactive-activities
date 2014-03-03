@@ -1,5 +1,7 @@
 // @file common server code
 
+'use strict';
+
 var _ = require('lodash');
 var debug = require('debug')('cee:common');
 var when = require('when');
