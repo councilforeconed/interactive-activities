@@ -5,6 +5,8 @@ define(function(require) {
   var Router = Backbone.Router.extend({
     initialize: function(options) {
       this.$el = options.$el;
+      this.data = options.data;
+      this._loadId = null;
     },
 
     routes: {
@@ -13,18 +15,47 @@ define(function(require) {
     },
 
     index: function() {
-      var view = new ActivitiesView();
-      var data = JSON.parse(document.getElementById('activity-data').innerHTML);
-      view.render(data);
-      this.$el.empty();
-      this.$el.append(view.el);
+      this.setView(ActivitiesView, this.data);
     },
 
+    /**
+     * Asynchronously load a the specified activity. Ensure that any
+     * previously-requested activity navigation is cancelled.
+     *
+     * @param {String} activity Module ID of desired activity.
+     */
     activity: function(activity) {
-      this.$el.empty();
-      require(['activities/' + activity + '/client/scripts/main'], function() {
-        console.log('loaded');
+      this._setActivity(activity);
+    },
+
+    _setActivity: function(activity) {
+      var activityId = 'activities/' + activity + '/client/scripts/main';
+      var loadId = this._loadId = +(new Date());
+      var self = this;
+
+      // TODO: Display a "loading" dialog
+
+      require([activityId], function(View) {
+        if (self._loadId !== loadId) {
+          return;
+        }
+        self.setView(View);
       });
+    },
+
+    /**
+     * Synchronously initialize the specified view and insert it into the page.
+     *
+     * @param {View} View Backbone view constructor.
+     */
+    setView: function(View, data) {
+      if (this.currentView) {
+        this.currentView.destroy();
+      }
+
+      this._loadId = null;
+
+      this.currentView = new View({ el: this.$el }).render(data);
     }
   });
 

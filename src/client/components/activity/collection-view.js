@@ -1,10 +1,10 @@
 define(function(require) {
   'use strict';
 
-  var Backbone = require('backbone');
+  var Layout = require('scripts/layout');
   var template = require('jade!./collection');
 
-  var ActivityView = Backbone.View.extend({
+  var ActivityView = Layout.extend({
     render: function(data) {
       this.$el.html(template({
         activities: data
