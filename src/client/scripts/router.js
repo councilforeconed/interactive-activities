@@ -22,7 +22,7 @@ define(function(require) {
 
     activity: function(activity) {
       this.$el.empty();
-      require(['activities/' + activity + '/scripts/main'], function() {
+      require(['activities/' + activity + '/client/scripts/main'], function() {
         console.log('loaded');
       });
     }

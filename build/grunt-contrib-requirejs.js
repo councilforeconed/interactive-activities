@@ -11,7 +11,9 @@ module.exports = function(grunt) {
           underscore: '../../bower_components/lodash/dist/lodash',
           _: '../../bower_components/lodash/dist/lodash',
           backbone: '../../bower_components/backbone/backbone',
-          jade: '../../bower_components/require-jade/jade'
+          jade: '../../bower_components/require-jade/jade',
+
+          activities: '../activities'
         },
         mainConfigFile: 'src/client/scripts/amd-config.js',
         dir: 'out',
@@ -54,14 +56,11 @@ function generateRjsModules() {
   };
   var activityModules = activities.map(function(activity) {
     return {
-      name: '../activities/' + activity.slug + '/client/scripts/main',
+      name: 'activities/' + activity.slug + '/client/scripts/main',
       // Activities will only be run in the context of the site application, so
       // optimized builds should omit any modules required by the "main"
       // module.
-      exclude: ['scripts/main'],
-      insertRequire: [
-        '../activities/' + activity.slug + '/client/scripts/main'
-      ]
+      exclude: ['scripts/main']
     };
   });
 

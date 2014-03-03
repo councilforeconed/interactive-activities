@@ -84,19 +84,13 @@ module.exports.createTop = function(options, debug) {
     indexData = { dev: false, activities: getActivities() };
   });
 
+  app.use('/static/activities', express.static(staticDir + '/activities'));
   app.use('/static', express.static(staticDir + '/client'));
   // In order to properly support pushState, serve the index HTML file for
   // GET requests to any directory.
   app.get(/\/$/, function(req, res) {
     res.render('index.jade', indexData);
     res.end();
-  });
-  app.get('/static/activities/:activity/*', function(req, res) {
-    var activity = req.params.activity;
-    var path = req.params[0];
-    res.sendfile(path, {
-      root: './' + staticDir + '/activities/' + activity + '/client'
-    });
   });
 
   app.get('/status', function(req, res, next) {
