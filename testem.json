@@ -1,0 +1,10 @@
+{
+  "launchers": {
+    "Mocha": {
+      "command": "node_modules/.bin/mocha --ui tdd --reporter tap test/server/test_*.js",
+      "protocol": "tap"
+    }
+  },
+  "launch_in_ci": ["Mocha"],
+  "launch_in_dev": ["Mocha"]
+}
