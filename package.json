@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/bocoup/cee/issues"
   },
+  "private": "true",
   "homepage": "https://github.com/bocoup/cee",
   "dependencies": {
     "commander": "~2.1.0",
