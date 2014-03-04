@@ -3,7 +3,8 @@ var spawn = require('child_process').spawn;
 
 /**
  * Simple Grunt.js task for running the project's server. This is equivalent to
- * executing the following command from the root of the project:
+ * executing the following command from either the `src/` directory or the
+ * `out/` directory:
  *
  *     $ node . --port 8000
  *
@@ -25,6 +26,7 @@ module.exports = function(grunt) {
       child.removeListener('error', done);
       grunt.fail.fatal('Server task exited unexpectedly.');
     };
+    var cwd;
 
     if (this.args.indexOf('hang') > -1) {
       this.async();
@@ -36,12 +38,16 @@ module.exports = function(grunt) {
 
     if (this.args.indexOf('prod') > -1) {
       childEnv.NODE_ENV = 'production';
+      cwd = 'out';
+    } else {
+      cwd = 'src';
     }
 
     var child = spawn(process.argv[0],
       ['.', '--port', 8000],
       {
         env: childEnv,
+        cwd: cwd,
         stdio: 'inherit'
       }
     );

@@ -8,6 +8,6 @@ html(lang="en")
     div#main
     script#activity-data(type='text/json')!= JSON.stringify(activities)
     if dev
-      script(src='/static/bower_components/requirejs/require.js', data-main='/static/scripts/amd-config')
+      script(src='/bower_components/requirejs/require.js', data-main='/scripts/amd-config')
     else
-      script(src='/static/scripts/main.js')
+      script(src='/scripts/main.js')

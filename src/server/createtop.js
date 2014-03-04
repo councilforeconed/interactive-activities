@@ -36,14 +36,14 @@ module.exports.createTop = function(options, debug) {
   // Find scripts to boot, then launch those with the manager instance.
   var whenChildren = getActivities()
     .then(function(activities) {
-      var scripts = _.pluck(activities, 'serverIndex');
       if (options.scriptFilter) {
-        scripts = scripts.filter(options.scriptFilter);
+        activities = activities.filter(function(activity) {
+          return options.scriptFilter(activity.serverIndex);
+        });
       }
 
-      return when.map(scripts, function(script) {
-        var name = /src\/activities\/([-\w]+)\/index.js/.exec(script)[1];
-        return manager.launch(name, script);
+      return when.map(activities, function(activity) {
+        return manager.launch(activity.slug, activity.serverIndex);
       });
     })
     .then(function() {debug('all children are ready');})
@@ -56,7 +56,6 @@ module.exports.createTop = function(options, debug) {
   // Create the express application.
   var app = express();
   var indexData;
-  var staticDir;
 
   // Route normal web traffic to /activities/:name to children.
   app.all('/activities/:name*', function(req, res, next) {
@@ -67,26 +66,24 @@ module.exports.createTop = function(options, debug) {
   });
 
   app.set('view engine', 'jade');
-  app.set('views', 'src/client');
+  app.set('views', 'client');
 
   app.configure('development', function() {
-    staticDir = 'src';
-    app.use('/static/bower_components', express.static('bower_components'));
+    app.use('/bower_components', express.static('../bower_components'));
+    app.set('devMode', true);
   });
 
   app.configure('production', function() {
-    staticDir = 'out';
-    app.use('/static/bower_components', express.static(staticDir + '/bower_components'));
+    app.use('/bower_components', express.static('bower_components'));
   });
 
-  app.use('/static/activities', express.static(staticDir + '/activities'));
-  app.use('/static', express.static(staticDir + '/client'));
+  app.use('/', express.static('client'));
   // In order to properly support pushState, serve the index HTML file for
   // GET requests to any directory.
   var indexRouteReady = getActivities().then(function(activityData) {
     app.get(/\/$/, function(req, res) {
       res.render('index.jade', {
-        dev: staticDir === 'src',
+        dev: !!app.get('devMode'),
         activities: activityData
       });
       res.end();

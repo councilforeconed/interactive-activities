@@ -1,5 +1,5 @@
 require({
-  baseUrl: '/static',
+  baseUrl: '/',
   paths: {
     jquery: 'bower_components/jquery/dist/jquery',
     _: 'bower_components/lodash/dist/lodash',

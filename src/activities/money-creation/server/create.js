@@ -24,6 +24,8 @@ module.exports = function(options, debug) {
     process.send({ name: 'listening-on', port: server.address().port });
   });
 
+  app.use('/client', express.static('client'));
+
   process.send('ok');
 
   return common.whenListening(server, debug);
