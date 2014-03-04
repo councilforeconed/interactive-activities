@@ -3,45 +3,54 @@
 var fs = require('fs');
 var path = require('path');
 
+var _ = require('lodash');
+var when = require('when');
+var whenNode = require('when/node/function');
+var statPromise = whenNode.bind(fs.stat);
+
 var activitiesDir = path.join(__dirname, '../activities');
 
 /**
- * Return an array with metadata for each activity as defined by the files
- * present in the project's `src/activities/` directory. Additionally, perform
- * some basic validation to ensure that each activity conforms to the
- * expectations of the build process.
+ * Return a promise for data describing each valid activity. Each element in the
+ * array will contain:
+ *
+ * - slug - Unique identifier
+ * - directory - Fully-resolved path to the activity's directory
+ * - configFile - Fully-resolved path to the activity's configuration file
+ * - serverIndex - Fully-resolved path to the activity server's index file
+ * - config - Activity configuration data
+ *
+ * The promise will be rejected if the directory reserved for activities
+ * contains any files or directories that do not conform to the expected
+ * structure.
  */
 module.exports = function() {
-  return fs.readdirSync(activitiesDir).map(function(name) {
-    var directory = path.join(activitiesDir, name);
-    return {
-      slug: name,
-      directory: directory,
-      configFile: directory + '/config.json'
-    };
-  }).filter(function(activity) {
-    return fs.statSync(activity.configFile).isFile();
-  }).map(function(activity) {
-    var configJSON = String(fs.readFileSync(activity.configFile));
-    var config = JSON.parse(configJSON);
-    try {
-      validate(activity.directory, config);
-    } catch(err) {
-      err.message = 'Activity error: (' + activity.slug + ') '+ err.message;
-      throw err;
-    }
-    config.slug = activity.slug;
-    return config;
-  });
-};
+  return whenNode.call(fs.readdir, activitiesDir)
+    .then(_.partialRight(when.map, function(name) {
+      var directory = path.join(activitiesDir, name);
+      var activity = {
+        slug: name,
+        directory: directory,
+        configFile: path.join(directory, 'config.json'),
+        serverIndex: path.join(directory, 'index.js')
+      };
 
-function validate(directory, metaData) {
-  if ('slug' in metaData) {
-    throw new Error('The "slug" configuration parameter is reserved');
-  }
-  if (!fs.statSync(directory + '/client/scripts/main.js').isFile()) {
-    throw new Error(
-      'Missing "main.js" entry point in "client/scripts" directory'
-    );
-  }
-}
+      return statPromise(activity.serverIndex)
+        .then(function(stat) {
+        if (!stat.isFile()) {
+          throw new Error('No server index found for activity: ' + name);
+        }
+        return whenNode.call(
+          fs.readFile, activity.configFile, { encoding: 'utf8' }
+        );
+      })
+      .then(function(configText) {
+        try {
+          activity.config = JSON.parse(configText);
+        } catch(err) {
+          throw new Error('Unable to parse JSON for activity: ' + name);
+        }
+        return activity;
+      });
+    }));
+};

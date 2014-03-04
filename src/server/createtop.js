@@ -8,9 +8,9 @@ var express = require('express');
 var when = require('when');
 var whenNode = require('when/node/function');
 var jade = require('jade');
+var _ = require('lodash');
 
 // Locally defined libs.
-var findServerScripts = require('./findserverscripts').findServerScripts;
 var ServerManager = require('./servermanager');
 var whenListening = require('./common').whenListening;
 var getActivities = require('./get-activities');
@@ -34,8 +34,9 @@ module.exports.createTop = function(options, debug) {
   var manager = new ServerManager();
 
   // Find scripts to boot, then launch those with the manager instance.
-  var whenChildren = findServerScripts()
-    .then(function(scripts) {
+  var whenChildren = getActivities()
+    .then(function(activities) {
+      var scripts = _.pluck(activities, 'serverIndex');
       if (options.scriptFilter) {
         scripts = scripts.filter(options.scriptFilter);
       }
@@ -71,27 +72,25 @@ module.exports.createTop = function(options, debug) {
   app.configure('development', function() {
     staticDir = 'src';
     app.use('/static/bower_components', express.static('bower_components'));
-    indexData = {
-      dev: true,
-      get activities() {
-        return getActivities();
-      }
-    };
   });
 
   app.configure('production', function() {
     staticDir = 'out';
     app.use('/static/bower_components', express.static(staticDir + '/bower_components'));
-    indexData = { dev: false, activities: getActivities() };
   });
 
   app.use('/static/activities', express.static(staticDir + '/activities'));
   app.use('/static', express.static(staticDir + '/client'));
   // In order to properly support pushState, serve the index HTML file for
   // GET requests to any directory.
-  app.get(/\/$/, function(req, res) {
-    res.render('index.jade', indexData);
-    res.end();
+  var indexRouteReady = getActivities().then(function(activityData) {
+    app.get(/\/$/, function(req, res) {
+      res.render('index.jade', {
+        dev: staticDir === 'src',
+        activities: activityData
+      });
+      res.end();
+    });
   });
 
   app.get('/status', function(req, res, next) {
@@ -128,6 +127,7 @@ module.exports.createTop = function(options, debug) {
   // Wait for everything to set up that can.
   return when
     .all([
+      indexRouteReady,
       // When the server is listening.
       whenListening(server, debug),
       // Wait for the children.

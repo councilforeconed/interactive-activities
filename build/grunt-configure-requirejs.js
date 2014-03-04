@@ -1,6 +1,37 @@
+/**
+ * @file Because the r.js configuration depends on factors that are fetched
+ * asynchronously (i.e. the state of the file system), the Grunt task must be
+ * configured asynchronously. Grunt does not support this directly, so a
+ * wrapper task is necessary to suspend execution while the configuration is
+ * generated.
+ */
 'use strict';
 
+var getActivities = require('../src/server/get-activities');
+
 module.exports = function(grunt) {
+  grunt.initConfig({});
+
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+  grunt.registerTask(
+    'configure-requirejs',
+    'Asynchronously configure and run the `grunt-contrib-requirejs` plugin',
+    function() {
+      var done = this.async();
+      var args = this.args;
+      var argString = this.args.length ? '' : (':' + args.join(':'));
+      getActivities().then(function(activities) {
+        grunt.config.set('requirejs', generateConfig(activities));
+
+        grunt.task.run('requirejs' + argString);
+        done();
+      }, console.error.bind(console));
+    }
+  );
+};
+
+function generateConfig(activities) {
   // Library code that is shared between some activities (but not the
   // top-level application) is optimized into distinct modules. Although this
   // forces some activities to require multiple JavaScript files in
@@ -11,7 +42,7 @@ module.exports = function(grunt) {
     'socket.io': 'socket.io-client/dist/socket.io'
   };
 
-  grunt.config.set('requirejs', {
+  return {
     prod: {
       options: {
         baseUrl: 'client',
@@ -32,7 +63,7 @@ module.exports = function(grunt) {
         pragmasOnSave: {
           excludeJade: true
         },
-        modules: generateRjsModules(sharedLibraries)
+        modules: generateRjsModules(activities, sharedLibraries)
       }
     },
     bower_components: {
@@ -43,15 +74,16 @@ module.exports = function(grunt) {
         modules: getModuleDescriptors(sharedLibraries)
       }
     }
-  });
-
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-};
+  };
+}
 
 /**
  * In order to seamlessly optimize any and all valid activities, the `modules`
  * configuration for the r.js optimizer must be programatically generated.
  *
+ * @param {Array} activities A collection of objects describing valid
+ *                activities. Each should define a `slug` property reflecting
+ *                the directory it is contained within.
  * @param {Object} sharedLibraries A collection of shared library paths
  *                 (relative to the `bower_components` directory), keyed on the
  *                 library's module ID. These will be excluded from all
@@ -62,8 +94,7 @@ module.exports = function(grunt) {
  *                  format of this data:
  *                  http://requirejs.org/docs/optimization.html
  */
-function generateRjsModules(sharedLibraries) {
-  var activities = require('../src/server/get-activities')();
+function generateRjsModules(activities, sharedLibraries) {
   var mainModule = {
     name: 'scripts/main',
     include: [
