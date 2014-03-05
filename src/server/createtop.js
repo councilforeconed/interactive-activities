@@ -7,8 +7,6 @@ var _debug = require('debug')('cee');
 var express = require('express');
 var when = require('when');
 var whenNode = require('when/node/function');
-var jade = require('jade');
-var _ = require('lodash');
 
 // Locally defined libs.
 var ServerManager = require('./servermanager');
@@ -55,10 +53,9 @@ module.exports.createTop = function(options, debug) {
 
   // Create the express application.
   var app = express();
-  var indexData;
 
   // Route normal web traffic to /activities/:name to children.
-  app.all('/activities/:name*', function(req, res, next) {
+  app.all('/activities/:name*', function(req, res) {
     // Edit the url that the child server sees. /activities/:name/status
     // becomes /status.
     req.url = req.params[0] || '/';
@@ -90,7 +87,7 @@ module.exports.createTop = function(options, debug) {
     });
   });
 
-  app.get('/status', function(req, res, next) {
+  app.get('/status', function(req, res) {
     res.send(200, 'ok');
   });
 

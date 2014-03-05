@@ -5,9 +5,6 @@
 // Third party libs.
 var _ = require('lodash');
 var debug = require('debug')('cee');
-var express = require('express');
-var when = require('when');
-var whenNode = require('when/node/function');
 
 // Locally defined libs.
 var common = require('./server/common');
@@ -27,7 +24,7 @@ var checkArgType = function(arg, type) {
   return typeof arg !== type && arg !== undefined;
 };
 
-var logArgError = function(args) {
+var logArgError = function() {
   console.error.apply(console, arguments);
   argv.help();
 };

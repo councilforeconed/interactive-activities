@@ -4,7 +4,6 @@
 
 // Node included libs.
 var child_process = require('child_process');
-var fs = require('fs');
 var path = require('path');
 
 // Third party libs.
@@ -12,7 +11,6 @@ var _ = require('lodash');
 var debug = require('debug')('cee:childmanager');
 var http_proxy = require('http-proxy');
 var when = require('when');
-var whenNode = require('when/node/function');
 
 // Export the ServerManager constructor.
 module.exports = ServerManager;
@@ -83,7 +81,7 @@ ServerChild.prototype._whenMessage = function(test) {
 // Kill the child.
 ServerChild.prototype.kill = function(signal) {
   var self = this;
-  return when.promise(function(resolve, reject) {
+  return when.promise(function(resolve) {
     debug('kill %s', self.name);
     var process = self.process;
     process.removeListener('exit', self._relaunch);
@@ -106,8 +104,6 @@ function ServerManager() {
 // @param path
 // @returns {Promise}
 ServerManager.prototype.launch = function(name, path) {
-  var self = this;
-
   debug('%s - launch', name);
 
   var child = this._children[name] = new ServerChild(this, name, path);

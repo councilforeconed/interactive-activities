@@ -22,7 +22,7 @@ suite('top server', function() {
         server = _server;
         // In case we are shutting down due to an error, make sure the servers
         // are closed.
-        process.on('uncaughtException', function(e) {
+        process.on('uncaughtException', function() {
           _server.close(function(e) {
             if (e && e.message !== 'Not running') {
               console.error('error while closing server', e.stack || e);
