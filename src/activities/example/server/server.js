@@ -32,6 +32,8 @@ module.exports.createServer = function(options, debug) {
     res.send('hello');
   });
 
+  app.use('/client', express.static('client'));
+
   app.get('/status', function(req, res, next) {
     res.send(200, 'ok');
   });

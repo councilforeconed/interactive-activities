@@ -18,15 +18,17 @@ var whenNode = require('when/node/function');
 module.exports = ServerManager;
 
 // Wrap a sub server process for easier communicataion.
-function ServerChild(manager, name, path) {
+function ServerChild(manager, name, indexFile) {
   var self = this;
 
   this.name = name;
-  this.path = path;
+  this.path = indexFile;
 
   this.port = 0;
   this.proxy = null;
-  this.process = child_process.fork(path);
+  this.process = child_process.fork(indexFile, {
+    cwd: path.dirname(indexFile)
+  });
 
   this._whenOk =
     this._whenMessage(function(data) {return data === 'ok';})
@@ -43,7 +45,7 @@ function ServerChild(manager, name, path) {
   this.whenLaunched = when.all([this._whenOk, this._whenPort]);
 
   // Have a bound version stored that can be easily removed as a listener.
-  this._relaunch = manager.launch.bind(manager, name, path);
+  this._relaunch = manager.launch.bind(manager, name, indexFile);
 
   // On exit, relaunch this child.
   this.process.on('exit', this._relaunch);

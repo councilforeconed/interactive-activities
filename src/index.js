@@ -64,7 +64,7 @@ if (argv.activities) {
   }
 
   argv.scriptFilter = function(scriptPath) {
-    var scriptName = /src\/activities\/(\w+)\/index.js/.exec(scriptPath)[1];
+    var scriptName = /src\/activities\/([-\w]+)\/index.js/.exec(scriptPath)[1];
     // User can include a !name argument along with * to exclude activities.
     if (_.contains(activities, '!' + scriptName)) {
       return false;

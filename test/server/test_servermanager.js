@@ -1,23 +1,25 @@
 // @file Test ServerManager.
 
+'use strict';
+
 // Third party libs.
 var _ = require('lodash');
 var assert = require('chai').assert;
 var whenDelay = require('when/delay');
 
 // Locally defined libs.
-var findServerScripts = require(
-  '../../src/server/findserverscripts'
-).findServerScripts;
+var getActivities = require(
+  '../../src/server/get-activities'
+);
 var ServerManager = require('../../src/server/servermanager');
 
 suite('ServerManager', function() {
   var scripts = [];
   var manager = null;
   setup(function(done) {
-    findServerScripts()
-      .then(function(_scripts) {
-        scripts = _scripts;
+    getActivities()
+      .then(function(activities) {
+        scripts = _.pluck(activities, 'serverIndex');
         manager = new ServerManager();
       })
       .always(done);

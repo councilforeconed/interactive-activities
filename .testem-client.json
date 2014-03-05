@@ -1,0 +1,10 @@
+{
+  "test_page": "test/unit/client/index.html",
+  "watch_files": [
+    "test/unit/client/**/*",
+    "src/client/**/*"
+  ],
+  "routes": {
+    "/src/client/bower_components": "bower_components"
+  }
+}

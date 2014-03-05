@@ -7,11 +7,13 @@ var _debug = require('debug')('cee');
 var express = require('express');
 var when = require('when');
 var whenNode = require('when/node/function');
+var jade = require('jade');
+var _ = require('lodash');
 
 // Locally defined libs.
-var findServerScripts = require('./findserverscripts').findServerScripts;
 var ServerManager = require('./servermanager');
 var whenListening = require('./common').whenListening;
+var getActivities = require('./get-activities');
 
 // Start a server and return a promise of when that server is ready.
 //
@@ -32,15 +34,16 @@ module.exports.createTop = function(options, debug) {
   var manager = new ServerManager();
 
   // Find scripts to boot, then launch those with the manager instance.
-  var whenChildren = findServerScripts()
-    .then(function(scripts) {
+  var whenChildren = getActivities()
+    .then(function(activities) {
       if (options.scriptFilter) {
-        scripts = scripts.filter(options.scriptFilter);
+        activities = activities.filter(function(activity) {
+          return options.scriptFilter(activity.serverIndex);
+        });
       }
 
-      return when.map(scripts, function(script) {
-        var name = /src\/activities\/(\w+)\/index.js/.exec(script)[1];
-        return manager.launch(name, script);
+      return when.map(activities, function(activity) {
+        return manager.launch(activity.slug, activity.serverIndex);
       });
     })
     .then(function() {debug('all children are ready');})
@@ -52,6 +55,7 @@ module.exports.createTop = function(options, debug) {
 
   // Create the express application.
   var app = express();
+  var indexData;
 
   // Route normal web traffic to /activities/:name to children.
   app.all('/activities/:name*', function(req, res, next) {
@@ -59,6 +63,31 @@ module.exports.createTop = function(options, debug) {
     // becomes /status.
     req.url = req.params[0] || '/';
     manager.proxyWeb(req.params.name, [req, res]);
+  });
+
+  app.set('view engine', 'jade');
+  app.set('views', 'client');
+
+  app.configure('development', function() {
+    app.use('/bower_components', express.static('../bower_components'));
+    app.set('devMode', true);
+  });
+
+  app.configure('production', function() {
+    app.use('/bower_components', express.static('bower_components'));
+  });
+
+  app.use('/', express.static('client'));
+  // In order to properly support pushState, serve the index HTML file for
+  // GET requests to any directory.
+  var indexRouteReady = getActivities().then(function(activityData) {
+    app.get(/\/$/, function(req, res) {
+      res.render('index.jade', {
+        dev: !!app.get('devMode'),
+        activities: activityData
+      });
+      res.end();
+    });
   });
 
   app.get('/status', function(req, res, next) {
@@ -85,7 +114,7 @@ module.exports.createTop = function(options, debug) {
     // TODO: Some of this could be replaced with a specialty express app
     // for websocket connections that would be able to use express's
     // path matching.
-    var match = /\/activities\/(\w+)(.*)/.exec(req.url);
+    var match = /\/activities\/([-\w]+)(.*)/.exec(req.url);
     var name = match[1];
     var newUrl = match[2];
     req.url = newUrl;
@@ -95,6 +124,7 @@ module.exports.createTop = function(options, debug) {
   // Wait for everything to set up that can.
   return when
     .all([
+      indexRouteReady,
       // When the server is listening.
       whenListening(server, debug),
       // Wait for the children.
