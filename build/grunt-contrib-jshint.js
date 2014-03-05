@@ -16,6 +16,13 @@ module.exports = function(grunt) {
       src: ['src/client/**/*.js', 'src/activities/**/client/**/*.js']
     },
 
+    client_test: {
+      options: {
+        jshintrc: 'test/unit/client/.jshintrc'
+      },
+      src: ['test/unit/client/tests/**/*.js']
+    },
+
     server: {
       options: {
         jshintrc: 'src/server/.jshintrc'

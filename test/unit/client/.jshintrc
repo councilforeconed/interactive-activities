@@ -1,0 +1,14 @@
+{
+  "extends": "../../../.jshintrc",
+  "browser": true,
+  "globals": {
+    "assert": true,
+    "suite": true,
+    "test": true,
+    "setup": true,
+    "teardown": true,
+    "suiteSetup": true,
+    "suiteTeardown": true,
+    "define": true
+  }
+}
