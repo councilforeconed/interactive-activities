@@ -1,4 +1,6 @@
 define(function(require) {
+  'use strict';
+
   var MainView = require('../components/home/view');
 
   // TODO: Remove this dependency. It is included here only for prototyping

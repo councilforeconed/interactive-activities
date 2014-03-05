@@ -1,4 +1,6 @@
 define(function(require) {
+  'use strict';
+
   var Backbone = require('backbone');
   var ActivitiesView = require('components/activity/collection-view');
 
