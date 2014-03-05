@@ -1,0 +1,9 @@
+.mc-supply-container {
+  float: left;
+
+  width: 20rem;
+}
+
+.mc-controls-container, .mc-ledger-container {
+  margin-left: 22rem;
+}

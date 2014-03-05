@@ -1,0 +1,25 @@
+.home-title, .home-sub-title {
+  text-align: center;
+}
+
+.home-activity-list {
+  list-style-type: none;
+  text-align: center;
+}
+
+.home-activity-item {
+  display: inline-block;
+  width: 40%;
+  margin: 0 2rem;
+  border: solid 1px #ddd;
+
+  vertical-align: top;
+  text-align: left;
+}
+
+.home-activity-link {
+  display: block;
+  padding: 1rem;
+
+  text-decoration: none;
+}

@@ -1,0 +1,14 @@
+h1.title=title
+
+ul.tabs
+  li.tab(data-tab="desc")(class=activeTab=='desc' ? 'active' : '') Description
+  li.tab(data-tab="inst")(class=activeTab=='inst' ? 'active' : '') Instructions
+
+ul.tab-containers
+  li.tab-container(class=activeTab=='desc' ? 'active' : '')
+    != description
+
+    button.begin Begin
+
+  li.tab-container(class=activeTab=='inst' ? 'active' : '')
+    != instructions

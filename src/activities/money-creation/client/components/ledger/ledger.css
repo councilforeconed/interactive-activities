@@ -1,0 +1,11 @@
+.ledger .round {
+  height: 2rem;
+}
+
+.ledger .institution {
+  text-align: center;
+}
+
+.ledger .excess {
+  text-align: right;
+}

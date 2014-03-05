@@ -49,13 +49,29 @@ function generateConfig(activities) {
         appDir: 'src',
         paths: {
           jquery: '../../bower_components/jquery/dist/jquery',
-          underscore: '../../bower_components/lodash/dist/lodash',
-          _: '../../bower_components/lodash/dist/lodash',
           backbone: '../../bower_components/backbone/backbone',
-          jade: '../../bower_components/require-jade/jade',
           'socket.io': '../../bower_components/socket.io-client/dist/socket.io',
+          layoutmanager: '../../bower_components/layoutmanager/backbone.layoutmanager',
+          lodash: '../../bower_components/lodash/dist/lodash.underscore',
+          rangeslider: '../../bower_components/rangeslider.js/dist/rangeslider',
+
+          // AMD loader plugins
+          jade: '../../bower_components/require-jade/jade',
+          css: '../../bower_components/require-css/css',
+          // Temporary fix to ensure that the CSS plugins internal modules are
+          // loaded correctly.
+          'css-builder': '../../bower_components/require-css/css-builder',
+          normalize: '../../bower_components/require-css/normalize',
 
           activities: '../activities'
+        },
+        shim: {
+          rangeslider: {
+            deps: [
+              'jquery',
+              'css!../../bower_components/rangeslider.js/dist/rangeslider'
+            ]
+          }
         },
         mainConfigFile: 'src/client/scripts/amd-config.js',
         dir: 'out',

@@ -1,0 +1,26 @@
+h2 Ledger
+
+table.ledger
+  thead
+    tr
+      th Depository Institution
+      th Deposit
+      th(colspan="2") Required Reserves
+      th Excess Reserves
+  tbody
+    each round, index in rounds
+      - var pct = (100 * round.reserves / total);
+      - var totalPct = (100 * (total - round.deposit) / total);
+      tr.round
+        td.institution=String.fromCharCode(index + 65)
+        td.deposit=formatters.usd(round.deposit)
+        td.bill-slice-container
+          .outer(style='margin-left:' + totalPct + '%;width:' + pct + '%;')
+            .inner
+              img(
+                src='/activities/money-creation/client/images/bill-small.jpg',
+                style='margin-left:-' + totalPct + '%;',
+                class='bill'
+              )
+        td.reserves=formatters.usd(round.reserves)
+        td.excess=formatters.usd(round.excess)

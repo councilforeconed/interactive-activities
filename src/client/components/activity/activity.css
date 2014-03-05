@@ -1,0 +1,47 @@
+.activity {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: #fff;
+}
+
+.activity .activity-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 5;
+
+  height: 3rem;
+
+  background-color: #fff;
+  border-bottom: 1px solid #777;
+}
+
+.activity-nav .activity-home {
+  font-size: 2rem;
+}
+
+.activity-nav .home, .activity-nav .activity-title {
+  display: inline;
+  margin: 0 2rem 0 0;
+}
+
+.activity-nav .activity-help {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.activity .activity-stage {
+  position: relative;
+
+  margin-top: 4rem;
+}

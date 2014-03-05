@@ -1,0 +1,44 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.modal .screen {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: #333;
+  opacity: 0.3;
+}
+
+.modal .center {
+  position: relative;
+  left: 50%;
+
+  width: 0;
+}
+
+.modal .surface {
+  position: absolute;
+  left: -21rem;
+  top: 3rem;
+
+  padding: 2rem;
+  width: 40rem;
+
+  background-color: #eee;
+}
+
+.modal .dismiss {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  cursor: pointer;
+}
