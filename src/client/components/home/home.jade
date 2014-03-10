@@ -1,6 +1,8 @@
-h2 Activities
+h1.home-title CEE's Interactive Activities
 
-ul
-each activity in activities
-  li
-    a(href='#activity/' + activity.slug + '/')=activity.config.name
+ul.home-activity-list
+  each activity in activities
+    li.home-activity-item
+      a.home-activity-link(href='#activity/' + activity.slug + '/')
+        h3.home-activity-name=activity.config.name
+        p.home-activity-desc= activity.config.shortDesc
