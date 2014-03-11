@@ -1,9 +1,11 @@
 define(function(require) {
+  'use strict';
+
   var $ = require('jquery');
   var Backbone = require('backbone');
   var Router = require('./router');
   var data = JSON.parse(document.getElementById('activity-data').innerHTML);
-  var router = new Router({
+  new Router({
     $el: $("#main"),
     data: data
   });
