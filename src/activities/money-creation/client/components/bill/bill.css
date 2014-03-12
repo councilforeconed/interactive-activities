@@ -1,0 +1,50 @@
+.mc-supply-title {
+  margin: 0 0 1rem 0;
+
+  text-align: center;
+}
+
+.bill-container {
+  position: relative;
+}
+
+.bill-container, .bill-container .bill {
+  width: 100%;
+}
+
+.bill-container .reserved-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  box-sizing: border-box;
+  border-width: 0 0 0.3rem 0;
+  border-color: #333;;
+  border-style: solid;
+
+  background-color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+.bill-container .reserved-overlay.focus {
+  z-index: 4;
+}
+
+.bill-container .reserved-overlay .amount {
+  position: absolute;
+  top: 50%;
+
+  padding: 0.2rem;
+
+  background-color: #fff;
+  border-radius: 0.3rem;
+}
+
+.bill-slice-container .inner,
+.bill-slice-container .bill {
+  width: 4rem;
+}
+
+.bill-slice-container .outer {
+  overflow: hidden;
+}

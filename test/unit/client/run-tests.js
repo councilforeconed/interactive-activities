@@ -1,8 +1,7 @@
 mocha.ui('tdd');
 
 testRequire([
-  'components/activity/collection-view',
-  'scripts/layout'
+  'scripts/formatters/usd'
 ], function() {
   mocha.run();
 });

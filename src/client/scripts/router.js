@@ -2,7 +2,7 @@ define(function(require) {
   'use strict';
 
   var Backbone = require('backbone');
-  var ActivitiesView = require('components/activity/collection-view');
+  var ActivitiesView = require('components/home/home');
 
   var Router = Backbone.Router.extend({
     initialize: function(options) {
@@ -17,7 +17,7 @@ define(function(require) {
     },
 
     index: function() {
-      this.setView(ActivitiesView, this.data);
+      this.setView(ActivitiesView, { activities: this.data });
     },
 
     /**
@@ -52,12 +52,17 @@ define(function(require) {
      */
     setView: function(View, data) {
       if (this.currentView) {
-        this.currentView.destroy();
+        this.currentView.remove();
       }
 
       this._loadId = null;
 
-      this.currentView = new View({ el: this.$el }).render(data);
+      this.currentView = new View();
+      this.$el.append(this.currentView.$el);
+      if (data) {
+        this.currentView.serialize = data;
+      }
+      this.currentView.render();
     }
   });
 

@@ -1,0 +1,19 @@
+h4
+  | Reserve Ratio: &nbsp;
+  span.ratio=(ratio * 100)
+  | %
+
+input(type='range', min=5, max=70, step=1, value=ratio * 100)
+
+button.change-round(data-dir='prev',
+    // Ensure the `disabled` attribute is only rendered when no rounds have
+    // have been simulated.
+    disabled=(rounds.length > 0 ? undefined : 'disabled')
+  )
+  | Previous Round
+
+button.change-round(data-dir='next') Next Round
+
+if rounds.length > 0
+  h3='Round ' + (rounds.length)
+  h3.money-created=formatters.usd(totalCreated)
