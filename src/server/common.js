@@ -3,6 +3,7 @@
 'use strict';
 
 var _ = require('lodash');
+var _debug = require('debug')('cee:common');
 var when = require('when');
 var whenParallel = require('when/parallel');
 var whenTimeout = require('when/timeout');
@@ -39,6 +40,7 @@ module.exports.atTermination = function(fn, debug) {
 // @param debug debug module instance for more straight forward debug messages
 // @returns {Promise} Promise that resolves when server is listening
 module.exports.whenListening = function(server, debug) {
+  debug = debug || _debug;
   return when.promise(function(resolve, reject) {
     server.on('listening', function() {
       debug('listening on %d', server.address().port);
