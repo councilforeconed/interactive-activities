@@ -50,6 +50,8 @@ function generateConfig(activities) {
         paths: {
           jquery: '../../bower_components/jquery/dist/jquery',
           backbone: '../../bower_components/backbone/backbone',
+          d3: '../../bower_components/d3/d3',
+          'd3.chart': '../../bower_components/d3.chart/d3.chart',
           'socket.io': '../../bower_components/socket.io-client/dist/socket.io',
           layoutmanager: '../../bower_components/layoutmanager/backbone.layoutmanager',
           lodash: '../../bower_components/lodash/dist/lodash.underscore',
@@ -66,6 +68,12 @@ function generateConfig(activities) {
           activities: '../activities'
         },
         shim: {
+          d3: {
+            exports: 'd3'
+          },
+          'd3.chart': {
+            deps: ['d3']
+          },
           rangeslider: {
             deps: [
               'jquery',

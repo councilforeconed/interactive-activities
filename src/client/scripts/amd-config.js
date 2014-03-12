@@ -5,6 +5,8 @@ require({
     backbone: 'bower_components/backbone/backbone',
     lodash: 'bower_components/lodash/dist/lodash.underscore',
     'socket.io': 'bower_components/socket.io-client/dist/socket.io',
+    d3: 'bower_components/d3/d3',
+    'd3.chart': 'bower_components/d3.chart/d3.chart',
     layoutmanager: 'bower_components/layoutmanager/backbone.layoutmanager',
     rangeslider: 'bower_components/rangeslider.js/dist/rangeslider',
 
@@ -18,6 +20,12 @@ require({
     }
   },
   shim: {
+    d3: {
+      exports: 'd3',
+    },
+    'd3.chart': {
+      deps: ['d3']
+    },
     rangeslider: {
       deps: [
         'jquery',
