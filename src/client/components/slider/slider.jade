@@ -1,0 +1,12 @@
+h3
+  = label
+  | :&nbsp;
+  span.value=formattedValue
+
+input(
+  type='range',
+  value=value,
+  min=min,
+  max=max,
+  step=(step < 1 ? '0' : '') + step
+)

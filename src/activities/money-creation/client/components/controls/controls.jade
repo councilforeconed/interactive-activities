@@ -1,9 +1,4 @@
-h4
-  | Reserve Ratio: &nbsp;
-  span.ratio=(ratio * 100)
-  | %
-
-input(type='range', min=5, max=70, step=1, value=ratio * 100)
+.ratio-slider
 
 button.change-round(data-dir='prev',
     // Ensure the `disabled` attribute is only rendered when no rounds have
