@@ -18,6 +18,10 @@ define(function(require) {
     assert.equal(formatUSD(0.9999999999999), '$1.00');
   });
 
+  test('negative values', function() {
+    assert.equal(formatUSD(-12.2), '-$12.20');
+  });
+
   suite('comma insertion', function() {
     test('thousands', function() {
       assert.equal(formatUSD(1234), '$1,234.00');
