@@ -96,7 +96,7 @@ suite('CRUDManager', function() {
         // Now spy that it isn't called.
         spy = sinon.spy();
         manager2.on('create', spy);
-        manager2.listenTo(undefined);
+        manager2.stopListening();
 
         // Have 3 listen to the original so we know when manager2 would have
         // listened if it was still doing so.
