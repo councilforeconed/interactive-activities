@@ -1,0 +1,7 @@
+{
+  "dicts": {
+    "adj": "adjective.json",
+    "noun": "noun.json"
+  },
+  "formula": ["adj", "noun"]
+}

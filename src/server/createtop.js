@@ -2,16 +2,24 @@
 
 'use strict';
 
+var fs = require('fs');
+
 // Third party libs.
+var _ = require('lodash');
 var _debug = require('debug')('cee');
 var express = require('express');
+require('express-resource');
 var when = require('when');
 var whenNode = require('when/node/function');
 
 // Locally defined libs.
+var ActivityManager = require('./activitymanager');
+var CRUDReplicator = require('./crudreplicator');
+var getActivities = require('./get-activities');
+var MemoryStore = require('./storememory');
+var namegen = require('./namegen');
 var ServerManager = require('./servermanager');
 var whenListening = require('./common').whenListening;
-var getActivities = require('./get-activities');
 
 // Start a server and return a promise of when that server is ready.
 //
@@ -53,6 +61,8 @@ module.exports.createTop = function(options, debug) {
 
   // Create the express application.
   var app = express();
+
+  app.use(express.json());
 
   // Route normal web traffic to /activities/:name to children.
   app.all('/activities/:name*', function(req, res) {
@@ -105,6 +115,86 @@ module.exports.createTop = function(options, debug) {
         .always(cb);
     };
   }());
+
+  // Load configurations for name generation.
+  var whenNameGensLoad = when
+    .map([
+      __dirname + '/names/room.json',
+      __dirname + '/names/group.json'
+    ], function(file) {
+      return whenNode.call(fs.readFile, file)
+        .then(JSON.parse)
+        // Iterate over values in the dicts key. If it is a string load that
+        // path as JSON.
+        .then(function(obj) {
+          var promises = [];
+          _.each(obj.dicts, function(dict, key) {
+            if (typeof dict === 'string') {
+              promises.push(whenNode
+                .call(
+                  fs.readFile,
+                  __dirname + '/names/' + dict,
+                  { encoding: 'utf8' }
+                )
+                .then(JSON.parse)
+                .then(function(dict) {
+                  obj.dicts[key] = dict.words;
+                })
+              );
+            }
+          });
+          return when.all(promises).yield(obj);
+        });
+    });
+
+  // Build the activity manager and replicate to child servers.
+  whenNameGensLoad
+    .spread(function(roomNameConfig, groupNameConfig) {
+      return getActivities().then(function(activityData) {
+        var activityManager = new ActivityManager({
+          // Keep rooms for 2 days.
+          existFor: 2 * 24 * 60 * 60 * 1000,
+          // Start all rooms with 5 groups.
+          baseGroups: 5,
+          roomNameGen: namegen.factory(roomNameConfig),
+          groupNameGen: namegen.factory(groupNameConfig),
+          roomStore: new MemoryStore(),
+          groupStore: new MemoryStore(),
+          lookupStore: new MemoryStore(),
+          activities: activityData
+        });
+
+        // Configure room and group replication.
+        activityManager.eachActivity(function(activity, key) {
+          new CRUDReplicator({
+            manager: activity.managers.room,
+            type: 'room',
+            target: manager._children[key].process
+          });
+
+          new CRUDReplicator({
+            manager: activity.managers.group,
+            type: 'group',
+            target: manager._children[key].process
+          });
+        });
+
+        // Create the room and group RESTful resources.
+        app.resource('api/room', activityManager.roomResource());
+        app.resource('api/group', activityManager.groupResource());
+
+        // Patch server.close to shutdown activity rooms.
+        (function() {
+          var _close = server.close;
+          server.close = function(cb) {
+            return activityManager.shutdown()
+              .yield(whenNode.call(_close.bind(server)))
+              .then(function() {debug('all activity rooms are closed');})
+              .always(cb);
+          };
+        }());
+      });
+    });
 
   // Websockets use the upgrade path. Figure out which sub to proxy to.
   server.on('upgrade', function(req, socket, head) {
