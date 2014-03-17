@@ -1,0 +1,91 @@
+.ppf-slopes, .ppf-graph-container {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.ppf-slopes {
+  position: relative;
+
+  width: 25%;
+
+  text-align: center;
+}
+.ppf-slopes-left .ppf-slope {
+  float: right;
+  clear: both;
+}
+
+.ppf-slope {
+  padding: 3rem;
+  margin: 1rem;
+
+  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.4);
+  border-radius: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  transition: box-shadow 0.3s;
+}
+.ppf-slope-active {
+  -moz-box-shadow:    3px 3px 3px 3px #ccc;
+  -webkit-box-shadow: 3px 3px 3px 3px #ccc;
+  box-shadow:         3px 3px 3px 3px #ccc;
+
+  /* Ensure the active slope renders above inactive slopes. */
+  z-index: 2;
+}
+.ppf-slope .ppf-value {
+  padding: 0.4rem;
+
+  border-radius: 0.4rem;
+  background-color: #fff;
+  font-weight: bold;
+}
+
+.ppf-graph-container {
+  position: relative;
+
+  display: inline-block;
+  width: 50%;
+}
+
+.ppf-graph {
+  width: 100%;
+}
+
+.ppf-graph-target {
+  position: absolute;
+
+}
+.ppf-graph-target-active {
+  outline: solid 1px #00a;
+}
+
+.ppf-graph-target-1 {
+  top: 25%;
+  left: 12.5%;
+
+  height: 4.3%;
+  width: 21%;
+}
+.ppf-graph-target-2 {
+  top: 29.5%;
+  left: 34%;
+
+  height: 8.3%;
+  width: 15%;
+}
+.ppf-graph-target-3 {
+  top: 38%;
+  left: 49.5%;
+
+  height: 20%;
+  width: 16.5%;
+}
+.ppf-graph-target-4 {
+  top: 58%;
+  left: 66.5%;
+
+  width: 10%;
+  height: 34%;
+}

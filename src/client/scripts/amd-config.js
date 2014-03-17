@@ -9,6 +9,7 @@ require({
     'd3.chart': 'bower_components/d3.chart/d3.chart',
     layoutmanager: 'bower_components/layoutmanager/backbone.layoutmanager',
     rangeslider: 'bower_components/rangeslider.js/dist/rangeslider',
+    'jquery.pep': 'bower_components/jquery.pep/src/jquery.pep',
 
     // AMD loader plugins
     jade: 'bower_components/require-jade/jade',
