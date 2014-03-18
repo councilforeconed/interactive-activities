@@ -6,11 +6,13 @@
   "private": true,
   "dependencies": {
     "backbone": "~1.1.2",
+    "d3": "~3.3.13",
+    "d3.chart": "~0.2.0",
     "jquery": "~2.1.0",
     "layoutmanager": "https://github.com/tbranyen/backbone.layoutmanager.git#e6a399699d738fa36e296e66d2675166aee5c6a6",
     "lodash": "~2.4.1",
     "socket.io-client": "~0.9.16",
-    "rangeslider.js": "~0.2.3",
+    "rangeslider.js": "git@github.com:jugglinmike/rangeslider.js.git#improved",
     "require-css": "~0.1.2",
     "require-jade": "~0.0.3",
     "requirejs": "~2.1.11"

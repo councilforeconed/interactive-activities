@@ -1,11 +1,11 @@
 define(function(require) {
   'use strict';
   var Layout = require('layoutmanager');
-  var _ = require('lodash');
 
   var formatters = require('scripts/formatters');
   var template = require('jade!./controls');
-  require('rangeslider');
+  var Slider = require('components/slider/slider');
+
   require('css!./controls');
 
   var ControlsView = Layout.extend({
@@ -18,24 +18,15 @@ define(function(require) {
 
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
-      this.updateRatio = _.bind(this.updateRatio, this);
-      this.setRatio = _.bind(this.setRatio, this);
-    },
-
-    afterRender: function() {
-      this.$('input[type="range"]').rangeslider({
-        polyfill: false,
-        onSlide: this.updateRatio,
-        onSlideEnd: this.setRatio
-      });
-    },
-
-    updateRatio: function(position, value) {
-      this.$('.ratio').text(value);
-    },
-
-    setRatio: function(position, value) {
-      this.model.set('ratio', value);
+      this.setView('.ratio-slider', new Slider({
+        label: 'Reserve Ratio',
+        min: 5,
+        max: 70,
+        step: 1,
+        attr: 'ratio',
+        format: function(val) { return val + '%'; },
+        model: this.model
+      }));
     },
 
     serialize: function() {
