@@ -1,0 +1,11 @@
+h3= label
+
+each valueLabel, key in values
+  label
+    input(
+      type='radio',
+      name=name,
+      value=key
+      checked=key === value ? 'checked' : undefined
+    )
+    = valueLabel
