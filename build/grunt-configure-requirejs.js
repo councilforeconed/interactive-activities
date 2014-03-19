@@ -59,11 +59,6 @@ function generateConfig(activities) {
 
           // AMD loader plugins
           jade: '../../bower_components/require-jade/jade',
-          css: '../../bower_components/require-css/css',
-          // Temporary fix to ensure that the CSS plugins internal modules are
-          // loaded correctly.
-          'css-builder': '../../bower_components/require-css/css-builder',
-          normalize: '../../bower_components/require-css/normalize',
 
           activities: '../activities'
         },
@@ -81,6 +76,18 @@ function generateConfig(activities) {
             ]
           }
         },
+        packages: [
+          /**
+           * The CSS loader plugin references modules using relative paths, so
+           * it must be specified as an AMD package in order for r.js to
+           * resolve its dependencies correctly.
+           */
+          {
+            location: '../../bower_components/require-css',
+            name: 'css',
+            main: 'css'
+          }
+        ],
         mainConfigFile: 'src/client/scripts/amd-config.js',
         dir: 'out',
         optimize: 'none',
