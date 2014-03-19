@@ -11,7 +11,7 @@ window.testRequire = function(tests, done) {
 
   // Rewrite test module IDs to be relative to the application's `baseUrl`
   while (--idx > -1) {
-    tests[idx] = '../../test/unit/client/tests/' + tests[idx];
+    tests[idx] = '../test/unit/client/tests/' + tests[idx];
   }
 
   require(['lib/chai'], function(chai) {
@@ -32,7 +32,12 @@ window.testRequire = function(tests, done) {
       // pushState-enabled server serving all assets from the root `/`) to
       // instead map to the client asset location relative to the test runner.
       require({
-        baseUrl: '../../../src/client'
+        baseUrl: '../../../bower_components',
+        paths: {
+          activities: '../src/activities',
+          components: '../src/client/components',
+          scripts: '../src/client/scripts'
+        }
       });
 
       // Finally, load the tests!
