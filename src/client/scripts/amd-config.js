@@ -7,6 +7,7 @@ require({
 
     // Third-party libraries
     backbone: 'backbone/backbone',
+    cloak: '../node_modules/cloak/cloak-client',
     d3: 'd3/d3',
     'd3.chart': 'd3.chart/d3.chart',
     layoutmanager: 'layoutmanager/backbone.layoutmanager',
@@ -51,6 +52,9 @@ require({
     }
   ],
   shim: {
+    cloak: {
+      deps: ['lodash', 'socket.io']
+    },
     d3: {
       exports: 'd3',
     },

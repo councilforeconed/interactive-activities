@@ -39,6 +39,7 @@ function generateConfig(activities) {
   // 1. minimizes the size of each individual activity
   // 2. avoids the need to re-define library code between activities
   var sharedLibraries = {
+    'cloak': '../node_modules/cloak/cloak-client',
     'socket.io': 'socket.io-client/dist/socket.io'
   };
 

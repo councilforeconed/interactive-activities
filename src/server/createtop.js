@@ -77,11 +77,13 @@ module.exports.createTop = function(options, debug) {
 
   app.configure('development', function() {
     app.use('/bower_components', express.static('../bower_components'));
+    app.use('/node_modules', express.static('../node_modules'));
     app.set('devMode', true);
   });
 
   app.configure('production', function() {
     app.use('/bower_components', express.static('bower_components'));
+    app.use('/node_modules', express.static('node_modules'));
   });
 
   app.use('/', express.static('client'));
