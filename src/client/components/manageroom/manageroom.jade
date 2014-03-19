@@ -1,0 +1,29 @@
+h1= 'Room: ' + id
+
+if typeof activity !== 'undefined'
+  p= 'Created on: ' + new Date(created_at).toLocaleDateString()
+  p= 'Expires at: ' + new Date(expires_at).toLocaleString()
+
+  h2= 'Activity: ' + activity
+
+  p= activityData.config.shortDesc
+
+if typeof error !== 'undefined'
+  p.error= error
+
+if typeof groups !== 'undefined'
+  h2 Groups
+
+  p.
+    Instruct your students to enter the one of the following urls to have them join the group you want them in.
+
+  table
+    each group in groups
+      tr
+        td
+          a(href='/#/group/' + group.name + '/')= location.protocol + '//' + location.host + '/group/' + group.name + '/'
+
+  div
+    a(class='add-group', href='javascript:;') Add Group
+else
+  p Loading ...

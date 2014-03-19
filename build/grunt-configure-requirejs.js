@@ -119,6 +119,12 @@ function generateRjsModules(activities, sharedLibraries) {
       'scripts/amd-config'
     ]
   };
+  var roomModules = ['createroom', 'manageroom'].map(function(component) {
+    return {
+      name: 'components/' + component + '/' + component,
+      exclude: ['scripts/main'].concat(Object.keys(sharedLibraries))
+    };
+  });
   var activityModules = activities.map(function(activity) {
     return {
       name: 'activities/' + activity.slug + '/client/scripts/main',
@@ -129,7 +135,7 @@ function generateRjsModules(activities, sharedLibraries) {
     };
   });
 
-  return [mainModule].concat(activityModules);
+  return [mainModule].concat(roomModules).concat(activityModules);
 }
 
 function getModuleDescriptors(modulePaths) {

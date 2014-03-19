@@ -16,6 +16,7 @@ require({
     'jquery.pep': 'jquery.pep/src/jquery.pep',
     rangeslider: 'rangeslider.js/dist/rangeslider',
     'socket.io': 'socket.io-client/dist/socket.io',
+    when: 'when/when',
 
     // AMD loader plugins
     jade: 'require-jade/jade',
