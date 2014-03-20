@@ -11,13 +11,15 @@ require({
     'd3.chart': 'd3.chart/d3.chart',
     layoutmanager: 'layoutmanager/backbone.layoutmanager',
     lodash: 'lodash/dist/lodash.underscore',
-    jquery: 'jquery/dist/jquery',
+    jquery: 'jquery/jquery',
     'jquery.pep': 'jquery.pep/src/jquery.pep',
     rangeslider: 'rangeslider.js/dist/rangeslider',
     'socket.io': 'socket.io-client/dist/socket.io',
 
     // AMD loader plugins
-    jade: 'require-jade/jade'
+    jade: 'require-jade/jade',
+    json: 'jquery-mobile/external/requirejs/plugins/json',
+    text: 'jquery-mobile/external/requirejs/plugins/text'
   },
   map: {
     '*': {
@@ -34,6 +36,18 @@ require({
       location: 'require-css',
       name: 'css',
       main: 'css'
+    },
+    {
+      name: 'jquery-mobile',
+      location: 'jquery-mobile'
+    },
+    {
+      name: 'jquery-ui',
+      location: 'jquery-ui/ui'
+    },
+    {
+      name: 'jquery-plugins',
+      location: 'jquery-mobile/external/jquery/plugins'
     }
   ],
   shim: {

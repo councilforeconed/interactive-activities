@@ -19,12 +19,11 @@ define(function(require) {
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.setView('.ratio-slider', new Slider({
-        label: 'Reserve Ratio',
+        label: 'Reserve Ratio (%)',
         min: 5,
         max: 70,
         step: 1,
         attr: 'ratio',
-        format: function(val) { return val + '%'; },
         model: this.model
       }));
     },
