@@ -1,0 +1,5 @@
+{
+  "name": "Example multi user activity",
+  "shortDesc": "This activity demonstrates a multi user application",
+  "roomBased": true
+}
