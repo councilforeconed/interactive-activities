@@ -153,6 +153,11 @@ module.exports.createTop = function(options, debug) {
   whenNameGensLoad
     .spread(function(roomNameConfig, groupNameConfig) {
       return getActivities().then(function(activityData) {
+        // Filter activites that need rooms.
+        activityData = activityData.filter(function(activity) {
+          return activity.config.roomBased;
+        });
+
         var activityManager = new ActivityManager({
           // Keep rooms for 2 days.
           existFor: 2 * 24 * 60 * 60 * 1000,
