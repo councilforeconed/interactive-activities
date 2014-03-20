@@ -15,6 +15,7 @@
     "rangeslider.js": "git@github.com:jugglinmike/rangeslider.js.git#improved",
     "require-css": "~0.1.2",
     "require-jade": "~0.0.3",
-    "requirejs": "~2.1.11"
+    "requirejs": "~2.1.11",
+    "jquery.pep": "~0.5.12"
   }
 }
