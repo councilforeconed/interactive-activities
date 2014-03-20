@@ -152,6 +152,9 @@ ServerManager.prototype.send = function(name, args) {
 // Proxy web traffic to a sub server.
 ServerManager.prototype.proxyWeb = function(name, args) {
   var child = this._children[name];
+  if (!child) {
+    throw new Error('Cannot proxy web traffic to ' + name + '.');
+  }
   child.whenLaunched.then(function() {
     child.proxy.web.apply(child.proxy, args);
   });
@@ -160,6 +163,9 @@ ServerManager.prototype.proxyWeb = function(name, args) {
 // Proxy a web socket to a sub server.
 ServerManager.prototype.proxyWs = function(name, args) {
   var child = this._children[name];
+  if (!child) {
+    throw new Error('Cannot proxy web socket connection to ' + name + '.');
+  }
   child.whenLaunched.then(function() {
     child.proxy.ws.apply(child.proxy, args);
   });
