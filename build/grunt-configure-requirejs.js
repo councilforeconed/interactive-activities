@@ -48,9 +48,9 @@ function generateConfig(activities) {
         baseUrl: '../bower_components',
         appDir: 'src',
         paths: {
-          scripts: '../src/client/scripts',
+          activities: '../src/activities',
           components: '../src/client/components',
-          activities: '../src/activities'
+          scripts: '../src/client/scripts'
         },
         shim: {
           d3: {

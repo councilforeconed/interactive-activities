@@ -1,23 +1,23 @@
 require({
   baseUrl: '/bower_components',
   paths: {
-    scripts: '../scripts',
-    components: '../components',
     activities: '../activities',
+    components: '../components',
+    scripts: '../scripts',
 
-    jquery: 'jquery/dist/jquery',
-    'jquery.pep': 'jquery.pep/src/jquery.pep',
+    // Third-party libraries
+    backbone: 'backbone/backbone',
     d3: 'd3/d3',
     'd3.chart': 'd3.chart/d3.chart',
-    backbone: 'backbone/backbone',
-    lodash: 'lodash/dist/lodash.underscore',
-    'socket.io': 'socket.io-client/dist/socket.io',
     layoutmanager: 'layoutmanager/backbone.layoutmanager',
+    lodash: 'lodash/dist/lodash.underscore',
+    jquery: 'jquery/dist/jquery',
+    'jquery.pep': 'jquery.pep/src/jquery.pep',
     rangeslider: 'rangeslider.js/dist/rangeslider',
+    'socket.io': 'socket.io-client/dist/socket.io',
 
     // AMD loader plugins
-    jade: 'require-jade/jade',
-    css: 'require-css/css'
+    jade: 'require-jade/jade'
   },
   map: {
     '*': {
