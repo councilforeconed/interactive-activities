@@ -45,27 +45,12 @@ function generateConfig(activities) {
   return {
     prod: {
       options: {
-        baseUrl: 'client',
+        baseUrl: '../bower_components',
         appDir: 'src',
         paths: {
-          jquery: '../../bower_components/jquery/dist/jquery',
-          backbone: '../../bower_components/backbone/backbone',
-          d3: '../../bower_components/d3/d3',
-          'd3.chart': '../../bower_components/d3.chart/d3.chart',
-          'socket.io': '../../bower_components/socket.io-client/dist/socket.io',
-          layoutmanager: '../../bower_components/layoutmanager/backbone.layoutmanager',
-          lodash: '../../bower_components/lodash/dist/lodash.underscore',
-          rangeslider: '../../bower_components/rangeslider.js/dist/rangeslider',
-
-          // AMD loader plugins
-          jade: '../../bower_components/require-jade/jade',
-          css: '../../bower_components/require-css/css',
-          // Temporary fix to ensure that the CSS plugins internal modules are
-          // loaded correctly.
-          'css-builder': '../../bower_components/require-css/css-builder',
-          normalize: '../../bower_components/require-css/normalize',
-
-          activities: '../activities'
+          activities: '../src/activities',
+          components: '../src/client/components',
+          scripts: '../src/client/scripts'
         },
         shim: {
           d3: {
@@ -77,7 +62,7 @@ function generateConfig(activities) {
           rangeslider: {
             deps: [
               'jquery',
-              'css!../../bower_components/rangeslider.js/dist/rangeslider'
+              'css!rangeslider.js/dist/rangeslider'
             ]
           }
         },
@@ -123,7 +108,7 @@ function generateRjsModules(activities, sharedLibraries) {
     name: 'scripts/main',
     include: [
       // Include RequireJS to support lazy loading of activities
-      '../../bower_components/requirejs/require',
+      'requirejs/require',
       // Include the configuration to ensure that:
       // 1. the application initializes immediately (via the `deps`
       //    option)

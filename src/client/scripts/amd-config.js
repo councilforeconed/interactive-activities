@@ -1,25 +1,41 @@
 require({
-  baseUrl: '/',
+  baseUrl: '/bower_components',
   paths: {
-    jquery: 'bower_components/jquery/dist/jquery',
-    backbone: 'bower_components/backbone/backbone',
-    lodash: 'bower_components/lodash/dist/lodash.underscore',
-    'socket.io': 'bower_components/socket.io-client/dist/socket.io',
-    d3: 'bower_components/d3/d3',
-    'd3.chart': 'bower_components/d3.chart/d3.chart',
-    layoutmanager: 'bower_components/layoutmanager/backbone.layoutmanager',
-    rangeslider: 'bower_components/rangeslider.js/dist/rangeslider',
-    'jquery.pep': 'bower_components/jquery.pep/src/jquery.pep',
+    activities: '../activities',
+    components: '../components',
+    scripts: '../scripts',
+
+    // Third-party libraries
+    backbone: 'backbone/backbone',
+    d3: 'd3/d3',
+    'd3.chart': 'd3.chart/d3.chart',
+    layoutmanager: 'layoutmanager/backbone.layoutmanager',
+    lodash: 'lodash/dist/lodash.underscore',
+    jquery: 'jquery/dist/jquery',
+    'jquery.pep': 'jquery.pep/src/jquery.pep',
+    rangeslider: 'rangeslider.js/dist/rangeslider',
+    'socket.io': 'socket.io-client/dist/socket.io',
 
     // AMD loader plugins
-    jade: 'bower_components/require-jade/jade',
-    css: 'bower_components/require-css/css'
+    jade: 'require-jade/jade'
   },
   map: {
     '*': {
       underscore: 'lodash'
     }
   },
+  packages: [
+    /**
+     * The CSS loader plugin references modules using relative paths, so
+     * it must be specified as an AMD package in order for r.js to
+     * resolve its dependencies correctly.
+     */
+    {
+      location: 'require-css',
+      name: 'css',
+      main: 'css'
+    }
+  ],
   shim: {
     d3: {
       exports: 'd3',
@@ -30,7 +46,7 @@ require({
     rangeslider: {
       deps: [
         'jquery',
-        'css!bower_components/rangeslider.js/dist/rangeslider'
+        'css!rangeslider.js/dist/rangeslider'
       ]
     }
   },
