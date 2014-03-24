@@ -1,0 +1,41 @@
+- var id = 'cee-slider-' + (+new Date())
+- var lowerId = id + '-lower'
+- var upperId = id + '-upper'
+
+// jQuery Mobile creates elements as "uncles" to the provided input elements,
+// so a container element must be used.
+div.range-slider-container
+
+  label(for=lowerId)
+    = label
+
+  // `data-cee-boundary` is a custom data attribute to differentiate between
+  // upper and lower bounds in this component's `change` event handler.
+  input(
+    type='number',
+    data-type='range',
+    data-cee-boundary='lower',
+    value=lowerValue,
+    min=min,
+    max=max,
+    name=lowerId,
+    id=lowerId,
+    step=(step < 1 ? '0' : '') + step
+  )
+
+  label(for=upperId)
+    = label
+
+  // `data-cee-boundary` is a custom data attribute to differentiate between
+  // upper and lower bounds in this component's `change` event handler.
+  input(
+    type='number',
+    data-type='range',
+    data-cee-boundary='upper',
+    value=upperValue,
+    min=min,
+    max=max,
+    name=upperId,
+    id=upperId,
+    step=(step < 1 ? '0' : '') + step
+  )

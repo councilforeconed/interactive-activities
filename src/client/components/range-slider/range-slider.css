@@ -1,0 +1,16 @@
+.cee-range-slider .ui-slider-bg {
+  background-color: #777;
+}
+
+/**
+ * jQuery mobile renders dynamically-created rangeslider widgets differently
+ * than those that are initially present in the document. The following style
+ * overrides ensure that the range slider's numeric value input elements appear
+ * on the same horizontal grid line as the slider itself.
+ */
+.cee-range-slider .ui-slider {
+  display: inline;
+}
+.cee-range-slider .ui-slider:before, .cee-range-slider .ui-slider:after {
+  content: none;
+}
