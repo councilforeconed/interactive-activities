@@ -11,7 +11,7 @@ define({
     dflt: 11
   },
   autonomousTaxes: {
-    label: 'Autonomous Taxes',
+    label: 'Autonomous Taxes ($)',
     dflt: 0,
     min: -200,
     max: 600,
@@ -25,7 +25,7 @@ define({
     step: 0.1
   },
   incChange: {
-    label: 'Income Change',
+    label: 'Income Change ($)',
     dflt: 1000,
     min: 500,
     max: 2000,

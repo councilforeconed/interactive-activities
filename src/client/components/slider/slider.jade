@@ -1,12 +1,15 @@
-h3
+- var id = 'cee-slider-' + (+new Date())
+
+label(for=id)
   = label
-  | :&nbsp;
-  span.value=formattedValue
 
 input(
-  type='range',
+  type='number',
+  data-type='range',
   value=value,
   min=min,
   max=max,
+  name=id,
+  id=id,
   step=(step < 1 ? '0' : '') + step
 )
