@@ -1,9 +1,0 @@
-/**
- * CSS defined here will be injected into the page when the component's
- * JavaScript module is loaded. Because it will remain on the page even after
- * the user navigates away from the current activity, it is a good idea to
- * namespace selectors under a CSS class name unique to the activity.
- */
-.example h1 {
-  color: #ddd;
-}
