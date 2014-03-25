@@ -19,6 +19,7 @@ define(function(require) {
      */
     initialize: function(options) {
       var axisLabelSpacing = '0.71em';
+      var clipId;
 
       if (!this.base) {
         this.base = d3.select(
@@ -61,16 +62,24 @@ define(function(require) {
         this.yAxisLabel.text(options.yLabel);
       }
 
-      this.pointsg = this.content.append('g')
+      // Create a clipping path to limit the rendered line to the graph's
+      // "field" (i.e. prevent overlaying on the visualization axes and
+      // margins)
+      this.defs = this.content.append('defs');
+      clipId = 'cee-line-and-bubble-' + (+new Date());
+      this.clipField = this.defs.append('clipPath')
+        .attr('id', clipId).append('rect');
+
+      this.lineAndPointsg = this.content.append('g')
+        .attr('clip-path', 'url(#' + clipId + ')');
+
+      this.lineg = this.lineAndPointsg.append('g')
+        .classed('line', true);
+      this.pointsg = this.lineAndPointsg.append('g')
         .classed('points', true);
 
-      this.layer('line', this.content.append('g'), require('./line-layer'));
-
-      this.layer(
-        'points',
-        this.content.append('g').classed('points', true),
-        require('./bubble-layer')
-      );
+      this.layer('line', this.lineg, require('./line-layer'));
+      this.layer('points', this.pointsg, require('./bubble-layer'));
 
       this.height(300);
       this.width(200);
@@ -124,6 +133,7 @@ define(function(require) {
       this.x.range([0, width]);
       this.xAxisLabel.attr('x', width);
       this.xAxisg.call(this.xAxis);
+      this.clipField.attr('width', width);
       this.redraw();
     },
 
@@ -133,6 +143,7 @@ define(function(require) {
       this.y.range([height, 0]);
       this.xAxisg.attr('transform', 'translate(0, ' + height + ')');
       this.yAxisg.call(this.yAxis);
+      this.clipField.attr('height', height);
       this.redraw();
     },
 
