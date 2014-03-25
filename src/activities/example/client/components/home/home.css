@@ -4,7 +4,7 @@
  * the user navigates away from the current activity, it is a good idea to
  * namespace selectors under a CSS class name unique to the activity.
  */
-.example-mp {
+.example {
   height: 100%;
 }
 

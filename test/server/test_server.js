@@ -87,7 +87,7 @@ suite('top server', function() {
 
     var client = socketio_client
       .connect('http://' + host, {
-        resource: 'activities/example-mp/socket.io'
+        resource: 'activities/example/socket.io'
       })
       .on('connect', function() {
         didConnect = true;

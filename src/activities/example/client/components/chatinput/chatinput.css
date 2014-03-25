@@ -1,0 +1,11 @@
+.example input {
+  margin: 1%;
+}
+
+.example input[name="nickname"] {
+  width: 20%;
+}
+
+.example input[name="message"] {
+  width: 70%;
+}
