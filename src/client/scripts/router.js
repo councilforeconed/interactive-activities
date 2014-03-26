@@ -49,7 +49,7 @@ define(function(require) {
         if (self._loadId !== loadId) {
           return;
         }
-        self.setView(View, undefined, { group: group });
+        self.setView(View, { group: group });
       });
     },
 
@@ -73,7 +73,7 @@ define(function(require) {
         }
 
         var roomModel = new Backbone.Model({ id: room });
-        self.setView(ManageRoomView, undefined, { model: roomModel});
+        self.setView(ManageRoomView, { model: roomModel});
         self._loadId = loadId;
 
         when($.get('/api/room/' + room))
@@ -118,8 +118,10 @@ define(function(require) {
      * Synchronously initialize the specified view and insert it into the page.
      *
      * @param {View} View Backbone view constructor.
+     * @param {mixed} [options] Value to pass to the view constructor when
+     *                invoked.
      */
-    setView: function(View, data, options) {
+    setView: function(View, options) {
       if (this.currentView) {
         // Ignore navigation events to the same view--assume the view can
         // respond properly to such changes.
@@ -133,9 +135,6 @@ define(function(require) {
 
       this.currentView = new View(options || {});
       this.$el.append(this.currentView.$el);
-      if (data) {
-        this.currentView.serialize = data;
-      }
       this.currentView.render();
     }
   });

@@ -19,6 +19,10 @@ define(function(require) {
       'submit form': 'submit'
     },
 
+    initialize: function(options) {
+      this.activities = options.activities;
+    },
+
     submit: function(ev) {
       ev.preventDefault();
       // Serialize the form into an object to send as JSON.
@@ -31,7 +35,7 @@ define(function(require) {
           Backbone.history.navigate('/room/' + data.id + '/', true);
         }, function(e) {
           // The error is a jQuery XHR object.
-          this.serialize.error = e.responseText;
+          this.errorMessage = e.responseText;
           this.render();
         });
       return false;
@@ -45,6 +49,13 @@ define(function(require) {
         contentType: 'application/json',
         dataType: 'json'
       }));
+    },
+
+    serialize: function() {
+      return {
+        activities: this.activities,
+        errorMessage: this.errorMessage
+      };
     }
   });
 
