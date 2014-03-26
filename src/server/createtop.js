@@ -111,8 +111,11 @@ module.exports.createTop = function(options, debug) {
   (function() {
     var _close = server.close;
     server.close = function(cb) {
-      return manager.killAll()
-        .yield(whenNode.call(_close.bind(server)))
+      // Close the express server before killing all child servers. This
+      // ensures that the top server's connection to its children are safely
+      // closed *before* the children are killed.
+      return whenNode.call(_close.bind(server))
+        .then(manager.killAll.bind(manager))
         .then(function() {debug('all children are stopped');})
         .always(cb);
     };
