@@ -4,6 +4,7 @@ define(function(require) {
   var Layout = require('layoutmanager');
   var _ = require('lodash');
 
+  var JoinGroupView = require('components/joingroup/joingroup');
   var Modal = require('components/modal/modal');
   var WelcomeView = require('components/welcome/welcome');
   var formatters = require('scripts/formatters');
@@ -21,6 +22,7 @@ define(function(require) {
       'click .activity-help': 'showWelcome'
     },
     chromeTemplate: require('jade!./activity'),
+    roomBased: false,
 
     /**
      * Template function that renders the activity's main content.
@@ -44,7 +46,7 @@ define(function(require) {
       return $markup.html();
     },
 
-    constructor: function() {
+    constructor: function(options) {
       var welcomeView;
 
       // When a child view define custom `events` hash, explicitly copy the
@@ -54,11 +56,32 @@ define(function(require) {
         _.extend(this.events, ActivityView.prototype.events);
       }
 
+      // Whitelist group.
+      this.group = options.group;
+
       Layout.prototype.constructor.apply(this, arguments);
 
       // Track when the activity has begun so the modal can be redrawn as
       // appropriate.
       this.hasBegun = null;
+
+      // If the activity is room based and we don't have an assigned group for
+      // a room, prompt the user for a group.
+      if (this.roomBased && typeof options.group !== 'string') {
+        var joinGroupView = new JoinGroupView({
+          activity: this.activitySlug
+        });
+
+        var joinGroupModal = new Modal({
+          content: joinGroupView
+        });
+
+        this.setView('.activity-modals', joinGroupModal);
+
+        joinGroupModal.summon({ mayDismiss: false });
+
+        return;
+      }
 
       // Create a modal containing the activity's description and instructions.
       welcomeView = new WelcomeView({

@@ -7,6 +7,7 @@ require({
 
     // Third-party libraries
     backbone: 'backbone/backbone',
+    cloak: '../node_modules/cloak/cloak-client',
     d3: 'd3/d3',
     'd3.chart': 'd3.chart/d3.chart',
     layoutmanager: 'layoutmanager/backbone.layoutmanager',
@@ -15,6 +16,7 @@ require({
     'jquery.pep': 'jquery.pep/src/jquery.pep',
     rangeslider: 'rangeslider.js/dist/rangeslider',
     'socket.io': 'socket.io-client/dist/socket.io',
+    when: 'when/when',
 
     // AMD loader plugins
     jade: 'require-jade/jade',
@@ -51,6 +53,9 @@ require({
     }
   ],
   shim: {
+    cloak: {
+      deps: ['lodash', 'socket.io']
+    },
     d3: {
       exports: 'd3',
     },

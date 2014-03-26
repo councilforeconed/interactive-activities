@@ -4,6 +4,10 @@
  * the user navigates away from the current activity, it is a good idea to
  * namespace selectors under a CSS class name unique to the activity.
  */
-.example h1 {
-  color: #ddd;
+.example {
+  height: 100%;
+}
+
+.output {
+  height: 100%;
 }

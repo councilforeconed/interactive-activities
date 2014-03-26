@@ -1,0 +1,15 @@
+h1 Create Room
+
+if typeof error !== 'undefined'
+  p.error= error
+
+p.
+  From here you can create a room for the selected activity. This room will have
+  a list of groups you can assign your students to.
+
+form
+  select(name='activity')
+    each activity in activities
+      option(value=activity.slug)= activity.slug
+
+  input(type='submit', value='Create')

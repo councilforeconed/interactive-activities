@@ -1,17 +1,18 @@
-// @file Example server. This demonstrates how to create a sub server that can
-//    handle normal http traffic and websockets with socket.io. `process.send`
-//    and `process.on('message')` are used to communicate with the parent node
-//    process, such as telling the parent the port it is listening on.
+// @file Example multi user server.
 
 'use strict';
 
 // Third party libs.
 var _debug = require('debug')('cee:example');
+var cloak = require('cloak');
 var express = require('express');
-var socketio = require('socket.io');
+var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
 var common = require('../../../server/common');
+var CRUDManager = require('../../../server/crudmanager');
+var CRUDReplicator = require('../../../server/crudreplicator');
+var MemoryStore = require('../../../server/storememory');
 
 // Create an express server.
 // @param {object} options
@@ -39,24 +40,70 @@ module.exports.createServer = function(options, debug) {
   });
 
   var server = app.listen(options.port || 0);
-  server.on('listening', function() {
-    // Let the parent know what port we are listening on.
-    process.send({name: 'listening-on', port: server.address().port});
+
+  // Setup room and group managers that will mirror the contents set by the
+  // top server.
+  var roomManager = new CRUDManager({ name: 'room', store: new MemoryStore() });
+  var groupManager = new CRUDManager({
+    name: 'group',
+    store: new MemoryStore()
+  });
+  roomManager.listenTo(new CRUDReplicator.EndPoint({
+    emitter: process,
+    type: 'room'
+  }));
+  groupManager.listenTo(new CRUDReplicator.EndPoint({
+    emitter: process,
+    type: 'group'
+  }));
+
+  var roomNameToId = {};
+
+  // Configure cloak. We'll start it later after server binds to a port.
+  cloak.configure({
+    express: server,
+
+    messages: {
+      'join-room': function(roomName, user) {
+        var room = cloak.getRoom(roomNameToId[roomName]);
+        if (room) {
+          room.addMember(user);
+        }
+      },
+
+      'chat': function(obj, user) {
+        user.getRoom().messageMembers('chat', obj);
+      }
+    }
   });
 
-  // Start the socketio websocket listener.
-  var io = socketio.listen(server, {
-    // In production, silence all socket.io debug messages.
-    'log level': process.env.NODE_ENV === 'production' ? -1 : 5
+  // Manage cloak rooms based off of group management instructed by
+  // top server.
+  groupManager.on('create', function(name, value) {
+    var room = cloak.createRoom(name);
+    roomNameToId[name] = room.id;
+  });
+  groupManager.on('delete', function(name) {
+    cloak.getRoom(name).delete();
+    delete roomNameToId[name];
   });
 
-  io.sockets.on('connection', function(socket) {
-    socket.emit('good bye');
-    socket.disconnect();
-  });
+  return common.whenListening(server, debug)
+    .then(function(server) {
+      // With a monkey patch, get some socket.io options to listen.
+      socketio.listen.options = {
+        // In production, silence all socket.io debug messages.
+        'log-level': process.env.NODE_ENV === 'production' ? -1 : 5,
+      };
+      // Start cloak.
+      cloak.run();
 
-  // Let the parent know we are ok.
-  process.send('ok');
+      // Let the parent know what port we are listening on.
+      process.send({name: 'listening-on', port: server.address().port});
 
-  return common.whenListening(server, debug);
+      // Let the parent know we are ok.
+      process.send('ok');
+
+      return server;
+    });
 };

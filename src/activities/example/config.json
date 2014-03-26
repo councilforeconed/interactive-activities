@@ -1,4 +1,5 @@
 {
-  "name": "Example activity",
-  "shortDesc": "This activity demonstrates general application structure"
+  "name": "Example multi user activity",
+  "shortDesc": "This activity demonstrates a multi user application",
+  "roomBased": true
 }

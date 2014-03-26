@@ -1,7 +1,7 @@
 {
   "launchers": {
     "Mocha": {
-      "command": "node_modules/.bin/mocha --ui tdd --reporter tap test/server/test_*.js",
+      "command": "NODE_ENV=test node_modules/.bin/mocha --ui tdd --reporter tap test/server/test_*.js",
       "protocol": "tap"
     }
   },

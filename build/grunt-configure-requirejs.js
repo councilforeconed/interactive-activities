@@ -39,6 +39,7 @@ function generateConfig(activities) {
   // 1. minimizes the size of each individual activity
   // 2. avoids the need to re-define library code between activities
   var sharedLibraries = {
+    'cloak': '../node_modules/cloak/cloak-client',
     'socket.io': 'socket.io-client/dist/socket.io'
   };
 
@@ -118,6 +119,12 @@ function generateRjsModules(activities, sharedLibraries) {
       'scripts/amd-config'
     ]
   };
+  var roomModules = ['createroom', 'manageroom'].map(function(component) {
+    return {
+      name: 'components/' + component + '/' + component,
+      exclude: ['scripts/main'].concat(Object.keys(sharedLibraries))
+    };
+  });
   var activityModules = activities.map(function(activity) {
     return {
       name: 'activities/' + activity.slug + '/client/scripts/main',
@@ -128,7 +135,7 @@ function generateRjsModules(activities, sharedLibraries) {
     };
   });
 
-  return [mainModule].concat(activityModules);
+  return [mainModule].concat(roomModules).concat(activityModules);
 }
 
 function getModuleDescriptors(modulePaths) {

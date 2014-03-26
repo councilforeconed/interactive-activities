@@ -81,25 +81,22 @@ suite('top server', function() {
       .always(done);
   });
 
-  test('websocket to example says good bye', function(done) {
+  test('websocket to example connects', function(done) {
     var host = 'localhost:' + server.address().port;
-    var goodByeReceived = false;
+    var didConnect = false;
 
-    socketio_client
+    var client = socketio_client
       .connect('http://' + host, {
         resource: 'activities/example/socket.io'
       })
-      .on('good bye', function() {
-        goodByeReceived = true;
+      .on('connect', function() {
+        didConnect = true;
+        client.disconnect();
       })
-      .on('error', done)
       .on('disconnect', function() {
-        try {
-          assert.ok(goodByeReceived, 'good bye received');
-          done();
-        } catch(e) {
-          done(e);
-        }
-      });
+        assert.ok(didConnect, 'connected');
+        done();
+      })
+      .on('error', done);
   });
 });
