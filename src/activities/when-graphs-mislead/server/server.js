@@ -39,10 +39,6 @@ module.exports.createServer = function(options, debug) {
   });
 
   var server = app.listen(options.port || 0);
-  server.on('listening', function() {
-    // Let the parent know what port we are listening on.
-    process.send({name: 'listening-on', port: server.address().port});
-  });
 
   // Start the socketio websocket listener.
   var io = socketio.listen(server, {
@@ -54,9 +50,6 @@ module.exports.createServer = function(options, debug) {
     socket.emit('good bye');
     socket.disconnect();
   });
-
-  // Let the parent know we are ok.
-  process.send('ok');
 
   return common.whenListening(server, debug);
 };

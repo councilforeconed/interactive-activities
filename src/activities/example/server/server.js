@@ -98,12 +98,6 @@ module.exports.createServer = function(options, debug) {
       // Start cloak.
       cloak.run();
 
-      // Let the parent know what port we are listening on.
-      process.send({name: 'listening-on', port: server.address().port});
-
-      // Let the parent know we are ok.
-      process.send('ok');
-
       return server;
     });
 };

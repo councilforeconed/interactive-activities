@@ -20,13 +20,8 @@ module.exports = function(options, debug) {
   var app = express();
 
   var server = app.listen(options.port || 0);
-  server.on('listening', function() {
-    process.send({ name: 'listening-on', port: server.address().port });
-  });
 
   app.use('/client', express.static('client'));
-
-  process.send('ok');
 
   return common.whenListening(server, debug);
 };

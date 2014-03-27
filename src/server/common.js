@@ -44,6 +44,16 @@ module.exports.whenListening = function(server, debug) {
   return when.promise(function(resolve, reject) {
     server.on('listening', function() {
       debug('listening on %d', server.address().port);
+
+      // Child processes will implement `process.send` and should use it to
+      // inform their parent that they are ready.
+      if (process.send) {
+        // Let the parent know what port we are listening on.
+        process.send({ name: 'listening-on', port: server.address().port });
+        // Let the parent know we are ok.
+        process.send('ok');
+      }
+
       resolve(server);
     });
 
