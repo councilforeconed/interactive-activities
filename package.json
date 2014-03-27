@@ -26,6 +26,7 @@
     "http-proxy": "~1.0.2",
     "jade": "~1.1.5",
     "lodash": "~2.4.1",
+    "readable-stream": "^1.0.26-2",
     "socket.io": "~0.9.16",
     "when": "~2.8.0"
   },
@@ -39,6 +40,7 @@
     "mocha": "~1.17.1",
     "request": "~2.34.0",
     "sinon": "~1.9.0",
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~0.9.16",
+    "through2-spy": "^1.1.1"
   }
 }
