@@ -18,8 +18,12 @@ define(function(require) {
       'click .add-group': 'addGroup',
     },
 
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+    },
+
     beforeRender: function() {
-      this.title = 'Manage Room: ' + this.serialize.id;
+      this.title = 'Manage Room: ' + this.model.get('id');
     },
 
     // Add a group and re-render on success.
@@ -27,7 +31,7 @@ define(function(require) {
       var self = this;
       var ajaxPut = $.ajax({
         method: 'PUT',
-        url: '/api/room/' + self.serialize.id,
+        url: '/api/room/' + self.model.get('id'),
         data: JSON.stringify({ addGroups: 1 }),
         contentType: 'application/json',
         dataType: 'json'
@@ -41,15 +45,13 @@ define(function(require) {
         })
         // Render the json returned by the server.
         .then(function(data) {
-          // Enhance data with old enhancements.
-          data.activityData = self.serialize.activityData;
-          self.serialize = data;
-          self.render();
+          // Remove any previously reported error.
+          data.error = undefined;
+          self.model.set(data);
         })
         // An error occured, present it.
         .catch(function(e) {
-          self.serialize.error = e.message;
-          self.render();
+          self.model.set('error', e.message);
         });
     }
   });
