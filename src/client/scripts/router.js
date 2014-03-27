@@ -120,6 +120,11 @@ define(function(require) {
      */
     setView: function(View, data, options) {
       if (this.currentView) {
+        // Ignore navigation events to the same view--assume the view can
+        // respond properly to such changes.
+        if (this.currentView instanceof View) {
+          return;
+        }
         this.currentView.remove();
       }
 
