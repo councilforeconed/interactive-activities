@@ -11,6 +11,7 @@ define(function(require) {
   var ChartState = require('../../scripts/model');
   var parameters = require('../../scripts/parameters');
   var fragmentData = require('scripts/fragment-data');
+  var WindowEmitter = require('scripts/window-emitter');
 
   require('css!./main');
 
@@ -64,8 +65,7 @@ define(function(require) {
       this.listenTo(this.chartState, 'change', this.drawChart);
 
       // Ensure the chart is properly redrawn as the viewport width changes
-      this._throttledResize = _.throttle(_.bind(this.resize, this, 500));
-      $window.on('resize', this._throttledResize);
+      this.listenTo(WindowEmitter, 'resize', this.resize);
 
       this.insertView('.wgdu-controls', new Radio(_.extend({
         tagName: 'li',
@@ -148,10 +148,6 @@ define(function(require) {
 
     handleYUnitChange: function(event) {
       this.chartState.set('yUnit', event.target.value);
-    },
-
-    cleanup: function() {
-      $window.off('resize', this._throttledResize);
     }
   });
 
