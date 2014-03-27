@@ -72,7 +72,8 @@ define(function(require) {
           return;
         }
 
-        self.setView(ManageRoomView, { id: room });
+        var roomModel = new Backbone.Model({ id: room });
+        self.setView(ManageRoomView, undefined, { model: roomModel});
         self._loadId = loadId;
 
         when($.get('/api/room/' + room))
@@ -83,15 +84,15 @@ define(function(require) {
               data.activityData = _.find(self.data, function(activity) {
                 return activity.slug === data.activity;
               });
-              self.setView(ManageRoomView, data);
+              roomModel.set(data);
             }
           })
           .catch(function() {
             if (loadId === self._loadId) {
-              self.setView(ManageRoomView, {
-                id: room,
-                error: 'An error occured loading this room. It might not exist.'
-              });
+              roomModel.set(
+                'error',
+                'An error occured loading this room. It might not exist.'
+              );
             }
           });
       });
@@ -120,6 +121,11 @@ define(function(require) {
      */
     setView: function(View, data, options) {
       if (this.currentView) {
+        // Ignore navigation events to the same view--assume the view can
+        // respond properly to such changes.
+        if (this.currentView instanceof View) {
+          return;
+        }
         this.currentView.remove();
       }
 

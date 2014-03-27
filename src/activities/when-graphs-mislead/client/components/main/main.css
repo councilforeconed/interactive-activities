@@ -1,0 +1,33 @@
+.wgdu-controls .rangeslider__fill {
+  background-color: #444;
+}
+
+.wgdu-controls {
+  margin: 0 1rem;
+  padding: 0;
+}
+
+.wgdu-controls > li {
+  margin: 0 0 1rem 0;
+  padding: 0;
+
+  list-style-type: none;
+}
+
+.wgdu-controls .cee-radio-component h3,
+.wgdu-controls .cee-range-slider label {
+  margin: 0;
+
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #444;
+}
+.wgdu-controls .cee-radio-component h3 {
+  margin: 0 0 0.7rem 0;
+}
+.wgdu-controls .cee-radio-component label {
+  padding: 0.3rem 1rem;
+}
+.wgdu-controls .cee-radio-component input {
+  margin-right: 0.8rem;
+}
