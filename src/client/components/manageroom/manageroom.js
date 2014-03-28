@@ -14,16 +14,15 @@ define(function(require) {
     homeTemplate: require('jade!./manageroom'),
     description: require('jade!./description')(),
     instructions: require('jade!./instructions')(),
+    config: {
+      title: 'Manage Room'
+    },
     events: {
       'click .add-group': 'addGroup',
     },
 
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
-    },
-
-    beforeRender: function() {
-      this.title = 'Manage Room: ' + this.model.get('id');
     },
 
     // Add a group and re-render on success.

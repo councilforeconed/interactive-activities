@@ -13,7 +13,7 @@ define(function(require) {
 
   var Home = ActivityView.extend({
     homeTemplate: require('jade!./main'),
-    title: 'Money Creation',
+    config: require('json!../../../config.json'),
     description: require('jade!./../../description')(),
     instructions: require('jade!./../../instructions')(),
     events: {

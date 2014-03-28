@@ -49,6 +49,9 @@ module.exports.createExpressServer = function() {
 
   app.use('/client', express.static('client'));
   app.use('/shared', express.static('shared'));
+  app.get('/config.json', function(req, res) {
+    res.sendfile('./config.json');
+  });
 
   app.get('/status', function(req, res) {
     res.send(200, 'ok');

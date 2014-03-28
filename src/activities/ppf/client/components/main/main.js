@@ -11,7 +11,7 @@ define(function(require) {
 
   var Home = ActivityView.extend({
     homeTemplate: require('jade!./main'),
-    title: 'Production Possibilities Frontier',
+    config: require('json!../../../config.json'),
     description: require('jade!./../../description')(),
     instructions: require('jade!./../../instructions')(),
 

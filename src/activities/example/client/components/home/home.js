@@ -35,11 +35,10 @@ define(function(require) {
     className: ActivityView.prototype.className + ' ' + activitySlug,
 
     homeTemplate: require('jade!./home'),
-    title: 'Example Activity',
+    config: require('json!../../../config.json'),
     description: 'This activity is intended to demonstrate things.',
     instructions: 'Strings can go here.',
     activitySlug: activitySlug,
-    roomBased: true,
 
     initialize: function() {
       // Cloak doesn't currently provide proper ways to clean itself up. So we

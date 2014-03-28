@@ -22,7 +22,6 @@ define(function(require) {
       'click .activity-help': 'showWelcome'
     },
     chromeTemplate: require('jade!./activity'),
-    roomBased: false,
 
     /**
      * Template function that renders the activity's main content.
@@ -37,7 +36,7 @@ define(function(require) {
 
     template: function(data) {
       var $markup = $('<div>').html(this.chromeTemplate({
-        title: this.title
+        title: this.config.title
       }));
 
       data.formatters = formatters;
@@ -67,7 +66,7 @@ define(function(require) {
 
       // If the activity is room based and we don't have an assigned group for
       // a room, prompt the user for a group.
-      if (this.roomBased && typeof options.group !== 'string') {
+      if (this.config.roomBased && typeof options.group !== 'string') {
         var joinGroupView = new JoinGroupView({
           activity: this.activitySlug
         });
@@ -85,7 +84,7 @@ define(function(require) {
 
       // Create a modal containing the activity's description and instructions.
       welcomeView = new WelcomeView({
-        title: this.title,
+        title: this.config.title,
         description: this.description,
         instructions: this.instructions
       });

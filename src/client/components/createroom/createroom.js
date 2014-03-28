@@ -11,7 +11,9 @@ define(function(require) {
   require('css!./createroom');
 
   var CreateRoomView = ActivityView.extend({
-    title: 'Create Activity Room',
+    config: {
+      title: 'Create Activity Room',
+    },
     homeTemplate: require('jade!./createroom'),
     description: require('jade!./description')(),
     instructions: require('jade!./instructions')(),
@@ -53,6 +55,7 @@ define(function(require) {
 
     serialize: function() {
       return {
+        title: this.config.title,
         activities: this.activities,
         errorMessage: this.errorMessage
       };
