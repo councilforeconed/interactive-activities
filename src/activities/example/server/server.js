@@ -5,7 +5,6 @@
 // Third party libs.
 var _debug = require('debug')('cee:example');
 var cloak = require('cloak');
-var express = require('express');
 var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
@@ -27,18 +26,7 @@ module.exports.createServer = function(options, debug) {
   // maintain that color value.
   debug = debug || _debug;
 
-  var app = express();
-
-  app.get('/', function(req, res, next) {
-    res.send('hello');
-  });
-
-  app.use('/client', express.static('client'));
-
-  app.get('/status', function(req, res, next) {
-    res.send(200, 'ok');
-  });
-
+  var app = common.createExpressServer(options);
   var server = app.listen(options.port || 0);
 
   // Setup room and group managers that will mirror the contents set by the

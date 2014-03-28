@@ -2,6 +2,7 @@
 
 'use strict';
 
+var express = require('express');
 var _ = require('lodash');
 var _debug = require('debug')('cee:common');
 var when = require('when');
@@ -31,6 +32,28 @@ var attachSigInt = _.once(function(debug) {
 module.exports.atTermination = function(fn, debug) {
   _atTermination.push(fn);
   attachSigInt(debug);
+};
+
+/**
+ * Create an express.js application that will serve files for an activity.
+ *
+ * @returns {Object} HTTP application object as created by
+ *          [express](http://expressjs.com/)
+ */
+module.exports.createExpressServer = function() {
+  var app = express();
+
+  app.get('/', function(req, res) {
+    res.send('hello');
+  });
+
+  app.use('/client', express.static('client'));
+
+  app.get('/status', function(req, res) {
+    res.send(200, 'ok');
+  });
+
+  return app;
 };
 
 // Return a promise that resolves when the server begins listening or rejects

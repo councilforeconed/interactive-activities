@@ -1,7 +1,5 @@
 'use strict';
 
-var express = require('express');
-
 var common = require('../../../server/common');
 
 /**
@@ -17,11 +15,8 @@ var common = require('../../../server/common');
 module.exports = function(options, debug) {
   options = options || {};
 
-  var app = express();
-
+  var app = common.createExpressServer(options);
   var server = app.listen(options.port || 0);
-
-  app.use('/client', express.static('client'));
 
   return common.whenListening(server, debug);
 };
