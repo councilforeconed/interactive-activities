@@ -15,7 +15,8 @@ var common = require('../../../server/common');
 module.exports = function(options, debug) {
   options = options || {};
 
-  var server = common.createHTTPServer(options);
+  var app = common.createExpressServer(options);
+  var server = app.listen(options.port || 0);
 
   return common.whenListening(server, debug);
 };

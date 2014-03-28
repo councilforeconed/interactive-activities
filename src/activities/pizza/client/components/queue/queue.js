@@ -2,6 +2,7 @@ define(function(require) {
   'use strict';
 
   var Layout = require('layoutmanager');
+  var _ = require('lodash');
 
   var QueuePizza = require('../queue-pizza/queue-pizza');
 
@@ -13,43 +14,52 @@ define(function(require) {
     template: require('jade!./queue'),
 
     initialize: function(options) {
-      this.localPlayer = options.localPlayer;
+      this.playerModel = options.playerModel;
 
       this.listenTo(this.collection, 'add', this.insertPizza);
-      this.listenTo(this.collection, 'change:ownerID', this.handleOwnerChange);
+      this.listenTo(this.collection, 'complete', this.removePizza);
+      this.listenTo(this.collection, 'localOwnerTake', this.handleTake);
+      this.listenTo(this.collection, 'localOwnerRelease', this.handleDrop);
+      this.listenTo(this.collection, 'change:isReady', this.render);
+      this.listenTo(this.collection, 'change:ownerID', this.render);
     },
 
     insertPizza: function(model) {
-      var view = new QueuePizza({ keep: true, model: model });
+      var view = new QueuePizza({
+        model: model,
+        playerModel: this.playerModel
+      });
       this.insertView('[data-pizza-id="' + model.get('id') + '"]', view);
     },
 
-    handleOwnerChange: function(changing) {
-      if (changing.localIsTaking()) {
-        this.handleTake();
-      } else if (changing.localIsDropping()) {
-        this.handleRelease();
-      }
+    removePizza: function(model) {
+      this.removeView('[data-pizza-id="' + model.get('id') + '"]');
+      this.render();
     },
 
-    handleTake: function() {
+    handleTake: function(pizza) {
       this.toggleDraggables(false);
+      this.getView('[data-pizza-id="' + pizza.get('id') + '"]')
+        .$el.hide();
     },
 
-    handleRelease: function() {
+    handleDrop: function() {
       this.toggleDraggables(true);
     },
 
     toggleDraggables: function(val) {
-      this.collection.each(function(pizza) {
+      _.forEach(this.collection.active(), function(pizza) {
         this.getView('[data-pizza-id="' + pizza.get('id') + '"]')
           .toggleDrag(val);
       }, this);
     },
 
     serialize: function() {
+      var activePizzas = this.collection.active();
       return {
-        pizzas: this.collection.toJSON()
+        pizzas: _.map(activePizzas, function(model) {
+          return model.toJSON();
+        })
       };
     }
   });

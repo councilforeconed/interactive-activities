@@ -7,7 +7,19 @@ define(function(require) {
 
   var ProgressView = Layout.extend({
     className: 'pizza-progress',
-    template: require('jade!./progress')
+    template: require('jade!./progress'),
+
+    initialize: function() {
+      this.listenTo(this.collection, 'complete', this.render);
+    },
+
+    serialize: function() {
+      return {
+        completeCount: this.collection.filter(function(pizza) {
+          return pizza.isComplete();
+        }).length
+      };
+    }
   });
 
   return ProgressView;

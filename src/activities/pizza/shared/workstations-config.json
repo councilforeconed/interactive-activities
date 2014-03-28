@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Rolling",
+    "minToppingCount": 1
+  },
+  {
+    "title": "Sauce",
+    "minToppingCount": 4
+  },
+  {
+    "title": "Cheese",
+    "minToppingCount": 2
+  },
+  {
+    "title": "Anchovies",
+    "minToppingCount": 3
+  },
+  {
+    "title": "Olives",
+    "minToppingCount": 4
+  }
+]
