@@ -28,10 +28,7 @@ function ServerChild(manager, name, indexFile) {
     cwd: path.dirname(indexFile)
   });
 
-  this._whenOk =
-    this._whenMessage(function(data) {return data === 'ok';})
-    .then(function() {debug('%s - ok (pid %d)', name, self.process.pid);});
-  this._whenPort =
+  this.whenLaunched =
     this._whenMessage(function(data) {
       return typeof data === 'object' && data.name === 'listening-on';
     })
@@ -39,8 +36,6 @@ function ServerChild(manager, name, indexFile) {
       debug('%s - received port server is listening on %d', name, data.port);
       self._setPort(data.port);
     });
-
-  this.whenLaunched = when.all([this._whenOk, this._whenPort]);
 
   // Have a bound version stored that can be easily removed as a listener.
   this._relaunch = manager.launch.bind(manager, name, indexFile);
