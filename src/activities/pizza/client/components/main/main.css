@@ -1,0 +1,37 @@
+.paddle {
+  width: 10%;
+  height: 10rem;
+  margin-top: 3rem;
+
+  background-color: #ddd;
+  line-height: 10rem;
+  text-align: center;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.paddle-left {
+  border-radius: 0 2rem 2rem 0;
+  float: left;
+} .paddle-right {
+  border-radius: 2rem 0 0 2rem;
+  float: right;
+}
+
+.pizza-workstation {
+  width: 70%;
+  height: 10rem;
+  margin: 3rem 5%;
+
+  float: left;
+  background-color: teal;
+}
+
+.platter {
+  width: 30%;
+  height: 10rem;
+  margin-left: 10%;
+
+  float: left;
+  background-color: papayawhip;
+}

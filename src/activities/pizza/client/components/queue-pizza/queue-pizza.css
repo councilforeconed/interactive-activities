@@ -1,0 +1,16 @@
+.pizza-queue-pizza {
+  position: absolute;
+
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+
+  border-radius: 3rem;
+  border: solid 0.4rem #EEC591;
+  background-color: #a00;
+  color: #fff;
+  cursor: pointer;
+  font-family: sans-serif;
+  line-height: 3rem;
+  text-align: center;
+}
