@@ -67,7 +67,7 @@ module.exports.createServer = function(options, debug) {
 
   // Manage cloak rooms based off of group management instructed by
   // top server.
-  groupManager.on('create', function(name, value) {
+  groupManager.on('create', function(name) {
     var room = cloak.createRoom(name);
     roomNameToId[name] = room.id;
   });

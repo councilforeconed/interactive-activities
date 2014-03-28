@@ -27,7 +27,12 @@ module.exports = function(grunt) {
       options: {
         jshintrc: 'src/server/.jshintrc'
       },
-      src: ['src/index.js', 'src/server/*.js']
+      src: [
+        'src/index.js',
+        'src/server/*.js',
+        'src/activities/*/index.js',
+        'src/activities/*/server/**/*.js'
+      ]
     },
 
     server_activities: {
