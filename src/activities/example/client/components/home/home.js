@@ -13,6 +13,11 @@ define(function(require) {
   var ChatMessageView = require('../chatmessage/chatmessage');
   var ChatInputView = require('../chatinput/chatinput');
 
+  // The `shared/` directory is available for scripts that should be available
+  // on both the client and the server.
+  var sharedObject = require('../../../shared/object');
+  sharedObject.random();
+
   // A RequireJS plugin is used to load CSS. Note that the file type is
   // implicit. The plugin will insert a new HTML `<style>` tag into the
   // document and inject the contents of the file. This automatic injection is

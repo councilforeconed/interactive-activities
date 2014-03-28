@@ -18,6 +18,7 @@
   "private": "true",
   "homepage": "https://github.com/bocoup/cee",
   "dependencies": {
+    "amdefine": "^0.1.0",
     "cloak": "^0.2.3",
     "commander": "~2.1.0",
     "debug": "~0.7.4",

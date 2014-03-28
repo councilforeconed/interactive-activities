@@ -13,6 +13,14 @@ var CRUDManager = require('../../../server/crudmanager');
 var CRUDReplicator = require('../../../server/crudreplicator');
 var MemoryStore = require('../../../server/storememory');
 
+// The `shared/` directory is available for scripts that should be available on
+// both the client and the server. In order to consume AMD modules, server
+// scripts should use AMDefine's "intercept" module.
+// https://github.com/jrburke/amdefine
+require('amdefine/intercept');
+var sharedObject = require('../shared/object');
+sharedObject.random();
+
 // Create an express server.
 // @param {object} options
 //    - port port to listen to. Defaults to 0.
