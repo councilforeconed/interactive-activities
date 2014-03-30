@@ -5,7 +5,22 @@ Education.
 
 ## Setup
 
-1. `npm install`
+1. Install [the bower package manager](http://bower.io) globally:  
+   ```
+   $ npm install -g bower
+   ```
+
+2. Install this project's external dependencies:
+
+   ```
+   $ npm install
+   ```
+
+3. (*optional*) Install the [Grunt](http://gruntjs.com) CLI globally. This
+   enable the use of the `grunt` commands detailed below:
+   ```
+   $ npm install -g grunt-cli
+   ```
 
 ## Usage
 
