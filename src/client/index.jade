@@ -4,6 +4,12 @@ html(lang="en")
     title Interactive Activities - Council for Economic Education
   body
     div#main
+    noscript
+      h1 Interactive Activities - Council for Economic Education
+      p
+        | This page requires JavaScript to function properly. Visit 
+        a(href="http://www.enable-javascript.com/") enable-javascript.com
+        |  to learn how you can enable JavaScript in your web browser.
     script#activity-data(type='text/json')!= JSON.stringify(activities)
     if dev
       script(src='/bower_components/requirejs/require.js', data-main='/scripts/amd-config')
