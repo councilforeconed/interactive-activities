@@ -13,6 +13,11 @@ define(function(require) {
   var ChatMessageView = require('../chatmessage/chatmessage');
   var ChatInputView = require('../chatinput/chatinput');
 
+  // The `shared/` directory is available for scripts that should be available
+  // on both the client and the server.
+  var sharedObject = require('../../../shared/object');
+  sharedObject.random();
+
   // A RequireJS plugin is used to load CSS. Note that the file type is
   // implicit. The plugin will insert a new HTML `<style>` tag into the
   // document and inject the contents of the file. This automatic injection is
@@ -30,11 +35,10 @@ define(function(require) {
     className: ActivityView.prototype.className + ' ' + activitySlug,
 
     homeTemplate: require('jade!./home'),
-    title: 'Example Activity',
+    config: require('json!../../../config.json'),
     description: 'This activity is intended to demonstrate things.',
     instructions: 'Strings can go here.',
     activitySlug: activitySlug,
-    roomBased: true,
 
     initialize: function() {
       // Cloak doesn't currently provide proper ways to clean itself up. So we

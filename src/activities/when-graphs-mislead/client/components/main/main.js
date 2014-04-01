@@ -44,7 +44,7 @@ define(function(require) {
 
   var MainView = ActivityView.extend({
     homeTemplate: require('jade!./main'),
-    title: 'When Graphs Mislead Us',
+    config: require('json!../../../config.json'),
     description: require('jade!../../description')(),
     instructions: require('jade!../../instructions')(),
 

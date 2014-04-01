@@ -4,5 +4,5 @@ ul.home-activity-list
   each activity in activities
     li.home-activity-item
       a.home-activity-link(href='#activity/' + activity.slug + '/')
-        h3.home-activity-name=activity.config.name
+        h3.home-activity-title=activity.config.title
         p.home-activity-desc= activity.config.shortDesc

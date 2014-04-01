@@ -20,7 +20,7 @@ require({
 
     // AMD loader plugins
     jade: 'require-jade/jade',
-    json: 'jquery-mobile/external/requirejs/plugins/json',
+    json: 'requirejs-json/json',
     text: 'jquery-mobile/external/requirejs/plugins/text'
   },
   map: {

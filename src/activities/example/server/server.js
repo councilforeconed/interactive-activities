@@ -5,7 +5,6 @@
 // Third party libs.
 var _debug = require('debug')('cee:example');
 var cloak = require('cloak');
-var express = require('express');
 var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
@@ -13,6 +12,14 @@ var common = require('../../../server/common');
 var CRUDManager = require('../../../server/crudmanager');
 var CRUDReplicator = require('../../../server/crudreplicator');
 var MemoryStore = require('../../../server/storememory');
+
+// The `shared/` directory is available for scripts that should be available on
+// both the client and the server. In order to consume AMD modules, server
+// scripts should use AMDefine's "intercept" module.
+// https://github.com/jrburke/amdefine
+require('amdefine/intercept');
+var sharedObject = require('../shared/object');
+sharedObject.random();
 
 // Create an express server.
 // @param {object} options
@@ -27,18 +34,7 @@ module.exports.createServer = function(options, debug) {
   // maintain that color value.
   debug = debug || _debug;
 
-  var app = express();
-
-  app.get('/', function(req, res, next) {
-    res.send('hello');
-  });
-
-  app.use('/client', express.static('client'));
-
-  app.get('/status', function(req, res, next) {
-    res.send(200, 'ok');
-  });
-
+  var app = common.createExpressServer(options);
   var server = app.listen(options.port || 0);
 
   // Setup room and group managers that will mirror the contents set by the
@@ -79,7 +75,7 @@ module.exports.createServer = function(options, debug) {
 
   // Manage cloak rooms based off of group management instructed by
   // top server.
-  groupManager.on('create', function(name, value) {
+  groupManager.on('create', function(name) {
     var room = cloak.createRoom(name);
     roomNameToId[name] = room.id;
   });
@@ -97,12 +93,6 @@ module.exports.createServer = function(options, debug) {
       };
       // Start cloak.
       cloak.run();
-
-      // Let the parent know what port we are listening on.
-      process.send({name: 'listening-on', port: server.address().port});
-
-      // Let the parent know we are ok.
-      process.send('ok');
 
       return server;
     });

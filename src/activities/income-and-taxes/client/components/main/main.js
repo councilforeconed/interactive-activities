@@ -15,7 +15,7 @@ define(function(require) {
 
   var MainView = ActivityView.extend({
     homeTemplate: require('jade!./main'),
-    title: 'Income & Taxes',
+    config: require('json!../../../config.json'),
     description: require('jade!../../description')(),
     instructions: require('jade!../../instructions')(),
 
