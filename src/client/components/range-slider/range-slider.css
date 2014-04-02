@@ -14,3 +14,10 @@
 .cee-range-slider .ui-slider:before, .cee-range-slider .ui-slider:after {
   content: none;
 }
+
+.cee-range-slider .min-label, .cee-range-slider .max-label {
+  display: inline;
+}
+.cee-range-slider .max-label {
+  float: right;
+}
