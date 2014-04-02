@@ -22,7 +22,7 @@ http.createServer(function(req, res) {
     if (data.ref === 'refs/heads/master') {
       // The spawned process invokes Grunt, which will fail if run in a "detached"
       // state *without* I/O redirection.
-      spawn('./deploy.sh', [], {
+      spawn(__dirname + '/deploy.sh', [], {
         detached: true,
         stdio: 'ignore'
       });
