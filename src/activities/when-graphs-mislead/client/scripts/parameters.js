@@ -3,7 +3,7 @@
  */
 define({
   yLimitsUSD: {
-    label: 'y-axis limits ($)',
+    label: 'y-axis limits ($USD)',
     min: 0,
     max: 50000,
     step: 1000
@@ -25,7 +25,7 @@ define({
     dflt: 'USD',
     values: {
       Pct: '% change in USD',
-      USD: 'USD ($)'
+      USD: 'Real GDP per capita ($USD)'
     }
   }
 });
