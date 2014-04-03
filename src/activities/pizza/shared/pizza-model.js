@@ -17,7 +17,7 @@ define(function(require) {
       this.on('change:foodState', this.triggerComplete);
 
       // The 'localOwner'-related events are only relevant on the client.
-      if (PizzaModel.localPlayerID) {
+      if (PizzaModel.isClient) {
         this.on('change:ownerID', this.triggerLocalOwnerChange);
         this.set('isReady', false);
       }

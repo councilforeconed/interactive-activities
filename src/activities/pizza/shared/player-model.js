@@ -8,13 +8,29 @@ define(function(require) {
 
   var PlayerModel = Backbone.Model.extend({
     defaults: {
-      workstation: workstations.byPosition[0].id
+      workstation: null
+    },
+    activate: function() {
+      if (this.get('workstation') !== null) {
+        throw new Error(
+          'PlayerModel#activate: attempted to activate a player that has ' +
+          'been activated previously.'
+        );
+      }
+      this.set('workstation', workstations.byPosition[0].id);
     },
 
     move: function(direction) {
-      var currentIdx = workstations.byId[this.get('workstation')].index;
+      var workstation = this.get('workstation');
+      var currentIdx = workstations.byId[workstation].index;
       var delta = (direction === 'next') ? 1 : -1;
       var nextIdx = (currentIdx + delta + stationCount) % stationCount;
+
+      if (workstation === null) {
+        throw new Error(
+          'PlayerModel#move: Cannot transition when workstation is not set'
+        );
+      }
 
       this.set('workstation', workstations.byPosition[nextIdx].id);
       this.trigger('move', direction);

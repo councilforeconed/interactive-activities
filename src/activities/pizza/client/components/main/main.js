@@ -1,103 +1,88 @@
 define(function(require) {
   'use strict';
 
-  var _ = require('lodash');
-  var when = require('when');
-  var whenDelay = require('when/delay');
-
   var PlayerModel = require('../../../shared/player-model');
   var PizzaModel = require('../../../shared/pizza-model');
   var PizzaCollection = require('../../../shared/pizza-collection');
+  var GameModel = require('../../../shared/game-model');
   var ActivityView = require('components/activity/activity');
-  var QueueView = require('../queue/queue');
-  var ProgressView = require('../progress/progress');
-  var Navigation = require('../navigation/navigation');
-  // In order for the build process to infer module dependencies through static
-  // analysis, the `require` function cannot be invoked programatically (even
-  // in cases like this which have a fair amount of repetion).
-  var workstations = {
-    rolling: require('../workstation/rolling-workstation'),
-    sauce: require('../workstation/sauce-workstation'),
-    cheese: require('../workstation/cheese-workstation'),
-    anchovies: require('../workstation/anchovies-toppings-workstation'),
-    olives: require('../workstation/olives-toppings-workstation')
-  };
+  var RoundView = require('../round/round');
+  var RoundStart = require('../round-start/round-start');
 
-  var workstationTransitionDelay =
-      require('../../scripts/parameters').workstationTransitionDelay;
+  // TODO: Load these values from a declarative parameters file.
+  var RoundDuration = 80000;
 
-  require('css!./main');
-  require('jquery.pep');
+  // Pizza models behave slightly differently on the client--they emit events
+  // related to local player actions.
+  PizzaModel.isClient = true;
 
-  var Home = ActivityView.extend({
-    homeTemplate: require('jade!./main'),
+  var MainView = ActivityView.extend({
+    // This activity's `main` view has been built strictly for flow control
+    // between other views. It defines no shared UI, so the `homeTemplate`
+    // function is a no-op.
+    homeTemplate: function() {},
     config: require('json!./../../../config.json'),
     description: require('jade!./../../description')(),
     instructions: require('jade!./../../instructions')(),
 
     initialize: function() {
-      var pizzaCount = 4 + Math.random() * 10;
-      var idx;
-
+      this.gameState = new GameModel();
+      this.playerModel = new PlayerModel();
       this.pizzas = new PizzaCollection();
-      this.localPlayer = new PlayerModel({
-        id: 1 + Math.round(1000 * Math.random())
+
+      // Generate dummy game state
+      // TODO: Replace these lines with and fetch state from the server
+      (function() {
+        var pizzaCount = 4 + Math.random() * 10;
+        var idx;
+        this.playerModel.set('id', 1 + Math.round(1000 * Math.random()));
+        for (idx = 0; idx < pizzaCount; ++idx) {
+          this.pizzas.add({ id: idx });
+        }
+        this.playerModel.activate();
+      }.call(this));
+
+      PizzaModel.localPlayerID = this.playerModel.get('id');
+
+      this.round = new RoundView({
+        playerModel: this.playerModel,
+        pizzas: this.pizzas,
+        gameState: this.gameState
+      });
+      this.roundStart = new RoundStart({
+        gameState: this.gameState,
+        playerModel: this.playerModel,
       });
 
-      PizzaModel.localPlayerID = this.localPlayer.get('id');
+      this.setView('.activity-stage', this.round);
 
-      this.queue = new QueueView({
-        collection: this.pizzas,
-        playerModel: this.localPlayer
-      });
-      this.progress = new ProgressView({ collection: this.pizzas });
-      this.workstation = new workstations.rolling();
-      this.navigation = new Navigation({ playerModel: this.localPlayer });
-
-      this.listenTo(this.pizzas, 'localOwnerTake', function(pizza) {
-        this.workstation.setPizza(pizza);
-        this.navigation.disable();
-      });
-      this.listenTo(this.pizzas, 'localOwnerRelease', function(pizza) {
-        this.workstation.releasePizza(pizza);
-        this.navigation.enable();
-      });
-      this.listenTo(this.localPlayer, 'move', this.handleMove);
-
-      for (idx = 0; idx < pizzaCount; ++idx) {
-        this.pizzas.add({ id: idx });
-      }
-
-      this.insertView('.pizza-queue-container', this.queue);
-      this.insertView('.progress-container', this.progress);
-      this.insertView('.pizza-workstation-container', this.workstation);
-      this.insertView('.pizza-navigation-container', this.navigation);
+      this.listenTo(
+        this.gameState,
+        'change:roundNumber',
+        this.handleRoundStart
+      );
     },
 
-    handleMove: function(direction) {
-      var newWorkstationName = this.localPlayer.get('workstation');
-      var oldWorkstation = this.workstation;
-      var newWorkstation = new workstations[newWorkstationName]();
-      var whenDelayComplete = whenDelay(workstationTransitionDelay);
-      var whenExited;
+    /**
+     * This activity has no runtime configuration, but the `setConfig` method
+     * is used as a hook into when the user has dismissed the initial "Welcome"
+     * dialog.
+     *
+     * TODO: Remove this logic, as round advancement should be dictated by the
+     * server (not by client interaction).
+     */
+    setConfig: function() {
+      this.gameState.set('roundNumber', 1);
+      this.gameState.timeRemaining(RoundDuration);
+    },
 
-      this.navigation.disable();
+    handleRoundStart: function() {
+      this.insertView('.activity-modals', this.roundStart);
+      this.roundStart.startIn(5432);
 
-      whenExited = oldWorkstation.exitTo(direction);
-      whenExited.then(function() {
-        oldWorkstation.remove();
-      });
-
-      when.all([whenDelayComplete, whenExited])
-        .then(_.bind(function() {
-            this.workstation = newWorkstation;
-            this.insertView('.pizza-workstation-container', this.workstation);
-            this.workstation.render();
-            return newWorkstation.enterFrom(direction);
-          }, this))
-        .then(_.bind(this.navigation.enable, this.navigation));
+      this.round.begin();
     }
   });
 
-  return Home;
+  return MainView;
 });

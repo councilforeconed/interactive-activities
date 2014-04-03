@@ -11,6 +11,7 @@ define(function(require) {
     className: 'pizza-queue-pizza',
     template: require('jade!./queue-pizza'),
     keep: true,
+
     initialize: function(options) {
       this.isDraggable = true;
 

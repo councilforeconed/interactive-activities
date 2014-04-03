@@ -12,9 +12,12 @@ define(function(require) {
     tagName: 'ul',
     className: 'pizza-queue',
     template: require('jade!./queue'),
+    keep: true,
 
     initialize: function(options) {
       this.playerModel = options.playerModel;
+
+      this.collection.each(this.insertPizza, this);
 
       this.listenTo(this.collection, 'add', this.insertPizza);
       this.listenTo(this.collection, 'complete', this.removePizza);
