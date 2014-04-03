@@ -7,6 +7,7 @@ define(function(require) {
   var when = require('when');
 
   var ActivitiesView = require('components/home/home');
+  var $documentElement = $(document.documentElement);
 
   var Router = Backbone.Router.extend({
     initialize: function(options) {
@@ -136,6 +137,7 @@ define(function(require) {
       this.currentView = new View(options || {});
       this.$el.append(this.currentView.$el);
       this.currentView.render();
+      $documentElement.addClass('initial-load-complete');
     }
   });
 
