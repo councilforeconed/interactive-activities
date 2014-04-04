@@ -9,6 +9,7 @@ define(function(require) {
   var Navigation = Layout.extend({
     tagName: 'nav',
     template: require('jade!./navigation'),
+    keep: true,
     events: {
       'click .pizza-paddle': 'navigate'
     },
@@ -27,12 +28,10 @@ define(function(require) {
 
     enable: function() {
       this.$el.removeClass('pizza-disabled');
-      this.navigate = this._navigate;
     },
 
     disable: function() {
       this.$el.addClass('pizza-disabled');
-      this.navigate = this.noop;
     }
   });
 

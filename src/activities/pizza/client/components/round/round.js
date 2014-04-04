@@ -67,7 +67,7 @@ define(function(require) {
 
       this.workstation = new workstations[currentWorkstation]();
 
-      this.insertView('.pizza-workstation-container', this.workstation);
+      this.setView('.pizza-workstation-container', this.workstation);
       this.insertView('.pizza-navigation-container', this.navigation);
 
       this.render();
@@ -90,11 +90,11 @@ define(function(require) {
       when.all([whenDelayComplete, whenExited])
         .then(_.bind(function() {
             this.workstation = newWorkstation;
-            this.insertView('.pizza-workstation-container', this.workstation);
+            this.setView('.pizza-workstation-container', this.workstation);
             this.workstation.render();
             return newWorkstation.enterFrom(direction);
           }, this))
-        .then(_.bind(this.navigation.enable, this.navigation));
+        .always(_.bind(this.navigation.enable, this.navigation));
     }
   });
 

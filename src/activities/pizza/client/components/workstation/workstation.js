@@ -31,29 +31,24 @@ define(function(require) {
     },
 
     enterFrom: function(direction) {
-      var $el = this.$el;
-
-      direction = (direction === 'next') ? 'right' : 'left';
-      $el.attr('data-move', 'enter-from-' + direction);
-
-      return $el.whenAnimationEnd()
-        // Remove the data- attribute so future re-renderings/re-insertions do
-        // no re-trigger the animation.
-        .then(function() {
-          $el.attr('data-move', '');
-        });
+      var moveVal = 'enter-from-' + ((direction === 'next') ? 'right' : 'left');
+      return this._setMove(moveVal);
     },
 
     exitTo: function(direction) {
+      var moveVal = 'exit-to-' + ((direction === 'next') ? 'left' : 'right');
+      return this._setMove(moveVal);
+    },
+
+    _setMove: function(moveVal) {
       var $el = this.$el;
 
-      direction = (direction === 'next') ? 'left' : 'right';
-      $el.attr('data-move', 'exit-to-' + direction);
+      $el.attr('data-move', moveVal);
 
       return $el.whenAnimationEnd()
         // Remove the data- attribute so future re-renderings/re-insertions do
         // no re-trigger the animation.
-        .then(function() {
+        .always(function() {
           $el.attr('data-move', '');
         });
     },
