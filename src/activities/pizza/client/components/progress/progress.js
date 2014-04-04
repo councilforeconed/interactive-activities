@@ -50,9 +50,11 @@ define(function(require) {
     },
 
     serialize: function() {
+      var roundNumber = this.gameState.get('roundNumber');
       return {
         completeCount: this.pizzas.filter(function(pizza) {
-          return pizza.isComplete();
+          return pizza.isComplete() &&
+            pizza.get('activeRound') === roundNumber;
         }).length,
         timeRemaining: this.gameState.timeRemaining()
       };

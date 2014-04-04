@@ -59,7 +59,7 @@ define(function(require) {
     },
 
     startIn: function() {
-      this.render();
+      this.summon();
       return this.roundStart.startIn.apply(this.roundStart, arguments);
     }
   });

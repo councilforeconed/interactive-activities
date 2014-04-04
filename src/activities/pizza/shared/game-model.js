@@ -3,6 +3,8 @@ define(function(require) {
 
   var Model = require('backbone').Model;
 
+  var RoundCount = require('./parameters').RoundCount;
+
   var GameState = Model.extend({
     defaults: {
       roundNumber: 0,

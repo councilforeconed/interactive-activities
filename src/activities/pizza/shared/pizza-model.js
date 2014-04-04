@@ -9,6 +9,7 @@ define(function(require) {
   var PizzaModel = Backbone.Model.extend({
     defaults: {
       foodState: foodStateIds[0],
+      activeRound: null,
       ownerID: null
     },
 

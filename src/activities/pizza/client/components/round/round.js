@@ -35,7 +35,8 @@ define(function(require) {
 
       this.queue = new QueueView({
         collection: this.pizzas,
-        playerModel: this.playerModel
+        playerModel: this.playerModel,
+        gameState: this.gameState
       });
       this.progress = new ProgressView({
         gameState: this.gameState,

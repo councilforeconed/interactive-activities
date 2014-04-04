@@ -9,8 +9,7 @@ define(function(require) {
   var RoundView = require('../round/round');
   var RoundStart = require('../round-start/round-start');
 
-  // TODO: Load these values from a declarative parameters file.
-  var RoundDuration = 80000;
+  var RoundDuration = require('../../../shared/parameters').RoundDuration;
 
   // Pizza models behave slightly differently on the client--they emit events
   // related to local player actions.
@@ -33,13 +32,33 @@ define(function(require) {
       // Generate dummy game state
       // TODO: Replace these lines with and fetch state from the server
       (function() {
-        var pizzaCount = 4 + Math.random() * 10;
-        var idx;
+        var self = this;
+        var pizzaID = 0;
+
         this.playerModel.set('id', 1 + Math.round(1000 * Math.random()));
-        for (idx = 0; idx < pizzaCount; ++idx) {
-          this.pizzas.add({ id: idx });
-        }
         this.playerModel.activate();
+
+        this.gameState.on('change:roundNumber', function(model, currentRound) {
+          var pizzaCount = 4 + Math.random() * 10;
+          var idx;
+
+          self.gameState.timeRemaining(RoundDuration);
+
+          for (idx = 0; idx < pizzaCount; ++idx) {
+            self.pizzas.add({
+              id: pizzaID++,
+              activeRound: currentRound
+            });
+          }
+
+          setTimeout(function() {
+            self.gameState.set('roundNumber', currentRound + 1);
+          }, RoundDuration);
+        });
+
+        setTimeout(function() {
+          self.gameState.set('roundNumber', 1);
+        }, 1000);
       }.call(this));
 
       PizzaModel.localPlayerID = this.playerModel.get('id');
@@ -61,19 +80,6 @@ define(function(require) {
         'change:roundNumber',
         this.handleRoundStart
       );
-    },
-
-    /**
-     * This activity has no runtime configuration, but the `setConfig` method
-     * is used as a hook into when the user has dismissed the initial "Welcome"
-     * dialog.
-     *
-     * TODO: Remove this logic, as round advancement should be dictated by the
-     * server (not by client interaction).
-     */
-    setConfig: function() {
-      this.gameState.set('roundNumber', 1);
-      this.gameState.timeRemaining(RoundDuration);
     },
 
     handleRoundStart: function() {

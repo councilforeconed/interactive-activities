@@ -8,9 +8,9 @@ define(function(require) {
   var PizzaCollection = Backbone.Collection.extend({
     model: PizzaModel,
 
-    active: function() {
+    active: function(roundNumber) {
       return this.filter(function(pizza) {
-        return !pizza.isComplete();
+        return pizza.get('activeRound') === roundNumber && !pizza.isComplete();
       });
     }
   });
