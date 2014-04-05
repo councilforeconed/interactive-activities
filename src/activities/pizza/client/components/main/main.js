@@ -6,6 +6,7 @@ define(function(require) {
   var PizzaCollection = require('../../../shared/pizza-collection');
   var GameModel = require('../../../shared/game-model');
   var ActivityView = require('components/activity/activity');
+  var ReportView = require('../report/report');
   var RoundView = require('../round/round');
   var RoundStart = require('../round-start/round-start');
 
@@ -67,6 +68,9 @@ define(function(require) {
 
       PizzaModel.localPlayerID = this.playerModel.get('id');
 
+      this.report = new ReportView({
+        pizzas: this.pizzas
+      });
       this.round = new RoundView({
         playerModel: this.playerModel,
         pizzas: this.pizzas,
@@ -77,8 +81,6 @@ define(function(require) {
         playerModel: this.playerModel,
       });
 
-      this.setView('.activity-stage', this.round);
-
       this.listenTo(
         this.gameState,
         'change:roundNumber',
@@ -86,8 +88,18 @@ define(function(require) {
       );
     },
 
+    // TODO: Re-name this method `handleRoundChange`, add a modal for when
+    // the `roundNumber` is zero ("Waiting for more players..."), and invoke
+    // immediately from `MainView#initialize`
     handleRoundStart: function() {
+      if (this.gameState.isOver()) {
+        this.setView('.activity-stage', this.report);
+        this.report.render();
+        return;
+      }
       this.insertView('.activity-modals', this.roundStart);
+      this.setView('.activity-stage', this.round);
+
       this.roundStart.startIn(5432);
 
       this.round.begin();
