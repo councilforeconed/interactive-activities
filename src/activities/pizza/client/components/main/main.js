@@ -42,6 +42,10 @@ define(function(require) {
           var pizzaCount = 4 + Math.random() * 10;
           var idx;
 
+          if (self.gameState.isOver()) {
+            return;
+          }
+
           self.gameState.timeRemaining(RoundDuration);
 
           for (idx = 0; idx < pizzaCount; ++idx) {

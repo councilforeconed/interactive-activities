@@ -11,6 +11,10 @@ define(function(require) {
       roundEndTime: 0
     },
 
+    isOver: function() {
+      return this.get('roundNumber') === RoundCount;
+    },
+
     /**
      * Convenience method to get and set the current round's end time relative
      * to the local system time.
