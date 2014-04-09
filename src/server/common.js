@@ -9,6 +9,10 @@ var when = require('when');
 var whenParallel = require('when/parallel');
 var whenTimeout = require('when/timeout');
 
+var CRUDManager = require('./crudmanager');
+var CRUDReplicator = require('./crudreplicator');
+var MemoryStore = require('./storememory');
+
 // List of function handles to execute in parallel when a TERMINATE-like signal
 // is received.
 var _atTermination = [];
@@ -125,4 +129,16 @@ module.exports.createRequireJS = function(paths) {
   });
 
   return requirejs;
+};
+
+module.exports.createListeningCRUDManager = function(name) {
+  var manager = new CRUDManager({
+    name: name,
+    store: new MemoryStore()
+  });
+  manager.listenTo(new CRUDReplicator.EndPoint({
+    emitter: process,
+    type: name
+  }));
+  return manager;
 };
