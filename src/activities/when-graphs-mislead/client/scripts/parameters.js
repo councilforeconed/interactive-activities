@@ -5,7 +5,7 @@ define({
   yLimitsUSD: {
     label: 'y-axis limits ($USD)',
     min: 0,
-    max: 50000,
+    max: 280000,
     step: 1000
   },
   yLimitsPct: {
@@ -17,7 +17,7 @@ define({
   xLimits: {
     label: 'x-axis limits (year)',
     min: 1960,
-    max: 2011,
+    max: 2013,
     step: 1
   },
   yUnit: {
