@@ -8,6 +8,7 @@ var cloak = require('cloak');
 var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
+var CloakRoomManager = require('../../../server/cloakroommanager');
 var common = require('../../../server/common');
 
 // In order to consume AMD modules, server scripts should use a `requirejs`
@@ -41,7 +42,8 @@ module.exports.createServer = function(options, debug) {
   common.createListeningCRUDManager('room');
   var groupManager = common.createListeningCRUDManager('group');
 
-  var roomNameToId = {};
+  var cloakRoomManager = new CloakRoomManager();
+  cloakRoomManager.listenTo(groupManager);
 
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
@@ -49,7 +51,7 @@ module.exports.createServer = function(options, debug) {
 
     messages: {
       'join-room': function(roomName, user) {
-        var room = cloak.getRoom(roomNameToId[roomName]);
+        var room = cloakRoomManager.byName(roomName);
         if (room) {
           room.addMember(user);
         }
@@ -59,17 +61,6 @@ module.exports.createServer = function(options, debug) {
         user.getRoom().messageMembers('chat', obj);
       }
     }
-  });
-
-  // Manage cloak rooms based off of group management instructed by
-  // top server.
-  groupManager.on('create', function(name) {
-    var room = cloak.createRoom(name);
-    roomNameToId[name] = room.id;
-  });
-  groupManager.on('delete', function(name) {
-    cloak.getRoom(name).delete();
-    delete roomNameToId[name];
   });
 
   return common.whenListening(server, debug)
