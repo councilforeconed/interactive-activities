@@ -11,7 +11,7 @@ define({
   yLimitsPct: {
     label: 'y-axis limits (% change)',
     min: 0,
-    max: 1.2,
+    max: 1.3,
     step: 0.01
   },
   xLimits: {
