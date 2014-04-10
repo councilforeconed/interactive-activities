@@ -1,0 +1,45 @@
+/* apply a natural box layout model to all elements */
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 90%; /*width: 960px;*/
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 0;
+}
+
+.article-container {
+  width: 100%;
+  background-color: #7fb539;
+}
+
+a { text-decoration: none; }
+
+li { list-style: none; }
+
+.left { float: left; }
+.right { float: right; }
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.clearfix { display: inline-block; }
+
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+
+.clearfix { display: block; }
+
+.cb { clear: both }
