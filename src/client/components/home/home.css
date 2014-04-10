@@ -1,3 +1,9 @@
+.article-text {
+  width: 40%;
+  color: white;
+}
+
+.article-title { text-transform: uppercase; }
 .home-title, .home-sub-title {
   text-align: center;
 }
