@@ -3,16 +3,31 @@ html.no-js(lang="en")
   head
     title Interactive Activities - Council for Economic Education
     link(type='text/css', rel='stylesheet', href='/style/index.css')
+    link(type='text/css', rel='stylesheet', href='/style/normalize.css')
+    link(type='text/css', rel='stylesheet', href='/style/base.css')
     script.
       document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, '');
   body
-    div#main
+    header
+      div.container.clearfix
+        div.left
+          img(class="cee-logo", src='images/cee-logo.png')
+        nav.right
+          ul.nav-menu
+            li.menu-item
+              a(href='') Item1
+            li.menu-item
+              a(href='') Item2
+            li.menu-item
+              a(href='') Item3
+
+    div#main.cb
     .initial-loading
       | Loading...
     noscript
       h1 Interactive Activities - Council for Economic Education
       p
-        | This page requires JavaScript to function properly. Visit 
+        | This page requires JavaScript to function properly. Visit
         a(href="http://www.enable-javascript.com/") enable-javascript.com
         |  to learn how you can enable JavaScript in your web browser.
     script#activity-data(type='text/json')!= JSON.stringify(activities)
