@@ -1,7 +1,6 @@
 'use strict';
 
-// Node core modules
-var EventEmitter = require('events').EventEmitter;
+var ProxyMe = require('./proxyme');
 
 // Export CRUDManager
 module.exports = CRUDManager;
@@ -29,8 +28,8 @@ function CRUDManager(options) {
   this._listeningHandlers = undefined;
 }
 
-// @inherits {EventEmitter}
-CRUDManager.prototype = Object.create(EventEmitter.prototype);
+// @inherits {ProxyMe}
+CRUDManager.prototype = Object.create(ProxyMe.prototype);
 CRUDManager.prototype.constructor = CRUDManager;
 
 // Create an object.
