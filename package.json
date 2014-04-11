@@ -29,7 +29,8 @@
     "lodash": "~2.4.1",
     "readable-stream": "^1.0.26-2",
     "socket.io": "~0.9.16",
-    "when": "~2.8.0"
+    "when": "~2.8.0",
+    "requirejs": "^2.1.11"
   },
   "devDependencies": {
     "chai": "~1.9.0",
