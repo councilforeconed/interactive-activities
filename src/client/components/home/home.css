@@ -4,9 +4,27 @@
 }
 
 .article-title { text-transform: uppercase; }
-.home-title, .home-sub-title {
+
+.home-title,
+.home-sub-title {
   text-align: center;
 }
+
+.activity-container {
+  width: 23%;
+  margin: 1%;
+}
+
+.activity-title {
+  color: #74bee9;
+}
+
+.activity {
+  border: 10px solid #f2f2ee;
+  height: auto;
+}
+
+.activity-icon { width: 100%; }
 
 .home-activity-list {
   list-style-type: none;

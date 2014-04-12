@@ -37,7 +37,7 @@ html.initial-load-complete .initial-loading {
 }
 
 .cee-logo {
-  width: 70%;
+  width: 50%;
   margin-right: 20px;
 }
 
@@ -45,3 +45,5 @@ html.initial-load-complete .initial-loading {
   display: inline;
   padding: 20px;
 }
+
+.nav-menu { margin: 32px 0; }
