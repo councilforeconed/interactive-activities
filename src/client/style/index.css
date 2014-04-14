@@ -9,6 +9,11 @@ html.initial-load-complete .initial-loading {
   -webkit-transition: opacity 1s, width 0s 1s;
 }
 
+footer {
+  background-color: #eae9d6;
+  height: 100px;
+}
+
 .initial-loading {
   position: absolute;
   top: 3rem;
@@ -47,3 +52,4 @@ html.initial-load-complete .initial-loading {
 }
 
 .nav-menu { margin: 32px 0; }
+
