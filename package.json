@@ -31,6 +31,7 @@
     "socket.io": "~0.9.16",
     "nodemailer": "^0.6.1",
     "through2": "^0.4.1",
+    "through2-reduce": "^0.2.3",
     "when": "~2.8.0"
   },
   "devDependencies": {

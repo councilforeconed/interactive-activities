@@ -5,13 +5,16 @@
 // Third party libs.
 var _debug = require('debug')('cee:example');
 var cloak = require('cloak');
+require('express-resource');
 var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
 var common = require('../../../server/common');
 var CRUDManager = require('../../../server/crudmanager');
 var CRUDReplicator = require('../../../server/crudreplicator');
+var DataAggregator = require('./dataaggregator');
 var MemoryStore = require('../../../server/storememory');
+var RoomDataCollector = require('../../../server/roomdatacollector');
 
 // The `shared/` directory is available for scripts that should be available on
 // both the client and the server. In order to consume AMD modules, server
@@ -53,7 +56,36 @@ module.exports.createServer = function(options, debug) {
     type: 'group'
   }));
 
+  var dataCollector = new RoomDataCollector(new CRUDManager({
+    name: 'data',
+    store : new MemoryStore()
+  }));
+
+  // Serve reports from /report/:room/(download|email)
+  common.addReportResource({
+    app: app,
+    DataAggregator: DataAggregator,
+    dataCollector: dataCollector,
+    debug: debug,
+    templatePath:
+      __dirname + '/../../../client/components/reportjson/index.jade'
+  });
+
   var roomNameToId = {};
+  var roomIdToName = {};
+
+  // Manage cloak rooms based off of group management instructed by
+  // top server.
+  groupManager.on('create', function(name) {
+    var room = cloak.createRoom(name);
+    roomNameToId[name] = room.id;
+    roomIdToName[room.id] = name;
+  });
+  groupManager.on('delete', function(name) {
+    cloak.getRoom(name).delete();
+    delete roomIdToName[roomNameToId[name]];
+    delete roomNameToId[name];
+  });
 
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
@@ -64,24 +96,36 @@ module.exports.createServer = function(options, debug) {
         var room = cloak.getRoom(roomNameToId[roomName]);
         if (room) {
           room.addMember(user);
+
+          // Find the activity room's name and log a data object in that.
+          groupManager.read(roomName)
+            .then(function(group) {
+              dataCollector.add(group.room, {
+                type: 'join-room',
+                group: roomName,
+                user: user.id
+              });
+            });
         }
       },
 
       'chat': function(obj, user) {
         user.getRoom().messageMembers('chat', obj);
+
+        // Find the activity room's name and log a data object in that.
+        var roomName = roomIdToName[user.getRoom().id];
+        if (roomName) {
+          groupManager.read(roomName)
+            .then(function(group) {
+              dataCollector.add(group.room, {
+                type: 'chat',
+                group: roomName,
+                user: user.id
+              });
+            });
+        }
       }
     }
-  });
-
-  // Manage cloak rooms based off of group management instructed by
-  // top server.
-  groupManager.on('create', function(name) {
-    var room = cloak.createRoom(name);
-    roomNameToId[name] = room.id;
-  });
-  groupManager.on('delete', function(name) {
-    cloak.getRoom(name).delete();
-    delete roomNameToId[name];
   });
 
   return common.whenListening(server, debug)
