@@ -29,6 +29,8 @@
     "lodash": "~2.4.1",
     "readable-stream": "^1.0.26-2",
     "socket.io": "~0.9.16",
+    "nodemailer": "^0.6.1",
+    "through2": "^0.4.1",
     "when": "~2.8.0"
   },
   "devDependencies": {
