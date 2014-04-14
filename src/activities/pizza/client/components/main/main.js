@@ -1,7 +1,11 @@
+/* global cloak:true */
+
 define(function(require) {
   'use strict';
 
   var _ = require('lodash');
+  require('cloak');
+  var io = require('scripts/socketio.monkey');
 
   var PizzaModel = require('../../../shared/pizza-model');
   var GameModel = require('../../../shared/game-model');
@@ -91,6 +95,8 @@ define(function(require) {
 
       PizzaModel.localPlayerID = this.playerModel.get('id');
 
+      this._initConnection();
+
       this.round = new RoundView({
         playerModel: this.playerModel,
         pizzas: this.pizzas,
@@ -127,6 +133,66 @@ define(function(require) {
       this.roundStart.startIn(5432);
 
       this.round.begin();
+    },
+
+    _initConnection: function() {
+
+      var createMessages = function(prefix, setFn, model, defaults) {
+        var messages = {};
+        messages[prefix + 'create'] = function(obj) {
+          setFn.call(model, obj);
+        };
+        messages[prefix + 'update'] = messages[prefix + 'create'];
+        messages[prefix + 'delete'] = function() {
+          setFn.call(model, defaults || model.defaults);
+        };
+      };
+
+      var self = this;
+      var pizzas = self.gameState.get('pizzas');
+      var pizzaMessages =
+        createMessages('pizza-collection/', pizzas.reset, pizzas, []);
+      var players = self.gameState.get('players');
+      var playerMessages =
+        createMessages('player-collection/', players.reset, players, []);
+      var localPlayerMessages = {
+        'player/set-local': function(playerId) {
+          self.gameState.get('players').get(playerId).set('isLocal', true);
+        }
+      };
+      var gameMessages =
+        createMessages('game/', self.gameState.set, self.gameState);
+
+      cloak.configure({
+        messages: _.extend(
+          {},
+          pizzaMessages,
+          playerMessages,
+          localPlayerMessages,
+          gameMessages
+        ),
+
+        serverEvents: {
+          begin: _.bind(function() {
+            // Join cloak room for this group
+            cloak.message('join', this.group);
+          }, this)
+        }
+      });
+
+      // Reload the page to reset cloak.
+      if (cloak.dirty) {
+        location.reload();
+      }
+      // Next run of a cloak-app should reload the page.
+      cloak.dirty = true;
+
+      // Cloak wraps socket.io in a way, that we must monkey in some options.
+      io.connect.options = {
+        'resource': 'activities/pizza/socket.io'
+      };
+      // Connect to socket
+      cloak.run();
     },
 
     handleComplete: function() {
