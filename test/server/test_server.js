@@ -16,7 +16,7 @@ suite('top server', function() {
   var server = null;
 
   // Setup the server to test against.
-  setup(function(done) {
+  suiteSetup(function(done) {
     server = createTop()
       .then(function(_server) {
         server = _server;
@@ -34,7 +34,7 @@ suite('top server', function() {
   });
 
   // Tear that server down so we have a clean one for the next test.
-  teardown(function(done) {
+  suiteTeardown(function(done) {
     if (server) {
       server.close(function(e) {
         if (e && e.message !== 'Not running') {
