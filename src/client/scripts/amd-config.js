@@ -10,6 +10,7 @@ require({
     cloak: '../node_modules/cloak/cloak-client',
     d3: 'd3/d3',
     'd3.chart': 'd3.chart/d3.chart',
+    highlight: 'highlightjs/highlight.pack',
     layoutmanager: 'layoutmanager/backbone.layoutmanager',
     lodash: 'lodash/dist/lodash.underscore',
     jquery: 'jquery/jquery',
@@ -61,6 +62,9 @@ require({
     },
     'd3.chart': {
       deps: ['d3']
+    },
+    highlight: {
+      exports: 'hljs'
     },
     rangeslider: {
       deps: [
