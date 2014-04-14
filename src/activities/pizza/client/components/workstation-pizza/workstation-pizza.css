@@ -1,0 +1,8 @@
+.pizza-workstation-pizza,
+.pizza-workstation-pizza img {
+  width: 100%;
+  max-height: 80%;
+}
+.pizza-workstation-pizza .toppings {
+  position: relative;
+}

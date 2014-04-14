@@ -10,61 +10,73 @@ define(function(require) {
   var QueuePizza = Layout.extend({
     className: 'pizza-queue-pizza',
     template: require('jade!./queue-pizza'),
-    initialize: function() {
+    keep: true,
+    initialize: function(options) {
+      this.isDraggable = true;
 
       this.revertIf = _.bind(function() {
-        return !this.isOverWorkstation();
+        return !this.mayTake();
       }, this);
       this.onStop = _.bind(this.onStop, this);
 
+      this.playerModel = options.playerModel;
+      this.listenTo(this.model, 'change:foodState', this.render);
+    },
+
+    mayTake: function() {
+      return this.isOverWorkstation() &&
+        this.model.mayPlaceIn(this.playerModel.get('workstation'));
+    },
+
+    onStop: function() {
+      var alreadyOwns = this.model.get('ownerID') !== null;
+
+      if (alreadyOwns) {
+        return;
+      }
+
+      if (!this.mayTake()) {
+        return;
+      }
+
+      this.model.set('ownerID', this.model.constructor.localPlayerID);
+    },
+
+    toggleDrag: function(value) {
+      // Store the latest value so it can be referenced during future render
+      // operations.
+      this.isDraggable = value;
+
+      this.$el.data('plugin_pep').toggle(value);
+    },
+
+    isOverWorkstation: function() {
+      var pep = this.$el.data('plugin_pep');
+      // TODO: Remove the "guard" check for `pep.activeDropRegions` (and simply
+      // test the length of that array) when the underlying bug in the
+      // jQuery.pep plugin is resolved:
+      // https://github.com/briangonzalez/jquery.pep.js/pull/113
+      return pep && pep.activeDropRegions && pep.activeDropRegions.length > 0;
+    },
+
+    afterRender: function() {
+      this.$el.removeAttr('style');
       this.$el.pep({
         deferPlacement: true,
         revert: true,
         shouldEase: false,
         revertIf: this.revertIf,
-        droppable: '.pizza-workstation',
+        droppable: '.pizza-workstation-surface',
         droppableActiveClass: 'pizza-workstation-active',
         stop: this.onStop
       });
+      this.toggleDrag(this.isDraggable);
     },
 
-    finishBuild: function() {
-      this.toggleDrag(true);
-
-      this.listenToOnce(this.model, 'change:ownerID', function() {
-        this.model.nextStep();
-      });
-    },
-
-    onStop: function() {
-      var alreadyOwns = this.model.get('ownerID') !== null;
-      if (this.isOverWorkstation()) {
-        if (alreadyOwns) {
-          return;
-        }
-
-        this.model.set('ownerID', this.model.constructor.localPlayerID);
-
-        // Simulate delay where player adds ingredients to pizza, then allow
-        // pizza to be returned.
-        setTimeout(_.bind(function() {
-          this.finishBuild();
-        }, this), 3000);
-      } else {
-        if (!alreadyOwns) {
-          return;
-        }
-
-        this.model.set('ownerID', null);
-      }
-    },
-
-    toggleDrag: function(value) {
-      this.$el.data('plugin_pep').toggle(value);
-    },
-
-    isOverWorkstation: function() {
-      return this.$el.data('plugin_pep').activeDropRegions.length > 0;
+    serialize: function() {
+      return {
+        foodStateChar: this.model.get('foodState')[0].toUpperCase()
+      };
     }
   });
 

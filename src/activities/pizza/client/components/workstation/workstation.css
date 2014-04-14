@@ -1,0 +1,174 @@
+.pizza-workstation-surface {
+  width: 70%;
+  min-height: 10rem;
+  margin: 3rem 5%;
+
+  float: left;
+  background-color: teal;
+  text-align: center;
+}
+
+.pizza-workstation-platter {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+
+  width: 30%;
+  height: 10rem;
+
+  background-color: papayawhip;
+}
+
+.pizza-workstation[data-move] .pizza-workstation-surface {
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+.pizza-workstation[data-move="enter-from-left"] .pizza-workstation-surface {
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-name: pizza-enter-from-left;
+  -moz-animation-name: pizza-enter-from-left;
+  animation-name: pizza-enter-from-left;
+}
+
+.pizza-workstation[data-move="enter-from-right"] .pizza-workstation-surface {
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-name: pizza-enter-from-right;
+  -moz-animation-name: pizza-enter-from-right;
+  animation-name: pizza-enter-from-right;
+}
+
+.pizza-workstation[data-move="exit-to-left"] .pizza-workstation-surface {
+  -webkit-animation-duration: 0.25s;
+  -moz-animation-duration: 0.25s;
+  animation-duration: 0.25s;
+  -webkit-animation-name: pizza-exit-to-left;
+  -moz-animation-name: pizza-exit-to-left;
+  animation-name: pizza-exit-to-left;
+}
+
+.pizza-workstation[data-move="exit-to-right"] .pizza-workstation-surface {
+  -webkit-animation-duration: 0.25s;
+  -moz-animation-duration: 0.25s;
+  animation-duration: 0.25s;
+  -webkit-animation-name: pizza-exit-to-right;
+  -moz-animation-name: pizza-exit-to-right;
+  animation-name: pizza-exit-to-right;
+}
+
+@-webkit-keyframes pizza-enter-from-left {
+  from {
+    -webkit-transform: translateX(-130%);
+  }
+
+  50% {
+    -webkit-transform: translateX(10%);
+  }
+
+  75% {
+    -webkit-transform: translateX(-5%);
+  }
+
+  to {
+    -webkit-transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes pizza-enter-from-right {
+  from {
+    -webkit-transform: translateX(130%);
+  }
+
+  50% {
+    -webkit-transform: translateX(-10%);
+  }
+
+  75% {
+    -webkit-transform: translateX(5%);
+  }
+
+  to {
+    -webkit-transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes pizza-exit-to-left {
+  from {
+    -webkit-transform: translateX(0);
+  }
+
+  to {
+    -webkit-transform: translateX(-130%);
+  }
+}
+
+@-webkit-keyframes pizza-exit-to-right {
+  from {
+    -webkit-transform: translateX(0);
+  }
+
+  to {
+    -webkit-transform: translateX(130%);
+  }
+}
+
+@-moz-keyframes pizza-enter-from-left {
+  from {
+    -moz-transform: translateX(-130%);
+  }
+
+  50% {
+    -moz-transform: translateX(10%);
+  }
+
+  75% {
+    -moz-transform: translateX(-5%);
+  }
+
+  to {
+    -moz-transform: translateX(0);
+  }
+}
+
+@-moz-keyframes pizza-enter-from-right {
+  from {
+    -moz-transform: translateX(130%);
+  }
+
+  50% {
+    -moz-transform: translateX(-10%);
+  }
+
+  75% {
+    -moz-transform: translateX(5%);
+  }
+
+  to {
+    -moz-transform: translateX(0);
+  }
+}
+
+@-moz-keyframes pizza-exit-to-left {
+  from {
+    -moz-transform: translateX(0);
+  }
+
+  to {
+    -moz-transform: translateX(-130%);
+  }
+}
+
+@-moz-keyframes pizza-exit-to-right {
+  from {
+    -moz-transform: translateX(0);
+  }
+
+  to {
+    -moz-transform: translateX(130%);
+  }
+}
