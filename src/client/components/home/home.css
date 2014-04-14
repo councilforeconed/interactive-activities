@@ -82,3 +82,20 @@
   opacity: 1;
   z-index: auto;
 }
+
+/*RESPONSIVE STYLES*/
+@media screen and (max-width: 768px) {
+  .logo { width: 59%; }
+  .activity-container { width: 31%; }
+}
+
+@media screen and (max-width: 320px) {
+  .logo {
+    float: none;
+    width: 100%;
+  }
+  nav { margin: -10px 25px; }
+  nav ul { padding-left: 0; }
+  .article-text { width: 100%; }
+  .activity-container { width: 48%; }
+}
