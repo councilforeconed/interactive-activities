@@ -8,10 +8,10 @@ var assert = require('chai').assert;
 var whenDelay = require('when/delay');
 
 // Locally defined libs.
-var getActivities = require(
-  '../../src/server/get-activities'
-);
 var ServerManager = require('../../src/server/servermanager');
+
+// Mock ups
+var getActivities = require('./mock/mock_getactivities');
 
 suite('ServerManager', function() {
   var scripts = [];
