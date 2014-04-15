@@ -8,7 +8,7 @@ var ListenTo = require('./listento');
 module.exports = CloakRoomManager;
 
 function CloakRoomManager() {
-  ListenTo.call(this, this._listeningNames);
+  ListenTo.call(this, ['create', 'delete']);
 
   this.roomNameToId = {};
   this.roomIdToName = {};
@@ -16,11 +16,6 @@ function CloakRoomManager() {
 
 CloakRoomManager.prototype = Object.create(ListenTo.prototype);
 CloakRoomManager.prototype.constructor = CloakRoomManager;
-
-CloakRoomManager.prototype._listeningNames = [
-  'create',
-  'delete'
-];
 
 CloakRoomManager.prototype.getRoomId = function(roomName) {
   return this.roomNameToId[roomName];
