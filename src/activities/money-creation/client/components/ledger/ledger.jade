@@ -8,9 +8,9 @@ table.ledger
       th(colspan="2") Required Reserves
       th Excess Reserves
   tbody
+    - var totalPct = 0;
     each round, index in rounds
-      - var pct = (100 * round.reserves / total);
-      - var totalPct = (100 * (total - round.deposit) / total);
+      - var pct = 100 * round.excess / total;
       tr.round
         td.institution=String.fromCharCode(index + 65)
         td.deposit=formatters.usd(round.deposit)
