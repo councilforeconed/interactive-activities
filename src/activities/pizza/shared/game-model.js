@@ -4,7 +4,9 @@ define(function(require) {
   var Backbone = require('backbone');
   var _ = require('lodash');
 
-  var RoundCount = require('./parameters').RoundCount;
+  var params = require('./parameters');
+  var RoundCount = params.RoundCount;
+  var MinPlayers = params.MinPlayers;
 
   var PlayerCollection = require('./player-collection');
   var PizzaCollection = require('./pizza-collection');
@@ -18,6 +20,16 @@ define(function(require) {
     initialize: function() {
       this.players = new PlayerCollection();
       this.pizzas = new PizzaCollection();
+
+      this.players.on('add', function() {
+        if (this.players.length < MinPlayers) {
+          return;
+        }
+        if (this.hasBegun()) {
+          return;
+        }
+        this.advance();
+      }, this);
     },
 
     /**
