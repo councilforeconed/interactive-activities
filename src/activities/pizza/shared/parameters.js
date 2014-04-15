@@ -1,4 +1,4 @@
 define({
-  RoundCount: 4,
-  RoundDuration: 80000
+  RoundCount: 2,
+  RoundDuration: 10000
 });

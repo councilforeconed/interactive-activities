@@ -25,14 +25,18 @@ define(function(require) {
           return this.append('rect').classed('bar', true);
         },
         events: {
-          merge: function() {
+          enter: function() {
             var chart = this.chart();
             var height = chart.height();
+
+            this.attr('height', 0)
+              .attr('y', height);
+          },
+          merge: function() {
+            var chart = this.chart();
             var barWidth = chart.x(offset - padPct + widthPct);
 
             this.attr('width', barWidth)
-              .attr('height', 0)
-              .attr('y', height)
               .attr('x', function(d, i) {
                 return chart.x(i + offset) - (barWidth / 2);
               });
@@ -54,6 +58,15 @@ define(function(require) {
     extent: function(data) {
       this.y.domain([0, d3.max(data)]);
       this.x.domain([offset - padPct, data.length + (offset * padPct)]);
+
+      // Because the barchart is intended to be used as a histogram,
+      // intermediate values have no significance. Ensure that d3 does not
+      // render "tick" marks for these values by explicitly setting the number
+      // of ticks according to the number of data points.
+      this.xAxis.ticks(data.length);
+
+      this._handleContentHeightChange();
+      this._handleContentWidthChange();
     }
   });
 

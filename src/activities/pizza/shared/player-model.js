@@ -8,15 +8,19 @@ define(function(require) {
 
   var PlayerModel = Backbone.Model.extend({
     defaults: {
-      workstation: null
+      workstation: null,
+      activedRound: -1
     },
-    activate: function() {
+
+    activate: function(roundNumber) {
       if (this.get('workstation') !== null) {
         throw new Error(
           'PlayerModel#activate: attempted to activate a player that has ' +
           'been activated previously.'
         );
       }
+
+      this.set('activatedRound', roundNumber);
       this.set('workstation', workstations.byPosition[0].id);
     },
 

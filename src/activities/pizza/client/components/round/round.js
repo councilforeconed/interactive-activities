@@ -63,6 +63,7 @@ define(function(require) {
       var currentWorkstation = this.playerModel.get('workstation');
 
       if (!currentWorkstation) {
+        this.render();
         return;
       }
 
