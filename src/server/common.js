@@ -87,3 +87,42 @@ module.exports.whenListening = function(server, debug) {
     });
   });
 };
+
+/**
+ * Create a RequireJS function that can load application JavaScript files,
+ * respecting current path/shim/packages configuration.
+ *
+ * @argument {Object} [paths] AMD `paths` configuration for any
+ *           activity-specific code.
+ *
+ * @returns {Function} Implements the AMD `define` signature.
+ */
+module.exports.createRequireJS = function(paths) {
+  var requirejs = require('requirejs');
+  var vm = require('vm');
+  var fs = require('fs');
+
+  // Stub out the application `main` file (which the application configuration
+  // lists as a dependency)
+  requirejs.define('scripts/main', function() {});
+  // Stub out jQuery (which Backbone.js lists as a hard dependency in
+  // AMD-enabled contexts)
+  requirejs.define('jquery', function() {});
+
+  // Configure the RequireJS function to resolve module names according to the
+  // settings in the browser.
+  vm.runInNewContext(
+    String(fs.readFileSync(__dirname + '/../client/scripts/amd-config.js')),
+    {
+      require: requirejs
+    }
+  );
+
+  // Override browser configuration with server-specific details
+  requirejs.config({
+    baseUrl: __dirname + '/../../bower_components',
+    paths: paths
+  });
+
+  return requirejs;
+};

@@ -13,12 +13,14 @@ var CRUDManager = require('../../../server/crudmanager');
 var CRUDReplicator = require('../../../server/crudreplicator');
 var MemoryStore = require('../../../server/storememory');
 
-// The `shared/` directory is available for scripts that should be available on
-// both the client and the server. In order to consume AMD modules, server
-// scripts should use AMDefine's "intercept" module.
-// https://github.com/jrburke/amdefine
-require('amdefine/intercept');
-var sharedObject = require('../shared/object');
+// In order to consume AMD modules, server scripts should use a `requirejs`
+// function created by `common.createRequireJS`. This can be configured with an
+// AMD-compliant `paths` hash if the activity has any commonly-used scripts or
+// directories.
+var requirejs = common.createRequireJS({
+  shared: __dirname + '/../shared'
+});
+var sharedObject = requirejs('shared/object');
 sharedObject.random();
 
 // Create an express server.
