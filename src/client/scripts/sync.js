@@ -1,9 +1,7 @@
-/* global cloak:true */
-
 define(function(require) {
   'use strict';
 
-  require('cloak');
+  var cloak = require('cloak');
 
   var sync = function(options) {
     var prefix = options.prefix;

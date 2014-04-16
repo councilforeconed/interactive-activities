@@ -1,11 +1,9 @@
-/* global cloak:true */
-
 // @file This view connects to the server and sends and receives chat messages
 //   from everyone in the group.
 define(function(require) {
   'use strict';
   var _ = require('lodash');
-  require('cloak');
+  var cloak = require('cloak');
   var io = require('scripts/socketio.monkey');
   var Model = require('backbone').Model;
 

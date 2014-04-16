@@ -1,10 +1,8 @@
-/* global cloak:true */
-
 define(function(require) {
   'use strict';
 
   var _ = require('lodash');
-  require('cloak');
+  var cloak = require('cloak');
   var io = require('scripts/socketio.monkey');
 
   var PizzaModel = require('../../../shared/pizza-model');
