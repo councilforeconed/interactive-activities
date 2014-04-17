@@ -5,6 +5,8 @@ define(function(require) {
   var cloak = require('cloak');
   var io = require('scripts/socketio.monkey');
 
+  var createMsgHandlers = require('scripts/create-cloak-msg-handlers');
+
   var PizzaModel = require('../../../shared/pizza-model');
   var GameModel = require('../../../shared/game-model');
 
@@ -135,38 +137,16 @@ define(function(require) {
 
     _initConnection: function() {
 
-      var createMessages = function(prefix, setFn, model, defaults) {
-        var messages = {};
-        messages[prefix + 'create'] = function(obj) {
-          //  Because the `trigger` option is only supported for
-          //  `Backbone.Collection#set` (and not `Backbone.Model#set`),
-          //  manually invoke the object's `parse` method, if defined.
-          if (model.parse) {
-            obj = model.parse(obj);
-          }
-          setFn.call(model, obj);
-        };
-        messages[prefix + 'update'] = messages[prefix + 'create'];
-        messages[prefix + 'delete'] = function() {
-          setFn.call(model, defaults || model.defaults);
-        };
-        return messages;
-      };
-
-      var self = this;
-      var pizzas = self.gameState.get('pizzas');
-      var pizzaMessages =
-        createMessages('pizza/', pizzas.reset, pizzas, []);
-      var players = self.gameState.get('players');
-      var playerMessages =
-        createMessages('player/', players.reset, players, []);
+      var pizzas = this.gameState.get('pizzas');
+      var pizzaMessages = createMsgHandlers('pizza', { collection: pizzas });
+      var players = this.gameState.get('players');
+      var playerMessages = createMsgHandlers('player', { collection: players });
       var localPlayerMessages = {
         'player/set-local': function(playerId) {
-          self.gameState.get('players').get(playerId).set('isLocal', true);
+          players.get(playerId).set('isLocal', true);
         }
       };
-      var gameMessages =
-        createMessages('game/', self.gameState.set, self.gameState);
+      var gameMessages = createMsgHandlers('game', { model: this.gameState });
 
       cloak.configure({
         messages: _.extend(

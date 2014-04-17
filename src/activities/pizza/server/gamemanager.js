@@ -10,7 +10,7 @@ var requirejs = common.createRequireJS({
 
 var PizzaGameModel = requirejs('shared/game-model');
 
-var sync = require('../../../server/sync');
+requirejs('backbone').sync = require('../../../server/sync');
 
 module.exports = GameManager;
 
@@ -19,7 +19,6 @@ function GameManager(cloakRooms) {
   this.cloakRooms = cloakRooms;
   this.rooms = {};
   this.games = {};
-  this.syncs = {};
 
   this._boundHandlers = {};
 }
@@ -33,8 +32,9 @@ GameManager.prototype._messages = {
   'player/update': '_player_update'
 };
 
-GameManager.prototype._serverEvents = {
-  'leaveRoom': '_leaveRoom'
+GameManager.prototype._roomEvents = {
+  'newMember': '_new_member',
+  'memberLeaves': '_member_leaves'
 };
 
 GameManager.prototype._createMessages = function() {};
@@ -52,36 +52,34 @@ GameManager.prototype.cloakMessages = function() {
   return this._handlers('_messages');
 };
 
-GameManager.prototype.cloakEvents = function() {
-  return this._handlers('_serverEvents');
+GameManager.prototype.roomEvents = function() {
+  return this._handlers('_roomEvents');
 };
 
 GameManager.prototype.create = function(roomName, room) {
   this.rooms[roomName] = room;
 
-  this.syncs[roomName] = sync.set({
-    game: { prefix: 'game/' },
-    pizzaCollection: { prefix: 'pizza-collection/' },
-    playerCollection: { prefix: 'player-collection/' }
-  }, {
-    room: room
-  });
-
   var game = new PizzaGameModel();
-  game.sync = this.syncs[roomName].game;
-  game.get('pizzas').sync = this.syncs[roomName].pizzaCollection;
-  game.get('players').sync = this.syncs[roomName].playerCollection;
+  var pizzas = game.get('pizzas');
+  var players = game.get('players');
+
+  game.room = pizzas.room = players.room = room;
+  game.prefix = 'game';
+  pizzas.prefix = 'pizza';
+  players.prefix = 'player';
+
   this.games[roomName] = game;
 };
 
+
 GameManager.prototype.delete = function(roomName) {
   delete this.rooms[roomName];
-  delete this.syncs[roomName];
   delete this.games[roomName];
 };
 
 GameManager.prototype._join = function(roomName, user) {
   var room = this.rooms[roomName];
+
   if (!room) {
     return;
   }
@@ -131,20 +129,28 @@ GameManager.prototype._player_update = function(obj, user) {
   this.games[roomName].get('players').get(obj.id).save(obj);
 };
 
-// TODO: Check that leaveRoom is the correct name.
-GameManager.prototype._leaveRoom = function(user, room) {
-  var roomName = this.cloakRooms.getRoomName(room.id);
+GameManager.prototype._new_member = function(user) {
+  this.cloakRooms.addUser(user);
+};
+
+GameManager.prototype._member_leaves = function(user) {
+  // At this time, the user is in a room and has a corresponding `room`
+  // attribute, but the room is the Cloak lobby and therefore does not exist in
+  // the `cloakRooms` data structure.
+  var roomName = this.cloakRooms.getName({ user: user });
   var game = this.games[roomName];
+
+  var player = game.get('players').findWhere({ cloakId: user.id });
   if (!game) {
     return;
   }
 
-  var player = game.get('players').findWhere({ cloakId: user.id });
   if (!player) {
     return;
   }
 
   player.destroy();
+  this.cloakRooms.removeUser(user);
 };
 
 GameManager.prototype.cleanup = function() {

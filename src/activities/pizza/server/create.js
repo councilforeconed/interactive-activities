@@ -35,15 +35,14 @@ module.exports = function(options, debug) {
   var cloakRoomManager = new CloakRoomManager();
   cloakRoomManager.listenTo(groupManager);
 
-  var gameManager = new GameManager();
+  var gameManager = new GameManager(cloakRoomManager);
   gameManager.listenTo(cloakRoomManager);
 
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
     express: server,
-
     messages: gameManager.cloakMessages(),
-    serverEvents: gameManager.cloakEvents()
+    room: gameManager.roomEvents()
   });
 
   return common.whenListening(server, debug)
