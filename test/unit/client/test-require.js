@@ -41,7 +41,28 @@ window.testRequire = function(tests, done) {
           sinon: '../node_modules/sinon/lib/sinon'
         },
         shim: {
+          // TODO: Remove this when Sinon.JS is updated to implement AMD
+          // correctly.
+          // See "GH-462 Fixes behavior of AMD dependencies"
+          // https://github.com/cjohansen/Sinon.JS/pull/462
+          'sinon/call': {
+            deps: ['sinon'],
+            exports: 'sinon'
+          },
+          'sinon/behavior': {
+            deps: ['sinon'],
+            exports: 'sinon'
+          },
+          'sinon/spy': {
+            deps: ['sinon/call'],
+            exports: 'sinon'
+          },
+          'sinon/stub': {
+            deps: ['sinon/spy', 'sinon/behavior'],
+            exports: 'sinon'
+          },
           'sinon/util/fake_timers': {
+            deps: ['sinon'],
             exports: 'sinon'
           }
         }
