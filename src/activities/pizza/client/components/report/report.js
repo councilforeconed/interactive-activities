@@ -3,6 +3,7 @@ define(function(require) {
 
   var Layout = require('layoutmanager');
   var _ = require('lodash');
+  var $ = require('jquery');
 
   var WindowEmitter = require('scripts/window-emitter');
   var BarChart = require('components/bar-chart/bar-chart');
@@ -49,6 +50,9 @@ define(function(require) {
     },
 
     resize: function() {
+      if (!$.contains(document, this.el)) {
+        return;
+      }
       this.barChart.width(this.$el.width());
     }
   });

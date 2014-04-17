@@ -93,9 +93,6 @@ define(function(require) {
 
       PizzaModel.localPlayerID = this.playerModel.get('id');
 
-      this.report = new ReportView({
-        gameState: this.gameState
-      });
       this.round = new RoundView({
         playerModel: this.playerModel,
         pizzas: this.pizzas,
@@ -135,8 +132,11 @@ define(function(require) {
     },
 
     handleComplete: function() {
-      this.setView('.activity-stage', this.report);
-      this.report.draw();
+      var report = new ReportView({
+        gameState: this.gameState
+      });
+      this.setView('.activity-stage', report);
+      report.draw();
     }
   });
 
