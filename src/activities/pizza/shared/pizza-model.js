@@ -68,6 +68,7 @@ define(function(require) {
         return;
       }
 
+      this.save();
       // Whenever ownership changes, the client-only `isReady` attribute should
       // be reset--either the pizza has been completed or it is being returned
       // to the queue unfinished.
@@ -100,6 +101,7 @@ define(function(require) {
         foodState: nextState.id,
         ownerID: null
       });
+      this.save();
     }
   });
 

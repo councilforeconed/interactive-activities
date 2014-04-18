@@ -16,7 +16,7 @@ define(function() {
    */
   return function(prefix, source) {
     var messages = {};
-    var setFn;
+    var setFn, setOpts;
 
     if (!source || ('model' in source) === ('collection' in source)) {
       throw new Error(
@@ -30,6 +30,7 @@ define(function() {
     } else {
       source = source.collection;
       setFn = source.add;
+      setOpts = { merge: true };
     }
 
     messages[prefix + '/create'] = function(obj) {
@@ -42,7 +43,7 @@ define(function() {
         obj = source.parse(obj);
       }
 
-      setFn.call(source, obj);
+      setFn.call(source, obj, setOpts);
     };
     messages[prefix + '/update'] = messages[prefix + '/create'];
     messages[prefix + '/delete'] = function(attrs) {

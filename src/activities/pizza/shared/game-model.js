@@ -6,7 +6,6 @@ define(function(require) {
 
   var params = require('./parameters');
   var RoundCount = params.RoundCount;
-  var MinPlayers = params.MinPlayers;
 
   var PlayerCollection = require('./player-collection');
   var PizzaCollection = require('./pizza-collection');
@@ -31,7 +30,18 @@ define(function(require) {
         delete data.players;
       }
 
+      if (data.timeRemaining) {
+        this.timeRemaining(data.timeRemaining);
+        delete data.timeRemaining;
+      }
+
       return data;
+    },
+
+    toJSON: function() {
+      var orig = Backbone.Model.prototype.toJSON.apply(this, arguments);
+      orig.timeRemaining = this.timeRemaining();
+      return orig;
     },
 
     initialize: function() {
@@ -41,36 +51,21 @@ define(function(require) {
         pizzas: new PizzaCollection()
       });
 
-      players.on('add', function() {
-        if (this.get('players').length < MinPlayers) {
-          return;
-        }
-        if (this.hasBegun()) {
-          return;
-        }
-        this.advance();
-      }, this);
+      this.on('change:roundNumber', this.handleRoundChange, this);
     },
 
     /**
-     * Transitions to the next round number:
+     * Trigger round-related events that carry more meaning than
+     * 'change:roundNumber':
      *
-     * - If the game has not yet begun, the round number will be set to `0`.
-     * - If the game has begun, the round number will be incremented by 1.
-     *
-     * Triggers a `roundStart` event if a round is starting, or triggers a
-     * `complete` event if transitioning out of the final round.
+     * - 'roundStart': when a new round is beginning
+     * - 'complete': when transitioning out of the final round
      */
-    advance: function() {
-      var currentRoundNumber = this.get('roundNumber');
-      var nextRoundNumber = currentRoundNumber + 1;
-
-      this.set('roundNumber', nextRoundNumber);
-
+    handleRoundChange: function(model, roundNumber) {
       if (this.isOver()) {
         this.trigger('complete');
       } else {
-        this.trigger('roundStart', nextRoundNumber);
+        this.trigger('roundStart', roundNumber);
       }
     },
 
@@ -140,7 +135,6 @@ define(function(require) {
 
       return ms;
     }
-
   });
 
   return GameState;

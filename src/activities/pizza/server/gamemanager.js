@@ -8,7 +8,7 @@ var requirejs = common.createRequireJS({
   shared: '../src/activities/pizza/shared'
 });
 
-var PizzaGameModel = requirejs('shared/game-model');
+var GameModel = require('./game-model');
 
 requirejs('backbone').sync = require('../../../server/sync');
 
@@ -59,7 +59,7 @@ GameManager.prototype.roomEvents = function() {
 GameManager.prototype.create = function(roomName, room) {
   this.rooms[roomName] = room;
 
-  var game = new PizzaGameModel();
+  var game = new GameModel();
   var pizzas = game.get('pizzas');
   var players = game.get('players');
 
@@ -70,7 +70,6 @@ GameManager.prototype.create = function(roomName, room) {
 
   this.games[roomName] = game;
 };
-
 
 GameManager.prototype.delete = function(roomName) {
   delete this.rooms[roomName];
@@ -87,33 +86,21 @@ GameManager.prototype._join = function(roomName, user) {
   room.addMember(user);
 
   var game = this.games[roomName];
+  var players = game.get('players');
 
   user.message('game/update', game.toJSON());
 
-  // Send old players to new player.
-  var players = game.get('players');
-  players.each(function(player) {
-    user.message('player/create', player.toJSON());
-  });
-
-  // Send old pizzas.
-  var pizzas = game.get('pizzas');
-  pizzas.each(function(pizza) {
-    user.message('pizza/create', pizza.toJSON());
-  });
-
   // Create new player.
-  var nextId = 0;
+  var nextId = 1;
   if (players.length > 0) {
     nextId = players.last().get('id') + 1;
   }
-  var newPlayer = players.add({
+  var newPlayer = players.create({
     id: nextId,
     cloakId: user.id,
     station: null
   });
 
-  user.message('player/create', newPlayer.toJSON());
   user.message('player/set-local', newPlayer.get('id'));
 };
 
