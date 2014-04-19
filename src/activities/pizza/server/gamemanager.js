@@ -107,13 +107,25 @@ GameManager.prototype._join = function(roomName, user) {
 GameManager.prototype._pizza_update = function(obj, user) {
   // Update the local object which will fire off a bounce to clients.
   var roomName = this.cloakRooms.getRoomName(user.getRoom().id);
-  this.games[roomName].get('pizzas').get(obj.id).save(obj);
+  var pizza = this.games[roomName].get('pizzas').get(obj.id);
+
+  if (pizza.parse) {
+    obj = pizza.parse(obj);
+  }
+
+  pizza.save(obj);
 };
 
 GameManager.prototype._player_update = function(obj, user) {
   // Update the local object which will fire off a bounce to clients.
   var roomName = this.cloakRooms.getRoomName(user.getRoom().id);
-  this.games[roomName].get('players').get(obj.id).save(obj);
+  var player = this.games[roomName].get('players').get(obj.id);
+
+  if (player.parse) {
+    obj = player.parse(obj);
+  }
+
+  player.save(obj);
 };
 
 GameManager.prototype._new_member = function(user) {
