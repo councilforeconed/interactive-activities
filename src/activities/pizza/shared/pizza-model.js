@@ -24,6 +24,15 @@ define(function(require) {
       }
     },
 
+    parse: function(data) {
+      // Clients may report `isReady` information for local usage. If specified
+      // in the `parse` method's response object, it has been incorrectly
+      // transmitted from the client to the server and may safely be removed.
+      delete data.isReady;
+
+      return data;
+    },
+
     isComplete: function() {
       var currentState = foodStates.byId[this.get('foodState')];
       return !!(currentState && !currentState.next);
