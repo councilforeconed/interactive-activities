@@ -9,6 +9,7 @@ var GameModel = requirejs('shared/game-model');
 var params = requirejs('shared/parameters');
 var MinPlayers = params.MinPlayers;
 var RoundDuration = params.RoundDuration;
+var RoundCount = params.RoundCount;
 
 var ServerGameModel = GameModel.extend({
   initialize: function() {
@@ -19,19 +20,9 @@ var ServerGameModel = GameModel.extend({
     this.on('roundStart', this.handleRoundStart, this);
     this.get('players').on('add', this.handleAddPlayer, this);
 
-    // Fill game queue with some completed pizzas in order to demonstrate a
-    // non- empty endgame report.
-    // TODO: Remove this
-    var pizzas = this.get('pizzas');
-    [2, 6, 8, 10].forEach(function(count, roundNumber) {
-      var idx;
-      for (idx = 0; idx < count; ++idx) {
-        pizzas.add({
-          id: ++this.pizzaID,
-          foodState: 'olives',
-          ownerID: 1,
-          activeRound: roundNumber
-        });
+    this.get('pizzas').on('change:foodState', function(pizza) {
+      if (pizza.isComplete()) {
+        this.allocatePizzas();
       }
     }, this);
   },
@@ -65,27 +56,57 @@ var ServerGameModel = GameModel.extend({
     this.advance();
   },
 
-  handleRoundStart: function(currentRound) {
-    var pizzaCount = 4 + Math.random() * 10;
+  /**
+   * Allow players to participate in the current round. This method is invoked
+   * immediately after each new round begins.
+   */
+  activatePlayers: function() {
+    var currentRound = this.get('roundNumber');
+    var players = this.get('players');
+    var currentCount = players.active().length;
+    var targetCount = Math.round(
+      ((currentRound + 1) / RoundCount) * players.length
+    );
+
+    players.each(function(player) {
+      if (currentCount >= targetCount) {
+        return;
+      }
+
+      if (player.get('activatedRound') < 0) {
+        player.activate(currentRound);
+        player.save();
+        currentCount++;
+      }
+    });
+  },
+
+  /**
+   * Insert new pizzas into the queue. This method is invoked immediately after
+   * each new round begins and after the completion of any pizza.
+   */
+  allocatePizzas: function() {
     var pizzas = this.get('pizzas');
-    var idx;
+    var players = this.get('players');
+    var targetCount = players.length;
+    var currentRound = this.get('roundNumber');
+    var currentCount = pizzas.active(currentRound).length;
 
-    this.timeRemaining(RoundDuration);
-
-    for (idx = 0; idx < pizzaCount; ++idx) {
+    while (currentCount < targetCount) {
       pizzas.create({
         id: ++this.pizzaID,
         activeRound: currentRound
       });
-    }
 
-    // TODO Activate some subset of the players
-    this.get('players').each(function(player) {
-      if (player.get('activatedRound') < 0) {
-        player.activate(currentRound);
-        player.save();
-      }
-    });
+      currentCount++;
+    }
+  },
+
+  handleRoundStart: function() {
+    this.timeRemaining(RoundDuration);
+
+    this.activatePlayers();
+    this.allocatePizzas();
 
     setTimeout(this.advance.bind(this), RoundDuration);
   }
