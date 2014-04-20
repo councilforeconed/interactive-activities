@@ -1,7 +1,6 @@
 'use strict';
 
-// Node core modules
-var EventEmitter = require('events').EventEmitter;
+var ListenTo = require('./listento');
 
 // Export CRUDManager
 module.exports = CRUDManager;
@@ -23,14 +22,13 @@ module.exports = CRUDManager;
 //    - {Store} store backend to store information
 // @constructor
 function CRUDManager(options) {
+  ListenTo.call(this, ['create', 'update', 'delete']);
   this.name = options.name;
   this._store = options.store;
-  this._listeningTo = undefined;
-  this._listeningHandlers = undefined;
 }
 
-// @inherits {EventEmitter}
-CRUDManager.prototype = Object.create(EventEmitter.prototype);
+// @inherits {ListenTo}
+CRUDManager.prototype = Object.create(ListenTo.prototype);
 CRUDManager.prototype.constructor = CRUDManager;
 
 // Create an object.
@@ -82,51 +80,6 @@ CRUDManager.prototype.delete = function(name) {
       self.emit('delete', name);
       return value;
     });
-};
-
-// Listen to another object that emits CRUDManager events.
-//
-// CRUDManager.listenTo will only listen to one emitter at a time.
-// Calling listenTo a second time will first remove listeners from the
-// previous emitter.
-//
-// @param emitter a NodeJS style event emitter
-CRUDManager.prototype.listenTo = function(emitter) {
-  var handlers;
-
-  // Remove listeners from the last emitter if there is one.
-  this.stopListening();
-
-  // Save this new emitter and create the appropriate handles.
-  this._listeningTo = emitter;
-  if (!this._listeningHandlers) {
-    this._listeningHandlers = {
-      create: this.create.bind(this),
-      update: this.update.bind(this),
-      delete: this.delete.bind(this)
-    };
-  }
-
-  if (!emitter) {
-    throw new Error('#listenTo must be called with an emitter parameter.');
-  }
-
-  // Attach handlers to the new emitter.
-  handlers = this._listeningHandlers;
-  emitter.on('create', handlers.create);
-  emitter.on('update', handlers.update);
-  emitter.on('delete', handlers.delete);
-};
-
-// Stop listening to the previous emitter if there is one.
-CRUDManager.prototype.stopListening = function() {
-  if (this._listeningTo) {
-    var oldEmitter = this._listeningTo;
-    var handlers = this._listeningHandlers;
-    oldEmitter.removeListener('create', handlers.create);
-    oldEmitter.removeListener('update', handlers.update);
-    oldEmitter.removeListener('delete', handlers.delete);
-  }
 };
 
 // Return an object that can be consumed by express-resource to provide
