@@ -2,102 +2,143 @@ define(function(require) {
   'use strict';
 
   var _ = require('lodash');
-  var when = require('when');
-  var whenDelay = require('when/delay');
 
   var PlayerModel = require('../../../shared/player-model');
   var PizzaModel = require('../../../shared/pizza-model');
-  var PizzaCollection = require('../../../shared/pizza-collection');
+  var GameModel = require('../../../shared/game-model');
+
   var ActivityView = require('components/activity/activity');
-  var QueueView = require('../queue/queue');
-  var ProgressView = require('../progress/progress');
-  var Navigation = require('../navigation/navigation');
-  // In order for the build process to infer module dependencies through static
-  // analysis, the `require` function cannot be invoked programatically (even
-  // in cases like this which have a fair amount of repetion).
-  var workstations = {
-    rolling: require('../workstation/rolling-workstation'),
-    sauce: require('../workstation/sauce-workstation'),
-    cheese: require('../workstation/cheese-workstation'),
-    anchovies: require('../workstation/anchovies-toppings-workstation'),
-    olives: require('../workstation/olives-toppings-workstation')
-  };
+  var ReportView = require('../report/report');
+  var RoundView = require('../round/round');
+  var PlayerWait = require('../player-wait/player-wait');
+  var RoundStart = require('../round-start/round-start');
 
-  var workstationTransitionDelay =
-      require('../../scripts/parameters').workstationTransitionDelay;
+  var RoundDuration = require('../../../shared/parameters').RoundDuration;
 
-  require('css!./main');
-  require('jquery.pep');
+  // Pizza models behave slightly differently on the client--they emit events
+  // related to local player actions.
+  PizzaModel.isClient = true;
 
-  var Home = ActivityView.extend({
-    homeTemplate: require('jade!./main'),
+  var MainView = ActivityView.extend({
+    // This activity's `main` view has been built strictly for flow control
+    // between other views. It defines no shared UI, so the `homeTemplate`
+    // function is a no-op.
+    homeTemplate: function() {},
     config: require('json!./../../../config.json'),
     description: require('jade!./../../description')(),
     instructions: require('jade!./../../instructions')(),
 
     initialize: function() {
-      var pizzaCount = 4 + Math.random() * 10;
-      var idx;
+      this.gameState = new GameModel();
+      this.playerModel = new PlayerModel();
+      this.pizzas = this.gameState.pizzas;
 
-      this.pizzas = new PizzaCollection();
-      this.localPlayer = new PlayerModel({
-        id: 1 + Math.round(1000 * Math.random())
+      // Generate dummy game state
+      // TODO: Replace these lines with and fetch state from the server
+      (function() {
+        var pizzaID = 0;
+        this.playerModel = this.gameState.players.add({
+          id: 1 + Math.round(1000 * Math.random())
+        });
+
+        _.forEach([2, 6, 8, 10], function(count, roundNumber) {
+          var idx;
+          for (idx = 0; idx < count; ++idx) {
+            this.pizzas.add({
+              foodState: 'olives',
+              ownerID: 1,
+              activeRound: roundNumber
+            });
+          }
+        }, this);
+
+        this.gameState.on('roundStart', function(currentRound) {
+          var pizzaCount = 4 + Math.random() * 10;
+          var idx;
+
+          this.gameState.timeRemaining(RoundDuration);
+
+          for (idx = 0; idx < pizzaCount; ++idx) {
+            this.pizzas.add({
+              id: pizzaID++,
+              activeRound: currentRound
+            });
+          }
+
+          if (currentRound === 1) {
+            this.playerModel.activate(currentRound);
+          }
+
+          setTimeout(
+            _.bind(this.gameState.advance, this.gameState),
+            RoundDuration
+          );
+        }, this);
+
+        // Simulate players joining the group asynchronously
+        var playerCount = 4 + Math.round(Math.random() * 5);
+        var idx;
+        var addPlayer = function(idx) {
+          this.gameState.players.add({
+            id: 1 + Math.round(1000 * Math.random()),
+            activatedRound: idx % 4
+          });
+        };
+
+        for (idx = 0; idx < playerCount; ++idx) {
+          setTimeout(_.bind(addPlayer, this, idx), (idx + 1) * 1500);
+        }
+
+      }.call(this));
+
+      PizzaModel.localPlayerID = this.playerModel.get('id');
+
+      this.round = new RoundView({
+        playerModel: this.playerModel,
+        pizzas: this.pizzas,
+        gameState: this.gameState
+      });
+      this.roundStart = new RoundStart({
+        gameState: this.gameState,
+        playerModel: this.playerModel,
       });
 
-      PizzaModel.localPlayerID = this.localPlayer.get('id');
-
-      this.queue = new QueueView({
-        collection: this.pizzas,
-        playerModel: this.localPlayer
-      });
-      this.progress = new ProgressView({ collection: this.pizzas });
-      this.workstation = new workstations.rolling();
-      this.navigation = new Navigation({ playerModel: this.localPlayer });
-
-      this.listenTo(this.pizzas, 'localOwnerTake', function(pizza) {
-        this.workstation.setPizza(pizza);
-        this.navigation.disable();
-      });
-      this.listenTo(this.pizzas, 'localOwnerRelease', function(pizza) {
-        this.workstation.releasePizza(pizza);
-        this.navigation.enable();
-      });
-      this.listenTo(this.localPlayer, 'move', this.handleMove);
-
-      for (idx = 0; idx < pizzaCount; ++idx) {
-        this.pizzas.add({ id: idx });
-      }
-
-      this.insertView('.pizza-queue-container', this.queue);
-      this.insertView('.progress-container', this.progress);
-      this.insertView('.pizza-workstation-container', this.workstation);
-      this.insertView('.pizza-navigation-container', this.navigation);
+      this.listenTo(this.gameState, 'roundStart', this.handleRoundStart);
+      this.listenTo(this.gameState, 'complete', this.handleComplete);
     },
 
-    handleMove: function(direction) {
-      var newWorkstationName = this.localPlayer.get('workstation');
-      var oldWorkstation = this.workstation;
-      var newWorkstation = new workstations[newWorkstationName]();
-      var whenDelayComplete = whenDelay(workstationTransitionDelay);
-      var whenExited;
+    setConfig: function() {
+      var playerWait;
 
-      this.navigation.disable();
+      if (!this.gameState.hasBegun()) {
+        playerWait = new PlayerWait({
+          gameState: this.gameState
+        });
+        this.insertView('.activity-modals', playerWait);
+        playerWait.summon();
+      }
+    },
 
-      whenExited = oldWorkstation.exitTo(direction);
-      whenExited.then(function() {
-        oldWorkstation.remove();
+    // TODO: Re-name this method `handleRoundChange`, add a modal for when
+    // the `roundNumber` is zero ("Waiting for more players..."), and invoke
+    // immediately from `MainView#initialize`
+    handleRoundStart: function() {
+      this.insertView('.activity-modals', this.roundStart);
+      this.setView('.activity-stage', this.round);
+
+      this.roundStart.startIn(5432);
+
+      this.round.begin();
+    },
+
+    handleComplete: function() {
+      var report = new ReportView({
+        gameState: this.gameState
       });
-
-      when.all([whenDelayComplete, whenExited])
-        .then(_.bind(function() {
-            this.workstation = newWorkstation;
-            this.insertView('.pizza-workstation-container', this.workstation);
-            this.workstation.render();
-            return newWorkstation.enterFrom(direction);
-          }, this))
-        .then(_.bind(this.navigation.enable, this.navigation));
+      this.setView('.activity-stage', report);
+      report.draw();
     }
   });
 
-  return Home;
+  return MainView;
 });

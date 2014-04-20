@@ -12,9 +12,13 @@ define(function(require) {
     tagName: 'ul',
     className: 'pizza-queue',
     template: require('jade!./queue'),
+    keep: true,
 
     initialize: function(options) {
       this.playerModel = options.playerModel;
+      this.gameState = options.gameState;
+
+      this.collection.each(this.insertPizza, this);
 
       this.listenTo(this.collection, 'add', this.insertPizza);
       this.listenTo(this.collection, 'complete', this.removePizza);
@@ -47,17 +51,20 @@ define(function(require) {
       this.toggleDraggables(true);
     },
 
+    activePizzas: function() {
+      return this.collection.active(this.gameState.get('roundNumber'));
+    },
+
     toggleDraggables: function(val) {
-      _.forEach(this.collection.active(), function(pizza) {
+      _.forEach(this.activePizzas(), function(pizza) {
         this.getView('[data-pizza-id="' + pizza.get('id') + '"]')
           .toggleDrag(val);
       }, this);
     },
 
     serialize: function() {
-      var activePizzas = this.collection.active();
       return {
-        pizzas: _.map(activePizzas, function(model) {
+        pizzas: _.map(this.activePizzas(), function(model) {
           return model.toJSON();
         })
       };
