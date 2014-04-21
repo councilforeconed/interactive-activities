@@ -44,11 +44,17 @@ define(function(require) {
     },
 
     toggleDrag: function(value) {
+      var pep = this.$el.data('plugin_pep');
+
       // Store the latest value so it can be referenced during future render
       // operations.
       this.isDraggable = value;
 
-      this.$el.data('plugin_pep').toggle(value);
+      // The DOM node may not have an associated `jQuery.pep` instance if the
+      // layout has been removed since the drag operation began.
+      if (pep) {
+        pep.toggle(value);
+      }
     },
 
     isOverWorkstation: function() {

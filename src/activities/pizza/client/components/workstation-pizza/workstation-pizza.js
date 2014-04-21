@@ -59,7 +59,11 @@ define(function(require) {
     },
 
     isOverPizzaQueue: function() {
-      return this.$el.data('plugin_pep').activeDropRegions.length > 0;
+      var pep = this.$el.data('plugin_pep');
+
+      // The DOM node may not have an associated `jQuery.pep` instance if the
+      // layout has been removed since the drag operation began.
+      return pep && pep.activeDropRegions.length > 0;
     }
   });
 
