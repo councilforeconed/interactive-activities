@@ -1,0 +1,37 @@
+html.no-js .initial-loading {
+  display: none;
+}
+
+html.initial-load-complete .initial-loading {
+  opacity: 0;
+  width: 0;
+  transition: opacity 1s, width 0s 1s;
+  -webkit-transition: opacity 1s, width 0s 1s;
+}
+
+.initial-loading {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  z-index: 10;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  overflow: hidden;
+
+  color: #444;
+  font-size: 3rem;
+  text-align: center;
+} .initial-loading:after {
+  content: ' ';
+  display: block;
+  width: 31px;
+  height: 31px;
+  margin: 1rem auto;
+
+  text-align: center;
+  background-image: url('loading-spinner.gif');
+  background-repeat: no-repeat;
+}

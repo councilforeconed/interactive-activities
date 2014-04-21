@@ -13,6 +13,8 @@ var CRUDManager = require('./crudmanager');
 var CRUDReplicator = require('./crudreplicator');
 var MemoryStore = require('./storememory');
 
+module.exports.addReportResource = require('./reporting/addresource');
+
 // List of function handles to execute in parallel when a TERMINATE-like signal
 // is received.
 var _atTermination = [];
