@@ -1,7 +1,12 @@
 'use strict';
 
+// Core node modules
+var path = require('path');
+
 // Third party libs
 var when = require('when');
+
+var activitiesDir = path.join(__dirname, '../../../src/activities');
 
 // Return a function that behaves like getActivities. Taking no parameters and
 // returning a promise that resolves to a list of activity objects. In this
@@ -9,8 +14,8 @@ var when = require('when');
 module.exports = function() {
   return when([{
     slug: 'example',
-    directory: 'src/activities/example',
-    configFile: 'src/activities/example/config.json',
-    serverIndex: 'src/activities/example/index.js'
+    directory: path.join(activitiesDir, 'example'),
+    configFile: path.join(activitiesDir, 'example/config.json'),
+    serverIndex: path.join(activitiesDir, 'example/index.js')
   }]);
 };

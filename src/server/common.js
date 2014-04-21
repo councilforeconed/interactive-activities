@@ -9,6 +9,8 @@ var when = require('when');
 var whenParallel = require('when/parallel');
 var whenTimeout = require('when/timeout');
 
+module.exports.addReportResource = require('./reporting/addresource');
+
 // List of function handles to execute in parallel when a TERMINATE-like signal
 // is received.
 var _atTermination = [];
