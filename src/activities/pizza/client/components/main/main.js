@@ -138,12 +138,19 @@ define(function(require) {
       var createMessages = function(prefix, setFn, model, defaults) {
         var messages = {};
         messages[prefix + 'create'] = function(obj) {
+          //  Because the `trigger` option is only supported for
+          //  `Backbone.Collection#set` (and not `Backbone.Model#set`),
+          //  manually invoke the object's `parse` method, if defined.
+          if (model.parse) {
+            obj = model.parse(obj);
+          }
           setFn.call(model, obj);
         };
         messages[prefix + 'update'] = messages[prefix + 'create'];
         messages[prefix + 'delete'] = function() {
           setFn.call(model, defaults || model.defaults);
         };
+        return messages;
       };
 
       var self = this;

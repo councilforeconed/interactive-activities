@@ -19,6 +19,21 @@ define(function(require) {
       players: null
     },
 
+    // Vivify nested arrays into true Backbone Collections
+    parse: function(data) {
+      if (data.pizzas) {
+        this.get('pizzas').set(data.pizzas);
+        delete data.pizzas;
+      }
+
+      if (data.players) {
+        this.get('players').set(data.players);
+        delete data.players;
+      }
+
+      return data;
+    },
+
     initialize: function() {
       var players = new PlayerCollection();
       this.set({
