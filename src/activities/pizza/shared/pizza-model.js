@@ -24,6 +24,15 @@ define(function(require) {
       }
     },
 
+    parse: function(data) {
+      // Clients may report `isReady` information for local usage. If specified
+      // in the `parse` method's response object, it has been incorrectly
+      // transmitted from the client to the server and may safely be removed.
+      delete data.isReady;
+
+      return data;
+    },
+
     isComplete: function() {
       var currentState = foodStates.byId[this.get('foodState')];
       return !!(currentState && !currentState.next);
@@ -68,6 +77,7 @@ define(function(require) {
         return;
       }
 
+      this.save();
       // Whenever ownership changes, the client-only `isReady` attribute should
       // be reset--either the pizza has been completed or it is being returned
       // to the queue unfinished.
@@ -100,6 +110,7 @@ define(function(require) {
         foodState: nextState.id,
         ownerID: null
       });
+      this.save();
     }
   });
 

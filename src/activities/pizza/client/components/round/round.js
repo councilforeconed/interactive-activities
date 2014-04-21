@@ -62,6 +62,10 @@ define(function(require) {
     begin: function() {
       var currentWorkstation = this.playerModel.get('workstation');
 
+      // Begin the progress timer immediately (to support players that join
+      // after the round begins)
+      this.progress.tick();
+
       if (!currentWorkstation) {
         this.render();
         return;

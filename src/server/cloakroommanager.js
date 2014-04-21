@@ -12,10 +12,45 @@ function CloakRoomManager() {
 
   this.roomNameToId = {};
   this.roomIdToName = {};
+  this.userIdToRoomId = {};
+  this.roomIdToUserId = {};
 }
 
 CloakRoomManager.prototype = Object.create(ListenTo.prototype);
 CloakRoomManager.prototype.constructor = CloakRoomManager;
+
+CloakRoomManager.prototype.addUser = function(user) {
+  if (!user.room) {
+    throw new Error('User ' + user.id + ' is not a member of any room');
+  }
+  if (user.room.isLobby) {
+    throw new Error(
+      'Cannot add user ' + user.id +
+      ' to a room: user is currently in the lobby.'
+    );
+  }
+
+  this.userIdToRoomId[user.id] = user.room.id;
+  this.roomIdToUserId[user.room.id] = user.id;
+};
+
+CloakRoomManager.prototype.removeUser = function(user) {
+  var roomId = this.userIdToRoomId[user.id];
+  delete this.userIdToRoomId[user.id];
+  delete this.roomIdToUserId[roomId];
+};
+
+CloakRoomManager.prototype.getName = function(criteria) {
+  var roomId;
+
+  if (criteria.user) {
+    roomId = this.userIdToRoomId[criteria.user.id];
+  } else if (criteria.room) {
+    roomId = criteria.room.id;
+  }
+
+  return this.roomIdToName[roomId];
+};
 
 CloakRoomManager.prototype.getRoomId = function(roomName) {
   return this.roomNameToId[roomName];

@@ -31,7 +31,7 @@ define(function(require) {
       var nextTick;
 
       // Ticking should stop when the round is over.
-      if (timeRemaining < 0) {
+      if (typeof timeRemaining !== 'number' || timeRemaining < 0) {
         return;
       }
 

@@ -69,6 +69,8 @@ ListenTo.prototype.stopListening = function() {
   }
 };
 
+ListenTo.prototype.cleanup = function() {};
+
 // Convenience function for binding arrays of event/method names or object
 // mappings of events to methods.
 //

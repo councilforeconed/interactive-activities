@@ -58,7 +58,8 @@ require({
   ],
   shim: {
     cloak: {
-      deps: ['lodash', 'socket.io']
+      deps: ['lodash', 'socket.io'],
+      exports: 'cloak'
     },
     d3: {
       exports: 'd3',

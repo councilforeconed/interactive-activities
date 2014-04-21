@@ -2,10 +2,16 @@ define(function(require) {
   'use strict';
 
   var _ = require('lodash');
+  var cloak = require('cloak');
+  var io = require('scripts/socketio.monkey');
+  var when = require('when');
+  var Backbone = require('backbone');
 
-  var PlayerModel = require('../../../shared/player-model');
+  var createMsgHandlers = require('scripts/create-cloak-msg-handlers');
+
   var PizzaModel = require('../../../shared/pizza-model');
   var GameModel = require('../../../shared/game-model');
+  var sync = require('scripts/sync');
 
   var ActivityView = require('components/activity/activity');
   var ReportView = require('../report/report');
@@ -13,11 +19,10 @@ define(function(require) {
   var PlayerWait = require('../player-wait/player-wait');
   var RoundStart = require('../round-start/round-start');
 
-  var RoundDuration = require('../../../shared/parameters').RoundDuration;
-
   // Pizza models behave slightly differently on the client--they emit events
   // related to local player actions.
   PizzaModel.isClient = true;
+  var originalSync = Backbone.sync;
 
   var MainView = ActivityView.extend({
     // This activity's `main` view has been built strictly for flow control
@@ -30,72 +35,17 @@ define(function(require) {
 
     initialize: function() {
       this.gameState = new GameModel();
-      this.playerModel = new PlayerModel();
-      this.pizzas = this.gameState.pizzas;
+      this.ready = this._initConnection();
 
-      // Generate dummy game state
-      // TODO: Replace these lines with and fetch state from the server
-      (function() {
-        var pizzaID = 0;
-        this.playerModel = this.gameState.players.add({
-          id: 1 + Math.round(1000 * Math.random())
-        });
+      Backbone.sync = sync;
+    },
 
-        _.forEach([2, 6, 8, 10], function(count, roundNumber) {
-          var idx;
-          for (idx = 0; idx < count; ++idx) {
-            this.pizzas.add({
-              foodState: 'olives',
-              ownerID: 1,
-              activeRound: roundNumber
-            });
-          }
-        }, this);
-
-        this.gameState.on('roundStart', function(currentRound) {
-          var pizzaCount = 4 + Math.random() * 10;
-          var idx;
-
-          this.gameState.timeRemaining(RoundDuration);
-
-          for (idx = 0; idx < pizzaCount; ++idx) {
-            this.pizzas.add({
-              id: pizzaID++,
-              activeRound: currentRound
-            });
-          }
-
-          if (currentRound === 1) {
-            this.playerModel.activate(currentRound);
-          }
-
-          setTimeout(
-            _.bind(this.gameState.advance, this.gameState),
-            RoundDuration
-          );
-        }, this);
-
-        // Simulate players joining the group asynchronously
-        var playerCount = 4 + Math.round(Math.random() * 5);
-        var idx;
-        var addPlayer = function(idx) {
-          this.gameState.players.add({
-            id: 1 + Math.round(1000 * Math.random()),
-            activatedRound: idx % 4
-          });
-        };
-
-        for (idx = 0; idx < playerCount; ++idx) {
-          setTimeout(_.bind(addPlayer, this, idx), (idx + 1) * 1500);
-        }
-
-      }.call(this));
-
-      PizzaModel.localPlayerID = this.playerModel.get('id');
+    finishInit: function() {
+      var playerWait;
 
       this.round = new RoundView({
         playerModel: this.playerModel,
-        pizzas: this.pizzas,
+        pizzas: this.gameState.get('pizzas'),
         gameState: this.gameState
       });
       this.roundStart = new RoundStart({
@@ -103,20 +53,27 @@ define(function(require) {
         playerModel: this.playerModel,
       });
 
+      // Schedule future changes to the game state to be reflected in the
+      // layout.
       this.listenTo(this.gameState, 'roundStart', this.handleRoundStart);
       this.listenTo(this.gameState, 'complete', this.handleComplete);
-    },
 
-    setConfig: function() {
-      var playerWait;
-
+      // Update the layout according to the current game state
       if (!this.gameState.hasBegun()) {
         playerWait = new PlayerWait({
           gameState: this.gameState
         });
         this.insertView('.activity-modals', playerWait);
         playerWait.summon();
+      } else if (this.gameState.isOver()) {
+        this.handleComplete();
+      } else {
+        this.handleRoundStart();
       }
+    },
+
+    setConfig: function() {
+      this.ready.then(_.bind(this.finishInit, this));
     },
 
     // TODO: Re-name this method `handleRoundChange`, add a modal for when
@@ -131,12 +88,71 @@ define(function(require) {
       this.round.begin();
     },
 
+    _initConnection: function() {
+
+      var dfd = when.defer();
+      var pizzas = this.gameState.get('pizzas');
+      var players = this.gameState.get('players');
+
+      this.gameState.prefix = 'game';
+      pizzas.prefix = 'pizza';
+      players.prefix = 'player';
+      var pizzaMessages = createMsgHandlers('pizza', { collection: pizzas });
+      var playerMessages = createMsgHandlers('player', { collection: players });
+      var localPlayerMessages = {
+        'player/set-local': _.bind(function(playerId) {
+          PizzaModel.localPlayerID = playerId;
+          this.playerModel = players.get(playerId);
+          this.playerModel.set('isLocal', true);
+          dfd.resolve();
+        }, this)
+      };
+      var gameMessages = createMsgHandlers('game', { model: this.gameState });
+
+      cloak.configure({
+        messages: _.extend(
+          {},
+          pizzaMessages,
+          playerMessages,
+          localPlayerMessages,
+          gameMessages
+        ),
+
+        serverEvents: {
+          begin: _.bind(function() {
+            // Join cloak room for this group
+            cloak.message('join', this.group);
+          }, this)
+        }
+      });
+
+      // Reload the page to reset cloak.
+      if (cloak.dirty) {
+        location.reload();
+      }
+      // Next run of a cloak-app should reload the page.
+      cloak.dirty = true;
+
+      // Cloak wraps socket.io in a way, that we must monkey in some options.
+      io.connect.options = {
+        'resource': 'activities/pizza/socket.io'
+      };
+      // Connect to socket
+      cloak.run();
+
+      return dfd.promise;
+    },
+
     handleComplete: function() {
       var report = new ReportView({
         gameState: this.gameState
       });
       this.setView('.activity-stage', report);
       report.draw();
+    },
+
+    cleanup: function() {
+      Backbone.sync = originalSync;
     }
   });
 
