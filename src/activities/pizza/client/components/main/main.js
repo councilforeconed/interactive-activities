@@ -149,10 +149,10 @@ define(function(require) {
       var self = this;
       var pizzas = self.gameState.get('pizzas');
       var pizzaMessages =
-        createMessages('pizza-collection/', pizzas.reset, pizzas, []);
+        createMessages('pizza/', pizzas.reset, pizzas, []);
       var players = self.gameState.get('players');
       var playerMessages =
-        createMessages('player-collection/', players.reset, players, []);
+        createMessages('player/', players.reset, players, []);
       var localPlayerMessages = {
         'player/set-local': function(playerId) {
           self.gameState.get('players').get(playerId).set('isLocal', true);
