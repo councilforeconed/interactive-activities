@@ -14,15 +14,20 @@ define(function(require) {
   var GameState = Backbone.Model.extend({
     defaults: {
       roundNumber: -1,
-      roundEndTime: 0
+      roundEndTime: 0,
+      pizzas: null,
+      players: null
     },
 
     initialize: function() {
-      this.players = new PlayerCollection();
-      this.pizzas = new PizzaCollection();
+      var players = new PlayerCollection();
+      this.set({
+        players: players,
+        pizzas: new PizzaCollection()
+      });
 
-      this.players.on('add', function() {
-        if (this.players.length < MinPlayers) {
+      players.on('add', function() {
+        if (this.get('players').length < MinPlayers) {
           return;
         }
         if (this.hasBegun()) {
@@ -72,8 +77,8 @@ define(function(require) {
      *                 position in the array reflects the round it describes.
      */
     report: function() {
-      var completedPizzasByRound = this.pizzas.completedByRound();
-      var activePlayersByRound = this.players.activeByRound();
+      var completedPizzasByRound = this.get('pizzas').completedByRound();
+      var activePlayersByRound = this.get('players').activeByRound();
 
       _.forEach(activePlayersByRound, function(roundPlayers, idx, allRounds) {
         var alreadyActive = allRounds[idx - 1];

@@ -3,7 +3,6 @@ define(function(require) {
 
   var _ = require('lodash');
 
-  var PlayerModel = require('../../../shared/player-model');
   var PizzaModel = require('../../../shared/pizza-model');
   var GameModel = require('../../../shared/game-model');
 
@@ -30,14 +29,13 @@ define(function(require) {
 
     initialize: function() {
       this.gameState = new GameModel();
-      this.playerModel = new PlayerModel();
-      this.pizzas = this.gameState.pizzas;
+      this.pizzas = this.gameState.get('pizzas');
 
       // Generate dummy game state
       // TODO: Replace these lines with and fetch state from the server
       (function() {
         var pizzaID = 0;
-        this.playerModel = this.gameState.players.add({
+        this.playerModel = this.gameState.get('players').add({
           id: 1 + Math.round(1000 * Math.random())
         });
 
@@ -79,7 +77,7 @@ define(function(require) {
         var playerCount = 4 + Math.round(Math.random() * 5);
         var idx;
         var addPlayer = function(idx) {
-          this.gameState.players.add({
+          this.gameState.get('players').add({
             id: 1 + Math.round(1000 * Math.random()),
             activatedRound: idx % 4
           });
