@@ -90,6 +90,8 @@ GameManager.prototype._join = function(roomName, user) {
 
   var game = this.games[roomName];
 
+  user.message('game/update', game.toJSON());
+
   // Send old players to new player.
   var players = game.get('players');
   players.each(function(player) {
@@ -102,8 +104,6 @@ GameManager.prototype._join = function(roomName, user) {
     user.message('pizza/create', pizza.toJSON());
   });
 
-  user.message('game/create', game.toJSON());
-
   // Create new player.
   var nextId = 0;
   if (players.length > 0) {
@@ -115,6 +115,7 @@ GameManager.prototype._join = function(roomName, user) {
     station: null
   });
 
+  user.message('player/create', newPlayer.toJSON());
   user.message('player/set-local', newPlayer.get('id'));
 };
 
