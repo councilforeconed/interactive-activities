@@ -5,7 +5,7 @@ define(function(require) {
   require('../base-chart/base-chart');
   require('css!./bar-chart');
 
-  var offset = 1;
+  var offset = 0;
   // Amount of a bar's maximum available horitontal space to use to draw the
   // bar.
   var widthPct = 0.5;
