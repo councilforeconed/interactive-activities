@@ -17,12 +17,20 @@ define(function(require) {
 
     afterRender: function() {
       var currentEl;
+      var $slopeElems = this.$('.ppf-slope');
 
-      this.$('.ppf-slope')
-        .each(function() {
-          var $el = $(this);
-          $el.css($el.position());
-        })
+      // The jQuery.pep plugin dynamically infers the position of draggable
+      // elements and then explicitly sets them. When this operation takes
+      // place on a collection of elements, the order of the elements is
+      // significant--fixing the position of one element may alter the position
+      // of another before its position has been set.
+      // By default, the jQuery collection will contain the slope elements in
+      // document order. The collection is reversed so that the position of
+      // each element can be set without affecting the position of the yet-to-
+      // be positioned elements.
+      Array.prototype.reverse.call($slopeElems);
+
+      $slopeElems
         .pep({
           droppable: '.ppf-graph-target',
           droppableActiveClass: 'ppf-graph-target-active',

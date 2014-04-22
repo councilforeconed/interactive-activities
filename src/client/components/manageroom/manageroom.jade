@@ -25,5 +25,9 @@ if typeof groups !== 'undefined'
 
   div
     a(class='add-group', href='javascript:;') Add Group
+
+  div
+    a(href='/activities/' + activity + '/report/' + room + '/download').
+      Download Report
 else
   p Loading ...

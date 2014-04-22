@@ -134,8 +134,32 @@ function generateRjsModules(activities, sharedLibraries) {
       exclude: ['scripts/main'].concat(Object.keys(sharedLibraries))
     };
   });
+  var reportModules = [
+    'reportjson',
+    'reporthistogram'
+  ].map(function(name) {
+    return {
+      name: 'components/' + name + '/' + name,
+      include: [
+        'requirejs/require',
+        // Report modules are standalone scripts. We force require to ignore
+        // the normal main script and instead use our main script.
+        'components/' + name + '/redefine-main',
+        'scripts/amd-config'
+      ]
+      // While other modules exclude scripts/main we want to leave it in so
+      // that its dependencies shared with our reports are not excluded. jQuery
+      // is a good example. This isn't a perfect solution but it is one that is
+      // more maintainable as there is less for us to keep track of, we don't
+      // need duplicate amd-configs or duplicate targets.
+      // exclude: ['scripts/main']
+    };
+  });
 
-  return [mainModule].concat(roomModules).concat(activityModules);
+  return [mainModule]
+    .concat(roomModules)
+    .concat(activityModules)
+    .concat(reportModules);
 }
 
 function getModuleDescriptors(modulePaths) {
