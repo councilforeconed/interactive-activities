@@ -1,4 +1,4 @@
-define('components/reportjson/reportjson', function(require) {
+define(function(require) {
   'use strict';
 
   var $ = require('jquery');
