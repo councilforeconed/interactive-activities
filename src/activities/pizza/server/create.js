@@ -3,11 +3,16 @@
 // Third party libs.
 var cloak = require('cloak');
 var socketio = require('../../../server/socketio.monkey');
+require('express-resource');
 
 var common = require('../../../server/common');
 
 var CloakRoomManager = require('../../../server/cloakroommanager');
 var GameManager = require('./gamemanager');
+var CRUDManager = require('../../../server/crudmanager');
+var DataAggregator = require('./dataaggregator');
+var MemoryStore = require('../../../server/storememory');
+var RoomDataCollector = require('../../../server/roomdatacollector');
 
 /**
  * Create an express server
@@ -35,8 +40,27 @@ module.exports = function(options, debug) {
   var cloakRoomManager = new CloakRoomManager();
   cloakRoomManager.listenTo(groupManager);
 
-  var gameManager = new GameManager(cloakRoomManager);
+  var dataCollector = new RoomDataCollector(new CRUDManager({
+    name: 'data',
+    store: new MemoryStore()
+  }));
+
+  var gameManager = new GameManager({
+    roomManager: cloakRoomManager,
+    dataCollector: dataCollector,
+    groupManager: groupManager
+  });
   gameManager.listenTo(cloakRoomManager);
+
+  // Serve reports from /report/:room/(download|email)
+  common.addReportResource({
+    app: app,
+    DataAggregator: DataAggregator,
+    dataCollector: dataCollector,
+    debug: debug,
+    templatePath:
+      __dirname + '/../../../client/components/reporthistogram/index.jade'
+  });
 
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({

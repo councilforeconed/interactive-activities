@@ -14,9 +14,12 @@ requirejs('backbone').sync = require('../../../server/sync');
 
 module.exports = GameManager;
 
-function GameManager(cloakRooms) {
+function GameManager(options) {
   ListenTo.call(this, ['create', 'delete']);
-  this.cloakRooms = cloakRooms;
+  this.cloakRooms = options.roomManager;
+  this.dataCollector = options.dataCollector;
+  this.groupManager = options.groupManager;
+
   this.rooms = {};
   this.games = {};
 
@@ -67,6 +70,14 @@ GameManager.prototype.create = function(roomName, room) {
   game.prefix = 'game';
   pizzas.prefix = 'pizza';
   players.prefix = 'player';
+
+  game.on('complete', function() {
+    this.groupManager.read(roomName).then(function(group) {
+      this.dataCollector.add(group.room, {
+        report: game.report()
+      });
+    }.bind(this));
+  }, this);
 
   this.games[roomName] = game;
 };
