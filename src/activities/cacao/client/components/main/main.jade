@@ -1,0 +1,39 @@
+//- IDs necessary to link `label` elements with `input` elements
+- var id1 = 'cacao-' + (new Date()).getTime() + 'a'
+- var id2 = 'cacao-' + (new Date()).getTime() + 'b'
+
+span.cacao-label Trader ID
+h1.cacao-player-name= player.id
+
+span.cacao-label Role
+h2.cacao-player-role=player.role
+
+span.cacao-label Target Price
+h2.cacao-player-target-price=formatters.usd(player.targetPrice)
+
+form.cacao-form
+  fieldset.cacao-trade-with
+    label.cacao-label(for=id1) Trade with player
+    input(
+      type='number',
+      name=otherRole,
+      id=id1,
+      min=0,
+      value=txn[otherRole] || 0
+    )
+
+  fieldset.cacao-tade-amount
+    label.cacao-label(for=id2) Tade amount
+    input(
+      type='number',
+      name='amount',
+      id=id2,
+      min=0,
+      value=txn['amount'] || 0
+    )
+
+  if validationError
+    .cacao-validation-error
+      =validationError
+
+  input.cacao-trade(type='submit', value='Trade!')

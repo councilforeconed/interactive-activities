@@ -1,0 +1,34 @@
+.cacao {
+  margin: 0 2rem;
+}
+.cacao-label {
+  display: block;
+
+  font-size: 1rem;
+}
+
+.cacao-player-name, .cacao-player-role, .cacao-player-target-price {
+  margin: 0 0 1rem 0;
+  display: block;
+}
+
+.cacao fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.cacao fieldset input, .cacao-trade {
+  display: block;
+  padding: 0.7rem;
+  width: 100%;
+  margin: 0 0 2rem 0;
+  box-sizing: border-box;
+
+  font-size: 1rem;
+}
+.cacao-validation-error {
+  padding: 1rem;
+  margin: 0 0 1rem 0;
+
+  background-color: #f77;
+}
