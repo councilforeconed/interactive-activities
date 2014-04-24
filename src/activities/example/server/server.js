@@ -9,19 +9,21 @@ require('express-resource');
 var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
+var CloakRoomManager = require('../../../server/cloakroommanager');
 var common = require('../../../server/common');
 var CRUDManager = require('../../../server/crudmanager');
-var CRUDReplicator = require('../../../server/crudreplicator');
 var DataAggregator = require('./dataaggregator');
 var MemoryStore = require('../../../server/storememory');
 var RoomDataCollector = require('../../../server/roomdatacollector');
 
-// The `shared/` directory is available for scripts that should be available on
-// both the client and the server. In order to consume AMD modules, server
-// scripts should use AMDefine's "intercept" module.
-// https://github.com/jrburke/amdefine
-require('amdefine/intercept');
-var sharedObject = require('../shared/object');
+// In order to consume AMD modules, server scripts should use a `requirejs`
+// function created by `common.createRequireJS`. This can be configured with an
+// AMD-compliant `paths` hash if the activity has any commonly-used scripts or
+// directories.
+var requirejs = common.createRequireJS({
+  shared: __dirname + '/../shared'
+});
+var sharedObject = requirejs('shared/object');
 sharedObject.random();
 
 // Create an express server.
@@ -42,20 +44,11 @@ module.exports.createServer = function(options, debug) {
 
   // Setup room and group managers that will mirror the contents set by the
   // top server.
-  var roomManager = new CRUDManager({ name: 'room', store: new MemoryStore() });
-  var groupManager = new CRUDManager({
-    name: 'group',
-    store: new MemoryStore()
-  });
-  roomManager.listenTo(new CRUDReplicator.EndPoint({
-    emitter: process,
-    type: 'room'
-  }));
-  groupManager.listenTo(new CRUDReplicator.EndPoint({
-    emitter: process,
-    type: 'group'
-  }));
+  common.createListeningCRUDManager('room');
+  var groupManager = common.createListeningCRUDManager('group');
 
+  var cloakRoomManager = new CloakRoomManager();
+  cloakRoomManager.listenTo(groupManager);
   var dataCollector = new RoomDataCollector(new CRUDManager({
     name: 'data',
     store : new MemoryStore()
@@ -71,29 +64,13 @@ module.exports.createServer = function(options, debug) {
       __dirname + '/../../../client/components/reportjson/index.jade'
   });
 
-  var roomNameToId = {};
-  var roomIdToName = {};
-
-  // Manage cloak rooms based off of group management instructed by
-  // top server.
-  groupManager.on('create', function(name) {
-    var room = cloak.createRoom(name);
-    roomNameToId[name] = room.id;
-    roomIdToName[room.id] = name;
-  });
-  groupManager.on('delete', function(name) {
-    cloak.getRoom(name).delete();
-    delete roomIdToName[roomNameToId[name]];
-    delete roomNameToId[name];
-  });
-
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
     express: server,
 
     messages: {
       'join-room': function(roomName, user) {
-        var room = cloak.getRoom(roomNameToId[roomName]);
+        var room = cloakRoomManager.byName(roomName);
         if (room) {
           room.addMember(user);
 
@@ -113,7 +90,7 @@ module.exports.createServer = function(options, debug) {
         user.getRoom().messageMembers('chat', obj);
 
         // Find the activity room's name and log a data object in that.
-        var roomName = roomIdToName[user.getRoom().id];
+        var roomName = cloakRoomManager.getRoomName(user.getRoom().id);
         if (roomName) {
           groupManager.read(roomName)
             .then(function(group) {

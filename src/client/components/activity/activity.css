@@ -43,5 +43,7 @@
 .activity .activity-stage {
   position: relative;
 
-  margin-top: 4rem;
+  padding-top: 3rem;
+  min-height: 100%;
+  box-sizing: border-box;
 }

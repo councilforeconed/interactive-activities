@@ -1,0 +1,11 @@
+for pizza in pizzas
+  //- This element requires multiple conditionally-defined CSS class values. In
+  //- order for Mocha to merge all values correctly, each conditional
+  //- assignment must occur within a dedicated parenthesis group. In order to
+  //- honor this project's enforcement of 80-column line length, these groups
+  //- are split across lines (the parenthesis themselves span line breaks in
+  //- order to avoid Jade parsing errors).
+  li.pizza-queue-pizza-container(
+    data-pizza-id=pizza.id)(
+    class=pizza.isReady ? 'pizza-ready' : ''
+    )(class=pizza.ownerID ? 'pizza-taken' : '')

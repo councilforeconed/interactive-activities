@@ -17,7 +17,6 @@ require({
     'jquery.pep': 'jquery.pep/src/jquery.pep',
     rangeslider: 'rangeslider.js/dist/rangeslider',
     'socket.io': 'socket.io-client/dist/socket.io',
-    when: 'when/when',
 
     // AMD loader plugins
     jade: 'require-jade/jade',
@@ -30,6 +29,11 @@ require({
     }
   },
   packages: [
+    {
+      location: 'when',
+      name: 'when',
+      main: 'when'
+    },
     /**
      * The CSS loader plugin references modules using relative paths, so
      * it must be specified as an AMD package in order for r.js to
@@ -55,7 +59,8 @@ require({
   ],
   shim: {
     cloak: {
-      deps: ['lodash', 'socket.io']
+      deps: ['lodash', 'socket.io'],
+      exports: 'cloak'
     },
     d3: {
       exports: 'd3',

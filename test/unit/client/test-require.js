@@ -36,12 +36,49 @@ window.testRequire = function(tests, done) {
         paths: {
           activities: '../src/activities',
           components: '../src/client/components',
-          scripts: '../src/client/scripts'
+          scripts: '../src/client/scripts',
+
+          sinon: '../node_modules/sinon/lib/sinon'
+        },
+        shim: {
+          // TODO: Remove this when Sinon.JS is updated to implement AMD
+          // correctly.
+          // See "GH-462 Fixes behavior of AMD dependencies"
+          // https://github.com/cjohansen/Sinon.JS/pull/462
+          'sinon/call': {
+            deps: ['sinon'],
+            exports: 'sinon'
+          },
+          'sinon/behavior': {
+            deps: ['sinon'],
+            exports: 'sinon'
+          },
+          'sinon/spy': {
+            deps: ['sinon/call'],
+            exports: 'sinon'
+          },
+          'sinon/stub': {
+            deps: ['sinon/spy', 'sinon/behavior'],
+            exports: 'sinon'
+          },
+          'sinon/util/fake_timers': {
+            deps: ['sinon'],
+            exports: 'sinon'
+          }
         }
       });
 
       // Finally, load the tests!
-      require(tests, done);
+      (function requireOne(tests, modules) {
+        if (tests.length) {
+          require(tests.slice(0, 1), function(module) {
+            modules.push(module);
+            requireOne(tests.slice(1), modules);
+          });
+        } else {
+          done.apply(undefined, modules);
+        }
+      })(tests.slice(), []);
     });
   });
 };

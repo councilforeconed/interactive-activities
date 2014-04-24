@@ -3,15 +3,20 @@ define(function(require) {
   var $ = require('jquery');
   var _ = require('underscore');
   var Backbone = require('backbone');
+  var sinon = require('sinon');
+  _.extend(sinon, require('sinon/util/fake_timers'));
 
   var WindowEmitter = require('scripts/window-emitter');
 
   suite('WindowEmitter', function() {
+    var clock;
     var listener;
     setup(function() {
+      clock = sinon.useFakeTimers();
       listener = _.extend({}, Backbone.Events);
     });
     teardown(function() {
+      clock.restore();
       listener.stopListening();
     });
 
@@ -40,6 +45,8 @@ define(function(require) {
 
         $(window).trigger('scroll');
         $(window).trigger('scroll');
+
+        clock.tick(101);
       });
 
       test('unbinding', function(done) {
@@ -53,6 +60,8 @@ define(function(require) {
         });
 
         $(window).trigger('scroll');
+
+        clock.tick(101);
       });
     });
 
@@ -81,6 +90,8 @@ define(function(require) {
 
         $(window).trigger('resize');
         $(window).trigger('resize');
+
+        clock.tick(101);
       });
 
       test('unbinding', function(done) {
@@ -94,6 +105,8 @@ define(function(require) {
         });
 
         $(window).trigger('resize');
+
+        clock.tick(101);
       });
     });
   });

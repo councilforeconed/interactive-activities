@@ -1,0 +1,25 @@
+.pizza-paddle {
+  width: 10%;
+  height: 10rem;
+  margin-top: 3rem;
+
+  background-color: #ddd;
+  line-height: 10rem;
+  text-align: center;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.pizza-disabled .pizza-paddle {
+  cursor: default;
+  color: #555;
+}
+
+.pizza-paddle[data-pizza-dir='prev'] {
+  border-radius: 0 2rem 2rem 0;
+  float: left;
+}
+.pizza-paddle[data-pizza-dir='next'] {
+  border-radius: 2rem 0 0 2rem;
+  float: right;
+}

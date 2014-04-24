@@ -1,0 +1,22 @@
+- var protocolAndHost = requestInfo.protocolAndHost;
+- var abspath = function(path) { return protocolAndHost + path; }
+
+doctype html
+html(lang="en")
+  head
+    title
+  body
+    h1 Aggregate Report
+    div#bar-chart
+
+    h2 Raw Data
+    textarea#raw-data
+    script#report-data(type='text/json')!= JSON.stringify(report)
+    if dev
+      script
+        != 'var host = \'' + protocolAndHost + '\';'
+      script(src=abspath('/bower_components/requirejs/require.js'))
+      script(src=abspath('/scripts/amd-config.js'))
+      script(src=abspath('/components/reporthistogram/redefine-main.js'))
+    else
+      script(src=abspath('/components/reporthistogram/reporthistogram.js'), charset='utf-8')

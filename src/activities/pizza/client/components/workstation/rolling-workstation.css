@@ -1,0 +1,12 @@
+.pizza-topping.pizza-topping-dough {
+  padding: 0.2rem;
+  height: 4rem;
+  width: 4rem;
+
+  background-color: #222;
+  border-radius: 0.5rem;
+  color: #FFE39B;
+}
+.pizza-topping.pizza-topping-dough:after {
+  content: '(dough)';
+}

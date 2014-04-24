@@ -1,0 +1,10 @@
+.pizza-topping.pizza-topping-anchovie {
+  padding: 0.2rem;
+
+  background-color: #222;
+  border-radius: 0.5rem;
+  color: #ddd;
+}
+.pizza-topping.pizza-topping-anchovie:after {
+  content: '(anchovie)';
+}

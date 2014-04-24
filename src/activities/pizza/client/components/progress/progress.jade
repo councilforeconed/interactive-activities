@@ -1,0 +1,6 @@
+.pizza-counter
+  label Completed this round:
+  .pizza-counter-count= completeCount
+.pizza-time
+  span.minutes= Math.floor(timeRemaining / (60 * 1000))
+  span.seconds= Math.floor(timeRemaining / 1000) % 60
