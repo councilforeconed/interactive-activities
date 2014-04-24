@@ -1,7 +1,5 @@
 'use strict';
 
-var cloak = require('cloak');
-
 var config = require('../shared/config.json');
 var common = require('../../../server/common');
 var requirejs = common.createRequireJS({
@@ -9,7 +7,8 @@ var requirejs = common.createRequireJS({
 });
 
 var PlayerCollection = requirejs('shared/player-collection');
-var TxnCollection = require('./txn-collection');
+PlayerCollection.prototype.model = require('./player');
+var TxnCollection = requirejs('shared/txn-collection');
 
 module.exports = CacaoGame;
 
@@ -43,8 +42,9 @@ CacaoGame.prototype.join = function(user) {
     cloakID: user.id,
     role: role
   });
+  newPlayer.assignTarget();
 
-  user.message('status', newPlayer.toJSON());
+  newPlayer.save();
 };
 
 CacaoGame.prototype.leave = function(user) {
@@ -57,7 +57,9 @@ CacaoGame.prototype.leave = function(user) {
 };
 
 CacaoGame.prototype.trade = function(txnData, user) {
-  var pending = this.pendingTxns.fuzzyFind(txnData);
+  var pending = this.pendingTxns.find(function(txn) {
+    return txn.fuzzyMatch(txnData);
+  });
   var player = this.players.findWhere({ cloakID: user.id });
   var initiator;
 
@@ -66,7 +68,7 @@ CacaoGame.prototype.trade = function(txnData, user) {
     pending.set('initiatorID', player.get('id'));
     setTimeout(function() {
       pending.destroy();
-      user.message('reject', txnData);
+      player.rejectTxn(txnData);
     }, config.txnTimeout);
   } else {
     initiator = this.players.get(pending.get('initiatorID'));
@@ -76,8 +78,8 @@ CacaoGame.prototype.trade = function(txnData, user) {
       return;
     }
 
-    user.message('accept', txnData);
-    cloak.getUser(initiator.get('cloakID')).message('accept', txnData);
+    player.acceptTxn(txnData);
+    initiator.acceptTxn(txnData);
     this.completedTxns.add(pending);
   }
 };

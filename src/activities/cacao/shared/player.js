@@ -9,13 +9,7 @@ define(function(require) {
       targetPrice: 0
     },
 
-    initialize: function() {
-      //this.set('id', Math.round(Math.random() * 1000));
-      //this.set('role', Math.random() > 0.5 ? 'buyer' : 'seller');
-      this.resetTarget();
-    },
-
-    resetTarget: function() {
+    assignTarget: function() {
       this.set('targetPrice', 20 + Math.round(Math.random() * 80));
     }
   });

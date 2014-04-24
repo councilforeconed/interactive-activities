@@ -9,7 +9,7 @@ define(function(require) {
   var ActivityView = require('components/activity/activity');
   var TxnModal = require('../txn-modal/txn-modal');
   var Player = require('../../../shared/player');
-  var Txn = require('../../../shared/txn');
+  var Txn = require('../../scripts/txn');
 
   require('css!./main');
 
@@ -42,29 +42,18 @@ define(function(require) {
       }
       cloak.dirty = true;
 
-      this.txn.sync = function() {
-        var dfd = this._dfd = require('when').defer();
-
-        cloak.message('trade', this.toJSON());
-
-        return dfd.promise;
-      };
-      this.txn._onReject = function() {
-        this._dfd.reject();
-      };
-      this.txn._onAccept = function() {
-        this._dfd.resolve();
-      };
-
       cloak.configure({
 
         // Define custom messages sent by server to respond to.
         messages: {
-          reject: _.bind(this.txn._onReject, this.txn),
-          accept: _.bind(this.txn._onAccept, this.txn),
+          reject: _.bind(this.txn.trigger, this.txn, 'reject'),
+          accept: _.bind(this.txn.trigger, this.txn, 'accept'),
           status: _.bind(function(status) {
             this.player.set(status);
-            this.txn.set(this.player.get('role') + 'ID', this.player.get('id'));
+            this.txn.set(
+              this.player.get('role') + 'ID',
+              this.player.get('id')
+            );
           }, this)
         },
 
