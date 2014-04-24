@@ -136,7 +136,8 @@ function generateRjsModules(activities, sharedLibraries) {
   });
   var reportModules = [
     'reportjson',
-    'reporthistogram'
+    'reporthistogram',
+    'reportgrouphistogram'
   ].map(function(name) {
     return {
       name: 'components/' + name + '/' + name,

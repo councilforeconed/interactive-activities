@@ -12,10 +12,24 @@ var TxnCollection = requirejs('shared/txn-collection');
 
 module.exports = CacaoGame;
 
-function CacaoGame() {
+/**
+ * Create an instance of the Cacao "game".
+ *
+ * @argument {Object} options
+ *           - {Function} options.report A function that may be invoked with
+ *                        game-specific data that should be included in the
+ *                        game report.
+ */
+function CacaoGame(options) {
+  var report = options.report;
+
   this.players = new PlayerCollection();
   this.pendingTxns = new TxnCollection();
   this.completedTxns = new TxnCollection();
+
+  this.completedTxns.on('add', function(model) {
+    report(model.toJSON());
+  });
 }
 
 CacaoGame.prototype.join = function(user) {

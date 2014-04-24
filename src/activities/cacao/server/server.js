@@ -65,10 +65,11 @@ module.exports.createServer = function(options, debug) {
     dataCollector: dataCollector,
     debug: debug,
     templatePath:
-      __dirname + '/../../../client/components/reportjson/index.jade'
+      __dirname + '/../../../client/components/reportgrouphistogram/index.jade'
   });
 
   var gameManager = new GameManager({
+    dataCollector: dataCollector,
     groupManager: groupManager,
     GameCtor: CacaoGame
   });

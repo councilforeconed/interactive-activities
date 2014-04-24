@@ -6,6 +6,7 @@ module.exports = GameManager;
 
 function GameManager(options) {
   this.groupManager = options.groupManager;
+  this.dataCollector = options.dataCollector;
   this.GameCtor = options.GameCtor;
 
   this.roomNameToId = {};
@@ -17,18 +18,30 @@ function GameManager(options) {
   this.games = {};
 }
 
-GameManager.prototype.create = function(roomName) {
-  var room = cloak.createRoom(roomName);
-  this.roomNameToId[roomName] = room.id;
-  this.roomIdToName[room.id] = roomName;
-  this.games[roomName] = new this.GameCtor();
+GameManager.prototype.create = function(groupName, groupData) {
+  var cloakRoom = cloak.createRoom(groupName);
+  var dataCollector = this.dataCollector;
+  this.roomNameToId[groupName] = cloakRoom.id;
+  this.roomIdToName[cloakRoom.id] = groupName;
+
+  // Define a custom reporting function for the new game instance.
+  var report = function(gameData) {
+    dataCollector.add(groupData.room, {
+      groupName: groupName,
+      gameData: gameData
+    });
+  };
+
+  this.games[groupName] = new this.GameCtor({
+    report: report
+  });
 };
 
-GameManager.prototype.delete = function(roomName) {
-  cloak.getRoom(roomName).delete();
-  delete this.roomIdToName[this.roomNameToId[roomName]];
-  delete this.roomNameToId[roomName];
-  delete this.games[roomName];
+GameManager.prototype.delete = function(groupName) {
+  cloak.getRoom(groupName).delete();
+  delete this.roomIdToName[this.roomNameToId[groupName]];
+  delete this.roomNameToId[groupName];
+  delete this.games[groupName];
 };
 
 GameManager.prototype._bindHandlers = function(names) {
