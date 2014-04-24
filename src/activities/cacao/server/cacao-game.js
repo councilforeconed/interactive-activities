@@ -61,7 +61,7 @@ CacaoGame.prototype.trade = function(txnData, user) {
     return txn.fuzzyMatch(txnData);
   });
   var player = this.players.findWhere({ cloakID: user.id });
-  var initiator;
+  var initiator, buyer, seller;
 
   if (!pending) {
     pending = this.pendingTxns.add(txnData);
@@ -77,6 +77,25 @@ CacaoGame.prototype.trade = function(txnData, user) {
     if (player === initiator) {
       return;
     }
+
+    if (player.get('role') === 'buyer') {
+      buyer = player;
+      seller = initiator;
+    } else {
+      buyer = initiator;
+      seller = player;
+    }
+
+    // Finalize transaction
+
+    // The initiator is only relevant to the trade negotation algorithm; it
+    // does not need to be stored after the transaction has been verified.
+    pending.unset('initiatorID');
+    pending.set({
+      buyerTarget: buyer.get('targetPrice'),
+      sellerTarget: seller.get('targetPrice'),
+      timeStamp: (new Date()).getTime()
+    });
 
     player.acceptTxn(txnData);
     initiator.acceptTxn(txnData);
