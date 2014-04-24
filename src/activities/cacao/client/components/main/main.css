@@ -7,7 +7,10 @@
   font-size: 1rem;
 }
 
-.cacao-player-name, .cacao-player-role, .cacao-player-target-price {
+.cacao-player-name,
+.cacao-player-role,
+.cacao-player-earnings,
+.cacao-player-target-price {
   margin: 0 0 1rem 0;
   display: block;
 }

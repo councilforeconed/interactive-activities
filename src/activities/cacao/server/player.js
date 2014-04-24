@@ -15,6 +15,19 @@ var ServerPlayer = Player.extend({
   },
 
   acceptTxn: function(txnData) {
+    var currentEarnings = this.get('earnings');
+    var thisSale;
+
+    if (this.get('role') === 'buyer') {
+      thisSale = this.get('targetPrice') - txnData.amount;
+    } else {
+      thisSale = txnData.amount - this.get('targetPrice');
+    }
+
+    this.save({
+      earnings: currentEarnings + thisSale
+    });
+
     this.getCloakUser().message('accept', txnData);
   },
 

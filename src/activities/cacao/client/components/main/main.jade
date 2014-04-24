@@ -8,6 +8,9 @@ h1.cacao-player-name= player.id
 span.cacao-label Role
 h2.cacao-player-role=player.role
 
+span.cacao-label Earnings
+h2.cacao-player-earnings=formatters.usd(player.earnings)
+
 span.cacao-label Target Price
 p.cacao-target-description
   if player.role === 'buyer'
