@@ -12,6 +12,14 @@
   display: block;
 }
 
+.cacao-target-description {
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
 .cacao fieldset {
   margin: 0;
   padding: 0;

@@ -9,6 +9,11 @@ span.cacao-label Role
 h2.cacao-player-role=player.role
 
 span.cacao-label Target Price
+p.cacao-target-description
+  if player.role === 'buyer'
+    | (Try not to spend more than this amount.)
+  else
+    | (Try to sell for at least this amount.)
 h2.cacao-player-target-price=formatters.usd(player.targetPrice)
 
 form.cacao-form
