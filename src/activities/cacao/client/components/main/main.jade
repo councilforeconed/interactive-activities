@@ -28,8 +28,9 @@ form.cacao-form
       type='number',
       name='amount',
       id=id2,
-      min=0,
-      value=txn['amount'] || 0
+      min=tradeAmount.min,
+      max=tradeAmount.max,
+      value=txn['amount'] || player.targetPrice
     )
 
   if validationError

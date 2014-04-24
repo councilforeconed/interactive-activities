@@ -10,6 +10,7 @@ define(function(require) {
   var TxnModal = require('../txn-modal/txn-modal');
   var Player = require('../../../shared/player');
   var Txn = require('../../scripts/txn');
+  var config = require('json!../../../shared/config.json');
 
   require('css!./main');
 
@@ -119,7 +120,8 @@ define(function(require) {
         player: player,
         txn: this.txn.toJSON(),
         validationError: validationError,
-        otherRole: otherRole
+        otherRole: otherRole,
+        tradeAmount: config.tradeAmount
       };
     }
   });
