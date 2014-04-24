@@ -31,6 +31,7 @@ define(function(require) {
       this.txnModal = new TxnModal();
 
       this.listenTo(this.txn, 'change invalid', this.render);
+      this.listenTo(this.player, 'change', this.render);
 
       this._initConnection();
     },

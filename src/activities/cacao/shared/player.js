@@ -12,11 +12,21 @@ define(function(require) {
       targetPrice: 0
     },
 
+    /**
+     * Assign a random target price to the player.
+     *
+     * @returns {Player} the Player instance
+     */
     assignTarget: function() {
       this.set(
         'targetPrice',
+        // Currently implemented as a uniform distribution across a
+        // configurable range, this heuristic will likely need revision to
+        // consistently model some market value.
         minPrice + Math.round(Math.random() * priceRange)
       );
+
+      return this;
     }
   });
 

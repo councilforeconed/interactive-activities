@@ -113,6 +113,9 @@ CacaoGame.prototype.trade = function(txnData, user) {
 
     player.acceptTxn(txnData);
     initiator.acceptTxn(txnData);
+    player.assignTarget().save();
+    initiator.assignTarget().save();
+
     this.completedTxns.add(pending);
   }
 };
