@@ -1,3 +1,7 @@
 {
-  "txnTimeout": 5000
+  "txnTimeout": 5000,
+  "targetPrice": {
+    "min": 20,
+    "max": 100
+  }
 }

@@ -2,6 +2,9 @@ define(function(require) {
   'use strict';
 
   var Backbone = require('backbone');
+  var config = require('json!./config.json');
+  var minPrice = config.targetPrice.min;
+  var priceRange = config.targetPrice.max - minPrice;
 
   var Player = Backbone.Model.extend({
     defaults: {
@@ -10,7 +13,10 @@ define(function(require) {
     },
 
     assignTarget: function() {
-      this.set('targetPrice', 20 + Math.round(Math.random() * 80));
+      this.set(
+        'targetPrice',
+        minPrice + Math.round(Math.random() * priceRange)
+      );
     }
   });
 
