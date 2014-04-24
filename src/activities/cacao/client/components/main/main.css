@@ -28,7 +28,7 @@
   padding: 0;
   border: 0;
 }
-.cacao fieldset input, .cacao-trade {
+.cacao .cacao-trade-with input, .cacao-trade {
   display: block;
   padding: 0.7rem;
   width: 100%;

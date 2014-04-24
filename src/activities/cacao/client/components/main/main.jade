@@ -30,16 +30,7 @@ form.cacao-form
       value=txn[otherRole] || 0
     )
 
-  fieldset.cacao-tade-amount
-    label.cacao-label(for=id2) Tade amount
-    input(
-      type='number',
-      name='amount',
-      id=id2,
-      min=tradeAmount.min,
-      max=tradeAmount.max,
-      value=txn['amount'] || player.targetPrice
-    )
+  fieldset.cacao-trade-amount
 
   if validationError
     .cacao-validation-error
