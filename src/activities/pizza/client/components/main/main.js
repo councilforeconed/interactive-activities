@@ -121,7 +121,7 @@ define(function(require) {
         serverEvents: {
           begin: _.bind(function() {
             // Join cloak room for this group
-            cloak.message('join', this.group);
+            cloak.message('joinRoom', this.group);
           }, this)
         }
       });

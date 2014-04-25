@@ -7,12 +7,12 @@ require('express-resource');
 
 var common = require('../../../server/common');
 
-var CloakRoomManager = require('../../../server/cloakroommanager');
-var GameManager = require('./gamemanager');
 var CRUDManager = require('../../../server/crudmanager');
 var DataAggregator = require('./dataaggregator');
 var MemoryStore = require('../../../server/storememory');
 var RoomDataCollector = require('../../../server/roomdatacollector');
+var GameManager = require('../../../server/game-manager');
+var PizzaGame = require('./pizza-game');
 
 /**
  * Create an express server
@@ -35,22 +35,16 @@ module.exports = function(options, debug) {
   common.createListeningCRUDManager('room');
   var groupManager = common.createListeningCRUDManager('group');
 
-  // Manage cloak rooms based off of group management instructed by
-  // top server.
-  var cloakRoomManager = new CloakRoomManager();
-  cloakRoomManager.listenTo(groupManager);
-
   var dataCollector = new RoomDataCollector(new CRUDManager({
     name: 'data',
     store: new MemoryStore()
   }));
 
   var gameManager = new GameManager({
-    roomManager: cloakRoomManager,
     dataCollector: dataCollector,
-    groupManager: groupManager
+    groupManager: groupManager,
+    GameCtor: PizzaGame
   });
-  gameManager.listenTo(cloakRoomManager);
 
   // Serve reports from /report/:room/(download|email)
   common.addReportResource({
@@ -65,8 +59,8 @@ module.exports = function(options, debug) {
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
     express: server,
-    messages: gameManager.cloakMessages(),
-    room: gameManager.roomEvents()
+    room: gameManager.cloakRoomMsgHandlers(),
+    messages: gameManager.cloakMsgsMsgHandlers()
   });
 
   return common.whenListening(server, debug)

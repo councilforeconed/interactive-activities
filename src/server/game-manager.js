@@ -33,7 +33,8 @@ GameManager.prototype.create = function(groupName, groupData) {
   };
 
   this.games[groupName] = new this.GameCtor({
-    report: report
+    report: report,
+    cloakRoom: cloakRoom
   });
 };
 

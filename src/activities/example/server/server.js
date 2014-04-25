@@ -9,12 +9,13 @@ require('express-resource');
 var socketio = require('../../../server/socketio.monkey');
 
 // Locally defined libs.
-var CloakRoomManager = require('../../../server/cloakroommanager');
 var common = require('../../../server/common');
 var CRUDManager = require('../../../server/crudmanager');
 var DataAggregator = require('./dataaggregator');
 var MemoryStore = require('../../../server/storememory');
 var RoomDataCollector = require('../../../server/roomdatacollector');
+var GameManager = require('../../../server/game-manager');
+var ChatGame = require('./chat-game');
 
 // In order to consume AMD modules, server scripts should use a `requirejs`
 // function created by `common.createRequireJS`. This can be configured with an
@@ -47,8 +48,6 @@ module.exports.createServer = function(options, debug) {
   common.createListeningCRUDManager('room');
   var groupManager = common.createListeningCRUDManager('group');
 
-  var cloakRoomManager = new CloakRoomManager();
-  cloakRoomManager.listenTo(groupManager);
   var dataCollector = new RoomDataCollector(new CRUDManager({
     name: 'data',
     store : new MemoryStore()
@@ -64,45 +63,18 @@ module.exports.createServer = function(options, debug) {
       __dirname + '/../../../client/components/reportjson/index.jade'
   });
 
+  var gameManager = new GameManager({
+    dataCollector: dataCollector,
+    groupManager: groupManager,
+    GameCtor: ChatGame
+  });
+
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
     express: server,
 
-    messages: {
-      'join-room': function(roomName, user) {
-        var room = cloakRoomManager.byName(roomName);
-        if (room) {
-          room.addMember(user);
-
-          // Find the activity room's name and log a data object in that.
-          groupManager.read(roomName)
-            .then(function(group) {
-              dataCollector.add(group.room, {
-                type: 'join-room',
-                group: roomName,
-                user: user.id
-              });
-            });
-        }
-      },
-
-      'chat': function(obj, user) {
-        user.getRoom().messageMembers('chat', obj);
-
-        // Find the activity room's name and log a data object in that.
-        var roomName = cloakRoomManager.getRoomName(user.getRoom().id);
-        if (roomName) {
-          groupManager.read(roomName)
-            .then(function(group) {
-              dataCollector.add(group.room, {
-                type: 'chat',
-                group: roomName,
-                user: user.id
-              });
-            });
-        }
-      }
-    }
+    room: gameManager.cloakRoomMsgHandlers(),
+    messages: gameManager.cloakMsgsMsgHandlers()
   });
 
   return common.whenListening(server, debug)

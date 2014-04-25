@@ -15,7 +15,7 @@ var CRUDReplicator = require('../../../server/crudreplicator');
 var DataAggregator = require('./dataaggregator');
 var MemoryStore = require('../../../server/storememory');
 var RoomDataCollector = require('../../../server/roomdatacollector');
-var GameManager = require('./game-manager');
+var GameManager = require('../../../server/game-manager');
 var CacaoGame = require('./cacao-game');
 
 // Create an express server.
