@@ -44,36 +44,47 @@ GameManager.prototype.delete = function(groupName) {
   delete this.games[groupName];
 };
 
-GameManager.prototype._bindHandlers = function(names) {
-  var handlers = {};
-
-  // Set the handlers' context as the GameManager instance. Since Cloak
-  // transmits some information via callback context, unshift the callback's
-  // context as the first argument to the handler.
-  names.forEach(function(name) {
-    var methodName = 'on' + name[0].toUpperCase() + name.slice(1);
-    var method = this[methodName];
-    var self = this;
-
-    handlers[name] = function() {
-      var args = Array.prototype.slice.call(arguments);
-      args.unshift(this);
-      return method.apply(self, args);
-    };
-  }, this);
-
-  return handlers;
-};
-
 GameManager.prototype.cloakRoomMsgHandlers = function() {
-  return this._bindHandlers(['memberLeaves']);
+  var gameManager = this;
+
+  return {
+    // Cloak specifies the Cloak room via the context of these handlers, so
+    // binding the handlers to the `GameManager` instance would prevent access
+    // to necessary information. Intead, define handlers via functions that
+    // close around a reference to the `GameManager` instance.
+    memberLeaves: function(user) {
+      var roomName = this.name;
+      var game = gameManager.games[roomName];
+
+      if (!game) {
+        return;
+      }
+
+      game.leave(user);
+    }
+  };
 };
 
 GameManager.prototype.cloakMsgsMsgHandlers = function() {
-  return this._bindHandlers(['trade', 'joinRoom']);
+  var cloakHandlers = {
+    joinRoom: this.onJoinRoom.bind(this)
+  };
+
+  Object.keys(this.GameCtor.messageHandlers).forEach(function(topic) {
+    var methodName = this.GameCtor.messageHandlers[topic];
+
+    cloakHandlers[topic] = function(data, user) {
+      var roomName = user.getRoom().name;
+      var game = this.games[roomName];
+
+      game[methodName](data, user);
+    }.bind(this);
+  }, this);
+
+  return cloakHandlers;
 };
 
-GameManager.prototype.onJoinRoom = function(X, roomName, user) {
+GameManager.prototype.onJoinRoom = function(roomName, user) {
   var room = cloak.getRoom(this.roomNameToId[roomName]);
   var game = this.games[roomName];
 
@@ -83,25 +94,4 @@ GameManager.prototype.onJoinRoom = function(X, roomName, user) {
 
   game.join(user);
   room.addMember(user);
-};
-
-GameManager.prototype.onMemberLeaves = function(room, user) {
-  // At this time, the user is in a room and has a corresponding `room`
-  // attribute, but the room is the Cloak lobby and therefore does not exist in
-  // the `cloakRooms` data structure.
-  var roomName = room.name;
-  var game = this.games[roomName];
-
-  if (!game) {
-    return;
-  }
-
-  game.leave(user);
-};
-
-GameManager.prototype.onTrade = function(X, txn, user) {
-  var roomName = user.getRoom().name;
-  var game = this.games[roomName];
-
-  game.trade(txn, user);
 };
