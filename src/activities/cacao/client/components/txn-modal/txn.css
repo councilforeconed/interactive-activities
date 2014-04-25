@@ -1,0 +1,9 @@
+[data-cacao-status] .cacao-message {
+  display: none;
+}
+
+[data-cacao-status="pending"] .cacao-txn-pending,
+[data-cacao-status="success"] .cacao-txn-success,
+[data-cacao-status="failure"] .cacao-txn-failure {
+  display: block;
+}
