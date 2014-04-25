@@ -27,10 +27,9 @@ define(function(require) {
         events: {
           enter: function() {
             var chart = this.chart();
-            var height = chart.height();
 
             this.attr('height', 0)
-              .attr('y', height);
+              .attr('y', chart.y(0));
           },
           merge: function() {
             var chart = this.chart();
@@ -43,20 +42,28 @@ define(function(require) {
           },
           'merge:transition': function() {
             var chart = this.chart();
-            var height = chart.height();
+            var zero = chart.y(0);
 
             this.duration(900)
               .attr('height', function(d) {
-                return height - chart.y(d);
+                return Math.abs(zero - chart.y(d));
               })
-              .attr('y', chart.y);
+              .attr('y', function(d) {
+                return Math.min(zero, chart.y(d));
+              });
           }
         }
       });
     },
 
     extent: function(data) {
-      this.y.domain([0, d3.max(data)]);
+      // In order to ensure that the chart always contains the zero y-axis
+      // crossing (even when all values are greater than zero or all values are
+      // less than zero), artificially insert a zero into the set used to
+      // calculate the Y domain.
+      var withZero = [0].concat(data);
+
+      this.y.domain([d3.min(withZero), d3.max(withZero)]);
       this.x.domain([offset - padPct, data.length + (offset * padPct)]);
 
       // Because the barchart is intended to be used as a histogram,
