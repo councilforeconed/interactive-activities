@@ -15,7 +15,8 @@ define(function(require) {
       this.gameState = options.gameState;
       this.barChart = new BarChart(null, {
         xLabel: '# of Chefs',
-        yLabel: '# Pizzas Completed'
+        yLabel: '# Pizzas Completed',
+        omitZero: true
       });
 
       this.barChart.height(300);

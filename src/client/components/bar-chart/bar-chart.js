@@ -13,9 +13,20 @@ define(function(require) {
   // percentage of a single bar's maximum available horizontal space)
   var padPct = 0.5;
 
+  /**
+   * Create a bar chart.
+   *
+   * @argument {Object} options Configuration for the bar chart instance
+   *                    [options.omitZero] When set to `true`, the X-axis will
+   *                    not include a "bar" for zero.
+   *
+   * @constructor
+   */
   var BarChart = d3.chart('CEEBase').extend('BarChart', {
-    initialize: function() {
+    initialize: function(options) {
       this.base.classed('cee-bar-chart', true);
+
+      this.omitZero = options && options.omitZero || false;
 
       this.layer('Bars', this.fieldGroup.append('g'), {
         dataBind: function(data) {
@@ -33,7 +44,8 @@ define(function(require) {
           },
           merge: function() {
             var chart = this.chart();
-            var barWidth = chart.x(offset - padPct + widthPct);
+            var omitZero = chart.omitZero ? 1 : 0;
+            var barWidth = chart.x(offset - padPct + widthPct + omitZero);
 
             this.attr('width', barWidth)
               .attr('x', function(d, i) {
@@ -62,15 +74,22 @@ define(function(require) {
       // less than zero), artificially insert a zero into the set used to
       // calculate the Y domain.
       var withZero = [0].concat(data);
+      var xDomain = [offset - padPct, data.length + (offset * padPct)];
+      var tickCount = data.length;
+
+      if (this.omitZero) {
+        xDomain[0]++;
+        tickCount--;
+      }
 
       this.y.domain([d3.min(withZero), d3.max(withZero)]);
-      this.x.domain([offset - padPct, data.length + (offset * padPct)]);
+      this.x.domain(xDomain);
 
       // Because the barchart is intended to be used as a histogram,
       // intermediate values have no significance. Ensure that d3 does not
       // render "tick" marks for these values by explicitly setting the number
       // of ticks according to the number of data points.
-      this.xAxis.ticks(data.length);
+      this.xAxis.ticks(tickCount);
 
       this._handleContentHeightChange();
       this._handleContentWidthChange();

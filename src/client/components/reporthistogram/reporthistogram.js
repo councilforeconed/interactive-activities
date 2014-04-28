@@ -22,7 +22,8 @@ define(function(require) {
 
   var barChart = new BarChart(null, {
     xLabel: '# of Chefs',
-    yLabel: 'Avg. # Pizzas Completed'
+    yLabel: 'Avg. # Pizzas Completed',
+    omitZero: true
   });
 
   barChart.height(300);
