@@ -88,7 +88,7 @@ define(function(require) {
      */
     report: function() {
       var completedPizzasByRound = this.get('pizzas').completedByRound();
-      var activePlayersByRound = this.get('players').activeByRound();
+      var activePlayersByRound = this.get('activePlayerCounts').slice();
 
       _.forEach(activePlayersByRound, function(roundPlayers, idx, allRounds) {
         var alreadyActive = allRounds[idx - 1];

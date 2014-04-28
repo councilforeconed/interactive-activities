@@ -15,19 +15,8 @@ define(function(require) {
       return this.filter(function(player) {
         return player.get('activatedRound') > -1;
       });
-    },
-
-    activeByRound: function() {
-      return this.chain()
-        .groupBy(function(player) {
-          return player.get('activatedRound');
-        })
-        .toArray()
-        .map(function(roundPlayers) {
-          return roundPlayers.length;
-        })
-        .value();
     }
+
   });
 
   return PlayerCollection;

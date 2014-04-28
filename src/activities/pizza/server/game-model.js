@@ -25,6 +25,12 @@ var ServerGameModel = GameModel.extend({
         this.allocatePizzas();
       }
     }, this);
+
+    // The number of active players in each round is necessary for report
+    // generation. The server maintains this number explicitly so that it can
+    // be sent to clients and remains constant even after the original
+    // participants have left the game.
+    this.set('activePlayerCounts', []);
   },
 
   /**
@@ -79,6 +85,8 @@ var ServerGameModel = GameModel.extend({
         currentCount++;
       }
     });
+
+    this.get('activePlayerCounts')[currentRound] = currentCount;
   },
 
   /**
