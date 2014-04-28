@@ -78,6 +78,8 @@ define(function(require) {
         stop: this.onStop
       });
       this.toggleDrag(this.isDraggable);
+
+      this.$el.attr('data-foodstate', this.model.get('foodState'));
     },
 
     serialize: function() {
