@@ -2,61 +2,44 @@ section.article-container.clearfix
   div.container.clearfix
     div.article-text.left
       h1.article-title Something Ipsum
-      p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      p
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 section.container.clearfix
   arcicle.activity-container.left
-    div.activity
-      a(href=""): img(src="images/icons/pizza.png", class="activity-icon")
-    div
-      a(href=""): h3.activity-title Productivity
+    a(href="").home-activity-item
+      img(src="images/icons/pizza.png", class="activity-icon")
+      h3.activity-title Productivity(COMING SOON...)
 
    arcicle.activity-container.left
-    div.activity
-      a(href=""): img(src="images/icons/supplydemand.png", class="activity-icon")
-    div
-      a(href=""): h3.activity-title A Classroom Market for Cocoa
+    a(href="").home-activity-item
+      img(src="images/icons/supplydemand.png", class="activity-icon")
+      h3.activity-title A Classroom Market for Cocoa(COMING SOON...)
 
    arcicle.activity-container.left
-    div.activity
-      a(href="#activity/money-creation/"): img(src="images/icons/moneycreation.png", class="activity-icon")
-    div
-      a(href="#activity/money-creation/"): h3.activity-title The Case of the Gigantic $100,000 Bill
+    a.activity(href="#activity/money-creation/")
+      img(src="images/icons/moneycreation.png", class="activity-icon")
+      h3.activity-title The Case of the Gigantic $100,000 Bill
 
    arcicle.activity-container.left
-    div.activity
-      a(href="#activity/ppf/"): img(src="images/icons/productionpossibilities.png", class="activity-icon")
-    div
-      a(href="#activity/ppf/"): h3.activity-title Production Possibilities and Opportunity Cost
+    a(href="#activity/ppf/").home-activity-item
+      img(src="images/icons/productionpossibilities.png", class="activity-icon")
+      h3.activity-title Production Possibilities and Opportunity Cost
 
    arcicle.activity-container.left
-    div.activity
-      a(href="#activity/income-and-taxes/"): img(src="images/icons/incomeandtax.png", class="activity-icon")
-    div
-      a(href="#activity/income-and-taxes/"): h3.activity-title Income Distribution
+    a(href="#activity/income-and-taxes/").home-activity-item
+      img(src="images/icons/incomeandtax.png", class="activity-icon")
+      h3.activity-title Income Distribution
 
    arcicle.activity-container.left
-    div.activity
-      a(href="#activity/when-graphs-mislead/"): img(src="images/icons/graphsmisleadus.png", class="activity-icon")
-    div
-      a(href="#activity/when-graphs-mislead/"): h3.activity-title When Charts Mislead Us
-
-
-
-h1.home-title CEE's Interactive Activities
-
-ul.home-activity-list
-  each activity in activities
-    li.home-activity-item
-      a.home-activity-link(href='#activity/' + activity.slug + '/')
-        h3.home-activity-title=activity.config.title
-        p.home-activity-desc= activity.config.shortDesc
-      .loading-screen
+     a(href="#activity/when-graphs-mislead/").home-activity-item
+      img(src="images/icons/graphsmisleadus.png", class="activity-icon")
+      h3.activity-title When Charts Mislead Us
 
 h2.home-title For Instructors
 

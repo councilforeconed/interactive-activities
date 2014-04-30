@@ -19,37 +19,23 @@
   color: #74bee9;
 }
 
-.activity {
-  border: 10px solid #f2f2ee;
+.home-activity-item {
+  display: block;
   height: auto;
 }
 
-.activity-icon { width: 100%; }
+
+
+.activity-icon {
+  border: 10px solid #f2f2ee;
+  width: 100%;
+}
 
 .home-activity-list {
   list-style-type: none;
   text-align: center;
 }
 
-.home-activity-item {
-  position: relative;
-
-  display: inline-block;
-  width: 40%;
-  margin: 1rem 2rem;
-  border: solid 1px #ddd;
-
-  vertical-align: top;
-  text-align: left;
-}
-
-.home-activity-item .home-activity-link {
-  display: block;
-  padding: 1rem;
-
-  text-decoration: none;
-  opacity: 1;
-}
 .home-activity-item.loading .home-activity-link,
 .home-activity-item.loading .loading-screen {
   transition: opacity .7s;
