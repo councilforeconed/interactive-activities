@@ -5,7 +5,7 @@ NODE_HOME=/home/$NODE_USER
 ENV_FILE=$NODE_HOME/node_env.sh
 
 PROJECT_DIR=${PROJECT_DIR:-$NODE_HOME/cee}
-GIT_URL=${GIT_URL:-git@github.com:bocoup/cee.git}
+GIT_URL=${GIT_URL:-git@github.com:councilforeconed/cee.git}
 
 # Install package dependencies
 apt-get install git authbind
