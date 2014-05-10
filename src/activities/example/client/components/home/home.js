@@ -25,7 +25,7 @@ define(function(require) {
   // Some modules simply extend other modules. This is often the case for
   // jQuery plugins. In these cases, the module value itself is not directly
   // useful, so the return value from the call to `require` is ignored.
-  require('socket.io');
+  require('socket.io-client');
 
   var activitySlug = 'example';
 

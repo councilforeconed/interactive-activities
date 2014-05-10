@@ -7,7 +7,7 @@
 define(function(require) {
   'use strict';
   var _ = require('lodash');
-  require('socket.io');
+  require('socket.io-client');
 
   var _connect = io.connect;
   io.connect = function(host, options) {
