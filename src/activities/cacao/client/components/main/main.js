@@ -61,13 +61,6 @@ define(function(require) {
     },
 
     _initConnection: function() {
-      // Cloak doesn't currently provide proper ways to clean itself up. So we
-      // must force a page reload to reset it.
-      if (cloak.dirty) {
-        location.reload();
-      }
-      cloak.dirty = true;
-
       cloak.configure({
 
         // Define custom messages sent by server to respond to.
@@ -146,6 +139,10 @@ define(function(require) {
         otherRole: otherRole,
         tradeAmount: config.tradeAmount
       };
+    },
+
+    cleanup: function() {
+      cloak.stop();
     }
   });
 

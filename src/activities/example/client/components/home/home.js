@@ -39,12 +39,6 @@ define(function(require) {
     activitySlug: activitySlug,
 
     initialize: function() {
-      // Cloak doesn't currently provide proper ways to clean itself up. So we
-      // must force a page reload to reset it.
-      if (cloak.dirty) {
-        location.reload();
-      }
-
       // Configure inserting output into dom
       cloak.configure({
         // Define custom messages sent by server to respond to.
@@ -66,8 +60,6 @@ define(function(require) {
         }
       });
 
-      cloak.dirty = true;
-
       // Cloak wraps socket.io in a way, that we must monkey in some options.
       io.connect.options = {
         'resource': 'activities/' + activitySlug + '/socket.io'
@@ -85,9 +77,6 @@ define(function(require) {
 
     // Stop the network.
     cleanup: function() {
-      // cloak.stop will disconnect but does not clean up configuration. A
-      // later multi-user connection will need to force a fresh load of the app
-      // to clear that away.
       cloak.stop();
     },
 
