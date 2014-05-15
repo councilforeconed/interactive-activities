@@ -32,6 +32,10 @@ function CacaoGame(options) {
   });
 }
 
+CacaoGame.messageHandlers = {
+  trade: 'trade'
+};
+
 CacaoGame.prototype.join = function(user) {
   var lastPlayer = this.players.last();
   var roles = this.players.groupBy('role');

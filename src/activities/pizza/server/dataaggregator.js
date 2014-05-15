@@ -8,11 +8,12 @@ var INITIAL = 'initial';
 module.exports = through2reduce.ctor(
   { objectMode: true },
   function (previous, current) {
+    var gameData = current.gameData;
     if (previous === INITIAL) {
       previous = [];
     }
 
-    _.forEach(current.report, function(round) {
+    _.forEach(gameData.report, function(round) {
       var pizzaCounts = previous[round.playerCount];
       if (!pizzaCounts) {
         pizzaCounts = previous[round.playerCount] = [];

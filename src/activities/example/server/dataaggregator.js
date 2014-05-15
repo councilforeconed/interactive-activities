@@ -7,6 +7,8 @@ var INITIAL = 'initial';
 module.exports = through2reduce.ctor(
   { objectMode: true },
   function(previous, current) {
+    var groupName = current.groupName;
+    var gameData = current.gameData;
     // Initialize the object.
     if (previous === INITIAL) {
       previous = {
@@ -15,27 +17,27 @@ module.exports = through2reduce.ctor(
     }
 
     // Add an object per group.
-    if (!(current.group in previous.groups)) {
-      previous.groups[current.group] = {
+    if (!(groupName in previous.groups)) {
+      previous.groups[groupName] = {
         events: {
-          'join-room': 0,
-          'chat': 0
+          joinRoom: 0,
+          chat: 0
         },
         byUser: {}
       };
     }
 
     // Add an object per user per group.
-    if (!(current.user in previous.groups[current.group].byUser)) {
-      previous.groups[current.group].byUser[current.user] = {
-        'join-room': 0,
-        'chat': 0
+    if (!(gameData.user in previous.groups[groupName].byUser)) {
+      previous.groups[groupName].byUser[gameData.user] = {
+        joinRoom: 0,
+        chat: 0
       };
     }
 
     // Increment group and user events.
-    previous.groups[current.group].events[current.type]++;
-    previous.groups[current.group].byUser[current.user][current.type]++;
+    previous.groups[groupName].events[gameData.type]++;
+    previous.groups[groupName].byUser[gameData.user][gameData.type]++;
 
     return previous;
   },

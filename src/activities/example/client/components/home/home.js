@@ -58,7 +58,7 @@ define(function(require) {
         serverEvents: {
           begin: _.bind(function() {
             // Join cloak room for this group
-            cloak.message('join-room', this.group);
+            cloak.message('joinRoom', this.group);
           }, this),
           joinedRoom: _.bind(function(group) {
             this.addMessage('server', 'Joined room ' + group.name + '.');
