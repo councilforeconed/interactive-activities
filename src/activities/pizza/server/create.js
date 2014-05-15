@@ -59,8 +59,8 @@ module.exports = function(options, debug) {
   // Configure cloak. We'll start it later after server binds to a port.
   cloak.configure({
     express: server,
-    room: gameManager.cloakRoomMsgHandlers(),
-    messages: gameManager.cloakMsgsMsgHandlers()
+    room: gameManager.cloakRoomHandlers(),
+    messages: gameManager.cloakMsgsHandlers()
   });
 
   return common.whenListening(server, debug)

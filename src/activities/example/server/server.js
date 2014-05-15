@@ -73,8 +73,8 @@ module.exports.createServer = function(options, debug) {
   cloak.configure({
     express: server,
 
-    room: gameManager.cloakRoomMsgHandlers(),
-    messages: gameManager.cloakMsgsMsgHandlers()
+    room: gameManager.cloakRoomHandlers(),
+    messages: gameManager.cloakMsgsHandlers()
   });
 
   return common.whenListening(server, debug)

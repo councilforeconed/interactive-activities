@@ -90,7 +90,7 @@ suite('GameManager', function() {
     var handlers;
 
     setup(function() {
-      handlers = gameManager.cloakMsgsMsgHandlers();
+      handlers = gameManager.cloakMsgsHandlers();
     });
 
     suite('joinRoom', function() {
@@ -136,7 +136,7 @@ suite('GameManager', function() {
     var handlers;
 
     setup(function() {
-      handlers = gameManager.cloakRoomMsgHandlers();
+      handlers = gameManager.cloakRoomHandlers();
     });
 
     suite('memberLeaves', function() {

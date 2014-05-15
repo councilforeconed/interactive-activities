@@ -45,7 +45,7 @@ GameManager.prototype.delete = function(groupName) {
   delete this.games[groupName];
 };
 
-GameManager.prototype.cloakRoomMsgHandlers = function() {
+GameManager.prototype.cloakRoomHandlers = function() {
   var gameManager = this;
 
   return {
@@ -66,7 +66,7 @@ GameManager.prototype.cloakRoomMsgHandlers = function() {
   };
 };
 
-GameManager.prototype.cloakMsgsMsgHandlers = function() {
+GameManager.prototype.cloakMsgsHandlers = function() {
   var cloakHandlers = {
     joinRoom: this.onJoinRoom.bind(this)
   };
