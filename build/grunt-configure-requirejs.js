@@ -199,6 +199,6 @@ function generateRjsModules(activities, sharedLibraries) {
 
 function getModuleDescriptors(moduleIds) {
   return moduleIds.map(function(id) {
-    return { name: id };
+    return { name: id, exclude: ['underscore'] };
   });
 }
