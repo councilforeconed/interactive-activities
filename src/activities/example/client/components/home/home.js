@@ -4,7 +4,6 @@ define(function(require) {
   'use strict';
   var _ = require('lodash');
   var cloak = require('cloak');
-  var io = require('scripts/socketio.monkey');
   var Model = require('backbone').Model;
 
   var ActivityView = require('components/activity/activity');
@@ -60,12 +59,12 @@ define(function(require) {
         }
       });
 
-      // Cloak wraps socket.io in a way, that we must monkey in some options.
-      io.connect.options = {
-        'resource': 'activities/' + activitySlug + '/socket.io'
-      };
       // Connect to socket
-      cloak.run();
+      cloak.run(undefined, {
+        'socket.io': {
+          resource: 'activities/' + activitySlug + '/socket.io'
+        }
+      });
 
       // Set up chat input.
       this.chatInput = new ChatInputView();

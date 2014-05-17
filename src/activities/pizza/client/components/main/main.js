@@ -3,7 +3,6 @@ define(function(require) {
 
   var _ = require('lodash');
   var cloak = require('cloak');
-  var io = require('scripts/socketio.monkey');
   var when = require('when');
   var Backbone = require('backbone');
 
@@ -126,12 +125,12 @@ define(function(require) {
         }
       });
 
-      // Cloak wraps socket.io in a way, that we must monkey in some options.
-      io.connect.options = {
-        'resource': 'activities/pizza/socket.io'
-      };
       // Connect to socket
-      cloak.run();
+      cloak.run(undefined, {
+        'socket.io': {
+          resource: 'activities/pizza/socket.io'
+        }
+      });
 
       return dfd.promise;
     },

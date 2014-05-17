@@ -4,7 +4,6 @@ define(function(require) {
   var $ = require('jquery');
   var _ = require('lodash');
   var cloak = require('cloak');
-  var io = require('scripts/socketio.monkey');
 
   var ActivityView = require('components/activity/activity');
   var Slider = require('components/slider/slider');
@@ -85,12 +84,11 @@ define(function(require) {
         }
       });
 
-      // Cloak wraps socket.io such that we must monkey-patch in some options.
-      io.connect.options = {
-        resource: 'activities/cacao/socket.io'
-      };
-
-      cloak.run();
+      cloak.run(undefined, {
+        'socket.io': {
+          resource: 'activities/cacao/socket.io'
+        }
+      });
     },
 
     handleTradeWithChange: function(event) {
