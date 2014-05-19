@@ -1,12 +1,45 @@
-h1.home-title CEE's Interactive Activities
+section.article-container.clearfix
+  div.container.clearfix
+    div.article-text.left
+      h1.article-title Something Ipsum
+      p
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-ul.home-activity-list
-  each activity in activities
-    li.home-activity-item
-      a.home-activity-link(href='#activity/' + activity.slug + '/')
-        h3.home-activity-title=activity.config.title
-        p.home-activity-desc= activity.config.shortDesc
-      .loading-screen
+section.container.clearfix
+  article.activity-container.left
+    a(href="#activity/pizza/")
+      img(src="images/icons/pizza.png", class="activity-icon")
+      h3.activity-title Productivity
+
+   article.activity-container.left
+    a(href="#activity/cacao/")
+      img(src="images/icons/supplydemand.png", class="activity-icon")
+      h3.activity-title A Classroom Market for Cocoa
+
+   article.activity-container.left
+    a(href="#activity/money-creation/")
+      img(src="images/icons/moneycreation.png", class="activity-icon")
+      h3.activity-title The Case of the Gigantic $100,000 Bill
+
+   article.activity-container.left
+    a(href="#activity/ppf/")
+      img(src="images/icons/productionpossibilities.png", class="activity-icon")
+      h3.activity-title Production Possibilities and Opportunity Cost
+
+   article.activity-container.left
+    a(href="#activity/income-and-taxes/")
+      img(src="images/icons/incomeandtax.png", class="activity-icon")
+      h3.activity-title Income Distribution
+
+   article.activity-container.left
+     a(href="#activity/when-graphs-mislead/")
+      img(src="images/icons/graphsmisleadus.png", class="activity-icon")
+      h3.activity-title When Graphs Mislead Us
 
 h2.home-title For Instructors
 
