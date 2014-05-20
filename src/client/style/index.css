@@ -42,7 +42,8 @@ footer {
 }
 
 .cee-logo {
-  width: 50%;
+  max-width: 214px;
+  max-height: 80px;
   margin-right: 20px;
 }
 
