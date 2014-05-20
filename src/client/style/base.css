@@ -54,3 +54,48 @@ li { list-style: none; }
 .clearfix { display: block; }
 
 .cb { clear: both }
+
+/* Buttons */
+
+button.button {
+  color: white;
+  background-color: rgb(29, 178, 212);
+  font-size: 0.8rem;
+  font-weight: 300;
+  border: 1px solid rgb(29, 178, 212);
+  border-radius: 3px;
+  outline: none;
+  padding: 0.8rem 2rem;
+}
+
+button.button:hover {
+  background-color: rgb(36, 190, 235);
+}
+
+button.button:active {
+  background-color: rgb(28, 151, 187);
+}
+
+button.button.button-forward:after {
+  content: ' →';
+}
+
+button.button.button-deactivated {
+  background-color: rgb(189, 225, 235);
+  pointer-events: none;
+}
+
+button.button.button-secondary {
+  background-color: white;
+  box-sizing: border-box;
+  color: rgb(29, 178, 212);
+}
+
+button.button.button-secondary:hover {
+  background-color: #F9F9F9;
+  color: rgb(36, 190, 235);
+}
+
+button.button.button-secondary:active {
+  background-color: #EEE;
+}
