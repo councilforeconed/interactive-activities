@@ -90,15 +90,6 @@
   .logo { width: 59%; }
   .activity-container {width: 31%;}
   .article-container { background: #7fb539; }
-  .article-text {
-    width: 100%;
-  }
-  .nav-menu {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 540px) {
   .introductory-content {
     font-size: 1.2rem;
     line-height: 1.8rem;
@@ -106,6 +97,12 @@
   .activity-title { 
     font-size: 1rem;
     font-weight: 500;
+  }
+  .article-text {
+    width: 100%;
+  }
+  .nav-menu {
+    display: none;
   }
 }
 
