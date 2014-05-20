@@ -76,6 +76,12 @@
 @media screen and (max-width: 768px) {
   .logo { width: 59%; }
   .activity-container { width: 31%; }
+  h1.article-title {
+    font-size: 1.4rem;
+  }
+  .nav-menu {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -87,4 +93,14 @@
   nav ul { padding-left: 0; }
   .article-text { width: 100%; }
   .activity-container { width: 48%; }
+  h1.article-title {
+    font-size: 1.5rem;
+  }
+  .activity-title { 
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+  .nav-menu {
+    display: none;
+  }
 }
