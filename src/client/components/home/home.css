@@ -98,6 +98,17 @@
   }
 }
 
+@media screen and (max-width: 540px) {
+  .introductory-content {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+  }
+  .activity-title { 
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .logo {
     float: none;
@@ -116,7 +127,7 @@
   }
   .activity-title { 
     font-size: 0.8rem;
-    font-weight: 400;
+    font-weight: 300;
   }
   .nav-menu {
     display: none;
