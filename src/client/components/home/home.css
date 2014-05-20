@@ -5,6 +5,11 @@
 
 .article-title { text-transform: uppercase; }
 
+.introductory-content {
+  line-height: 1.8rem;
+  font-weight: 300;
+}
+
 .home-title,
 .home-sub-title {
   text-align: center;
@@ -23,8 +28,6 @@
   display: block;
   height: auto;
 }
-
-
 
 .activity-icon {
   border: 10px solid #f2f2ee;

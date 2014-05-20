@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .container {
   width: 90%; /*width: 960px;*/
   max-width: 1200px;
@@ -17,6 +21,11 @@
 .article-container {
   width: 100%;
   background-color: #7fb539;
+}
+
+p {
+  line-height: 1.6rem;
+  font-weight: 300;
 }
 
 a { text-decoration: none; }
