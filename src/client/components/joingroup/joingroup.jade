@@ -1,9 +1,15 @@
 if typeof error !== 'undefined'
   p.error= error
 
-p.
-  This is a group activity. Ask your instructor to assign you to a group and enter it below.
+.body 
+  p
+   | This is a group activity. Ask your instructor to assign you to a group 
+   | and enter it below.
+  p
+   | <strong>Are you an instructor?</strong> <a href="/#room/">Click here</a>
+   | to create a activity room.
 
-form
-  input(type='text', name='group')
-  button.joinGroup Join
+.footer
+  form
+    input.group-name(type='text', name='group', placeholder='Group Name')
+    button.button.joinGroup Join

@@ -1,14 +1,10 @@
-h1.title=title
+.header
+  h1.title=title
+  != description
 
-ul.tabs
-  li.tab(data-tab="desc")(class=activeTab=='desc' ? 'active' : '') Description
-  li.tab(data-tab="inst")(class=activeTab=='inst' ? 'active' : '') Instructions
+.body
+  h2 Instructions
+  != instructions
 
-ul.tab-containers
-  li.tab-container(class=activeTab=='desc' ? 'active' : '')
-    != description
-
-    button.begin Begin
-
-  li.tab-container(class=activeTab=='inst' ? 'active' : '')
-    != instructions
+.footer
+  button.button.button-forward.button.begin Get Started
