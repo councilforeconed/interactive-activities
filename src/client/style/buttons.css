@@ -1,0 +1,42 @@
+button, input[type="submit"] {
+  color: white;
+  background-color: rgb(29, 178, 212);
+  font-size: 0.8rem;
+  font-weight: 300;
+  border: 1px solid rgb(29, 178, 212);
+  border-radius: 3px;
+  outline: none;
+  padding: 0.8rem 2rem;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: rgb(36, 190, 235);
+}
+
+button:active, input[type="submit"]:active {
+  background-color: rgb(28, 151, 187);
+}
+
+button.forward:after, input[type="submit"].forward:after {
+  content: ' →';
+}
+
+button.deactivated, input[type="submit"].deactivated {
+  background-color: rgb(189, 225, 235);
+  pointer-events: none;
+}
+
+button.secondary, input[type="submit"].secondary {
+  background-color: white;
+  box-sizing: border-box;
+  color: rgb(29, 178, 212);
+}
+
+button.secondary:hover, input[type="submit"].secondary:hover {
+  background-color: #F9F9F9;
+  color: rgb(36, 190, 235);
+}
+
+button.secondary:active, input[type="submit"].secondary:active {
+  background-color: #EEE;
+}

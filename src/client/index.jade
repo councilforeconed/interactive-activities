@@ -2,9 +2,12 @@ doctype html
 html.no-js(lang="en")
   head
     title Interactive Activities - Council for Economic Education
+    meta(name="viewport" content="width=device-width")
     link(type='text/css', rel='stylesheet', href='/style/index.css')
     link(type='text/css', rel='stylesheet', href='/style/normalize.css')
+    link(type='text/css', rel='stylesheet', href='/style/fonts.css')
     link(type='text/css', rel='stylesheet', href='/style/base.css')
+    link(type='text/css', rel='stylesheet', href='/style/buttons.css')
     script.
       document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, '');
   body
@@ -15,11 +18,11 @@ html.no-js(lang="en")
         nav.right
           ul.nav-menu
             li.menu-item
-              a(href='') Item1
+              a(href='http://councilforeconed.org') Home
             li.menu-item
-              a(href='') Item2
+              a(href='http://econedlink.org') EconEdLink
             li.menu-item
-              a(href='') Item3
+              a(href='http://genirevolution.org') Gen i Revolution
 
     div#main.cb
     .initial-loading

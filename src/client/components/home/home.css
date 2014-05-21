@@ -3,7 +3,15 @@
   color: white;
 }
 
-.article-title { text-transform: uppercase; }
+.article-title { 
+  font-size: 1.9rem;
+  text-transform: uppercase;
+}
+
+.introductory-content {
+  line-height: 1.8rem;
+  font-weight: 300;
+}
 
 .home-title,
 .home-sub-title {
@@ -23,8 +31,6 @@
   display: block;
   height: auto;
 }
-
-
 
 .activity-icon {
   border: 10px solid #f2f2ee;
@@ -70,9 +76,34 @@
 }
 
 /*RESPONSIVE STYLES*/
+@media screen and (max-width: 1024px) {
+  .article-title {
+    font-size: 1.4rem;
+  }
+  .introductory-content {
+    font-size: 0.9rem;
+    line-height: 1.6rem;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .logo { width: 59%; }
-  .activity-container { width: 31%; }
+  .activity-container {width: 31%;}
+  .article-container { background: #7fb539; }
+  .introductory-content {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+  }
+  .activity-title { 
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .article-text {
+    width: 100%;
+  }
+  .nav-menu {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -84,4 +115,17 @@
   nav ul { padding-left: 0; }
   .article-text { width: 100%; }
   .activity-container { width: 48%; }
+  .article-title {
+    font-size: 1.5rem;
+  }
+  .introductory-content {
+    font-size: 1rem;
+  }
+  .activity-title { 
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+  .nav-menu {
+    display: none;
+  }
 }
