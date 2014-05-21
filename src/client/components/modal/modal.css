@@ -32,8 +32,43 @@
 
   padding: 2rem;
   width: 40rem;
+  
+  overflow-y: scroll;
+  max-height: 300px;
 
   background-color: #eee;
+}
+
+/*
+  Adapt the set the max-height of the modal depending on the window height.
+  This is a work around for the fact that you can't use percentages with
+  aboslutely positioned elements. If anyone has a better solution, I'd love
+  to hear it. (REMOVE_COMMENT 2014-07-07)
+*/
+
+
+@media screen and (min-height: 500px) {
+  .modal .surface {
+    max-height: 400px;
+  }
+}
+
+@media screen and (min-height: 600px) {
+  .modal .surface {
+    max-height: 500px;
+  }
+}
+
+@media screen and (min-height: 700px) {
+  .modal .surface {
+    max-height: 600px;
+  }
+}
+
+@media screen and (min-height: 800px) {
+  .modal .surface {
+    max-height: 700px;
+  }
 }
 
 .modal .dismiss {
@@ -42,4 +77,37 @@
   right: 0;
 
   cursor: pointer;
+}
+
+.modal .header {
+  background-color: rgb(242, 241, 241);
+  border-bottom: 1px solid rgb(213, 213, 213);
+  padding: 1rem 2rem;
+}
+
+.modal h1, .modal h2 {
+  font-weight: 300;
+}
+
+.modal .title {
+  margin: 0 0 0.8rem 0;
+}
+
+.modal .header p {
+  font-style: italic;
+}
+
+.modal .body {
+  padding: 1rem 2rem;
+}
+
+.modal .body h2 {
+  margin-top: 0;
+}
+
+.modal .footer {
+  background-color: rgb(242, 241, 241);
+  border-top: 1px solid rgb(213, 213, 213);
+  padding: 1rem 2rem;
+  text-align: right;
 }
