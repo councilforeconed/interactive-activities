@@ -31,7 +31,7 @@
   top: 4rem;
 
   width: 40rem;
-  
+
   overflow-y: scroll;
   max-height: 300px;
 
@@ -73,8 +73,15 @@
 
 .modal .dismiss {
   position: absolute;
-  top: 0;
-  right: 0;
+
+  top: 0.5rem;
+  right: 1rem;
+
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 1.5rem;
+  padding: 0 0.5rem;
 
   cursor: pointer;
 }
