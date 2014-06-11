@@ -1,0 +1,10 @@
+.mc-chart .axis path, .axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.mc-chart .axis text {
+  font-family: sans-serif;
+  font-size: 11px;
+}
