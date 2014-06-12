@@ -3,7 +3,7 @@
   color: white;
 }
 
-.article-title { 
+.article-title {
   font-size: 1.9rem;
   text-transform: uppercase;
 }
@@ -20,6 +20,7 @@
 
 .activity-container {
   width: 23%;
+  min-height: 368px;
   margin: 1%;
 }
 
@@ -77,6 +78,9 @@
 
 /*RESPONSIVE STYLES*/
 @media screen and (max-width: 1024px) {
+  .activity-container {
+    min-height: 320px;
+  }
   .article-title {
     font-size: 1.4rem;
   }
@@ -88,13 +92,16 @@
 
 @media screen and (max-width: 768px) {
   .logo { width: 59%; }
-  .activity-container {width: 31%;}
+  .activity-container {
+    width: 31%;
+    min-height: 225px;
+  }
   .article-container { background: #7fb539; }
   .introductory-content {
     font-size: 1.2rem;
     line-height: 1.8rem;
   }
-  .activity-title { 
+  .activity-title {
     font-size: 1rem;
     font-weight: 500;
   }
@@ -121,7 +128,7 @@
   .introductory-content {
     font-size: 1rem;
   }
-  .activity-title { 
+  .activity-title {
     font-size: 0.8rem;
     font-weight: 300;
   }
