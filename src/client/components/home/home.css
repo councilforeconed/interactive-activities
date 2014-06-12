@@ -94,7 +94,7 @@
   .logo { width: 59%; }
   .activity-container {
     width: 31%;
-    min-height: 225px;
+    min-height: 285px;
   }
   .article-container { background: #7fb539; }
   .introductory-content {
@@ -113,6 +113,12 @@
   }
 }
 
+@media screen and (max-width: 568px) {
+  .activity-container {
+    min-height: 260px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .logo {
     float: none;
@@ -121,7 +127,10 @@
   nav { margin: -10px 25px; }
   nav ul { padding-left: 0; }
   .article-text { width: 100%; }
-  .activity-container { width: 48%; }
+  .activity-container {
+    min-height: 220px;
+    width: 48%;
+  }
   .article-title {
     font-size: 1.5rem;
   }
