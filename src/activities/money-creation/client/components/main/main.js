@@ -8,6 +8,7 @@ define(function(require) {
   var BillView = require('../bill/bill');
   var LedgerView = require('../ledger/ledger');
   var ControlsView = require('../controls/controls');
+  var ChartView = require('../chart/chart');
 
   require('css!./main');
 
@@ -25,9 +26,11 @@ define(function(require) {
       this.billView = new BillView({ model: this.model });
       this.ledgerView = new LedgerView({ model: this.model });
       this.controlsView = new ControlsView({ model: this.model });
+      this.chartView = new ChartView({ model: this.model });
       this.setView('.mc-supply-container', this.billView);
       this.setView('.mc-ledger-container', this.ledgerView);
       this.setView('.mc-controls-container', this.controlsView);
+      this.setView('.mc-chart-container', this.chartView);
     },
 
     setConfig: function(config) {
