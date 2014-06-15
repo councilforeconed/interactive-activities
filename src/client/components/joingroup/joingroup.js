@@ -12,7 +12,7 @@ define(function(require) {
     className: 'welcome',
     template: require('jade!./joingroup'),
     events: {
-      'click .joinGroup': 'join',
+      'click .js-join-group': 'join',
       'submit form': 'join'
     },
     serialize: function() {
