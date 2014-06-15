@@ -8,42 +8,39 @@
   background-color: #fff;
 }
 
-.activity .activity-nav {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 5;
-
-  height: 3rem;
-
-  background-color: #fff;
-  border-bottom: 1px solid #777;
+.activity-nav {
+  padding: 2em;
+  text-align: center;
+  background-color: #62caae;
 }
 
 .activity-nav .activity-home {
   font-size: 2rem;
 }
 
-.activity-nav .home, .activity-nav .activity-title {
+.activity-title-light {
+  line-height: 1.6rem;
+  font-weight: 400;
+  color: white;
   display: inline;
   margin: 0 2rem 0 0;
 }
 
-.activity-nav .activity-help {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 1rem;
-
+.activity-help {
   cursor: pointer;
-  font-size: 2rem;
+  background-color: white;
+  padding: 10px;
+}
+
+.activity-help-icon {
+  border-radius: 100%;
+  background-color: #eadd3f;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
 }
 
 .activity .activity-stage {
-  position: relative;
-
   padding-top: 3rem;
   min-height: 100%;
   box-sizing: border-box;
