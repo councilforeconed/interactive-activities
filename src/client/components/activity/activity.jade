@@ -12,9 +12,13 @@ header
           a(href='http://genirevolution.org') Gen i Revolution
 
 .activity-nav.clearfix
-  h2.activity-title-light=title
-  button.activity-help.right
-    span.activity-help-icon i
+  .activity-nav-container
+    img(src=image).activity-image.left
+
+    h2.left.activity-title-light=title
+
+    .activity-help.right
+      p.activity-help-icon i
 
 .activity-stage
 

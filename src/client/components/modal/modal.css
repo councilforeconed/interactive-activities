@@ -97,11 +97,12 @@
 }
 
 .modal .title {
-  margin: 0 0 0.8rem 0;
+  margin: 0;
 }
 
 .modal .header p {
   font-style: italic;
+  margin-top: 0;
 }
 
 .modal .body {

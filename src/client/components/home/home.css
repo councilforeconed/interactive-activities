@@ -3,7 +3,7 @@
   color: white;
 }
 
-.article-title { 
+.article-title {
   font-size: 1.9rem;
   text-transform: uppercase;
 }
@@ -35,6 +35,11 @@
 .activity-icon {
   border: 10px solid #f2f2ee;
   width: 100%;
+}
+
+.activity-image {
+  width: 100px;
+  margin-right: 20px;
 }
 
 .home-activity-list {
@@ -94,7 +99,7 @@
     font-size: 1.2rem;
     line-height: 1.8rem;
   }
-  .activity-title { 
+  .activity-title {
     font-size: 1rem;
     font-weight: 500;
   }
@@ -121,7 +126,7 @@
   .introductory-content {
     font-size: 1rem;
   }
-  .activity-title { 
+  .activity-title {
     font-size: 0.8rem;
     font-weight: 300;
   }
