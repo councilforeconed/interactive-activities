@@ -36,7 +36,8 @@ define(function(require) {
 
     template: function(data) {
       var $markup = $('<div>').html(this.chromeTemplate({
-        title: this.config.title
+        title: this.config.title,
+        image: this.config.image
       }));
 
       data.formatters = formatters;
@@ -85,6 +86,7 @@ define(function(require) {
       // Create a modal containing the activity's description and instructions.
       welcomeView = new WelcomeView({
         title: this.config.title,
+        image: this.config.image,
         description: this.description,
         instructions: this.instructions
       });
