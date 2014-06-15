@@ -114,7 +114,5 @@
 
 .modal .footer {
   background-color: rgb(242, 241, 241);
-  border-top: 1px solid rgb(213, 213, 213);
   padding: 1rem 2rem;
-  text-align: right;
 }
