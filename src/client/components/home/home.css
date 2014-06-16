@@ -38,6 +38,11 @@
   width: 100%;
 }
 
+.activity-image {
+  width: 100px;
+  margin-right: 20px;
+}
+
 .home-activity-list {
   list-style-type: none;
   text-align: center;

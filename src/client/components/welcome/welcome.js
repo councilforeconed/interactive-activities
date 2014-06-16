@@ -15,6 +15,7 @@ define(function(require) {
       this.title = options.title;
       this.description = options.description;
       this.instructions = options.instructions;
+      this.image = options.image;
       this.activeTab = null;
 
       this.showTab('desc');
@@ -23,6 +24,7 @@ define(function(require) {
     serialize: function() {
       return {
         title: this.title,
+        image: this.image,
         description: this.description,
         instructions: this.instructions,
         activeTab: this.activeTab

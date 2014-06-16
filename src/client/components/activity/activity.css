@@ -8,43 +8,56 @@
   background-color: #fff;
 }
 
-.activity .activity-nav {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 5;
+.activity-nav {
+  padding: 1em;
+  background-color: #62caae;
+}
 
-  height: 3rem;
-
-  background-color: #fff;
-  border-bottom: 1px solid #777;
+.activity-nav-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
 }
 
 .activity-nav .activity-home {
   font-size: 2rem;
 }
 
-.activity-nav .home, .activity-nav .activity-title {
-  display: inline;
-  margin: 0 2rem 0 0;
+.activity-title-light {
+  line-height: 1.6rem;
+  font-weight: 400;
+  color: white;
+  margin: 2rem 0;
 }
 
-.activity-nav .activity-help {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 1rem;
-
+.activity-help {
   cursor: pointer;
-  font-size: 2rem;
+  background-color: white;
+  width: 35px;
+  height: 35px;
+  position: relative;
+  margin: 2rem 0;
+}
+
+.activity-help-icon {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  border-radius: 100%;
+  background-color: #eadd3f;
+  color: white;
+  font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  padding: 4px 12px;
 }
 
 .activity .activity-stage {
-  position: relative;
-
   padding-top: 3rem;
   min-height: 100%;
   box-sizing: border-box;
 }
+
+.modal-title-description { margin: 17px; }

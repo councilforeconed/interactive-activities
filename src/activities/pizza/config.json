@@ -1,5 +1,6 @@
 {
   "title": "Pizza Productivity",
+  "image": "/images/pizza/pizza.png",
   "shortDesc": "Learn about efficiency tradeoffs in a pizza shop",
   "roomBased": true
 }
