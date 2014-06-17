@@ -9,7 +9,7 @@
 }
 
 .introductory-content {
-  line-height: 1.8rem;
+  line-height: 1.6rem;
   font-weight: 300;
 }
 
@@ -20,7 +20,7 @@
 
 .activity-container {
   width: 23%;
-  min-height: 368px;
+  min-height: 370px;
   margin: 1%;
 }
 
