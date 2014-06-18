@@ -3,7 +3,6 @@ define(function(require) {
 
   var _ = require('lodash');
   var cloak = require('cloak');
-  var io = require('scripts/socketio.monkey');
   var when = require('when');
   var Backbone = require('backbone');
 
@@ -126,19 +125,12 @@ define(function(require) {
         }
       });
 
-      // Reload the page to reset cloak.
-      if (cloak.dirty) {
-        location.reload();
-      }
-      // Next run of a cloak-app should reload the page.
-      cloak.dirty = true;
-
-      // Cloak wraps socket.io in a way, that we must monkey in some options.
-      io.connect.options = {
-        'resource': 'activities/pizza/socket.io'
-      };
       // Connect to socket
-      cloak.run();
+      cloak.run(undefined, {
+        'socket.io': {
+          resource: 'activities/pizza/socket.io'
+        }
+      });
 
       return dfd.promise;
     },
@@ -153,6 +145,7 @@ define(function(require) {
 
     cleanup: function() {
       Backbone.sync = originalSync;
+      cloak.stop();
     }
   });
 

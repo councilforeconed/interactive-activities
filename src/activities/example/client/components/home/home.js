@@ -4,7 +4,6 @@ define(function(require) {
   'use strict';
   var _ = require('lodash');
   var cloak = require('cloak');
-  var io = require('scripts/socketio.monkey');
   var Model = require('backbone').Model;
 
   var ActivityView = require('components/activity/activity');
@@ -25,7 +24,7 @@ define(function(require) {
   // Some modules simply extend other modules. This is often the case for
   // jQuery plugins. In these cases, the module value itself is not directly
   // useful, so the return value from the call to `require` is ignored.
-  require('socket.io');
+  require('socket.io-client');
 
   var activitySlug = 'example';
 
@@ -39,12 +38,6 @@ define(function(require) {
     activitySlug: activitySlug,
 
     initialize: function() {
-      // Cloak doesn't currently provide proper ways to clean itself up. So we
-      // must force a page reload to reset it.
-      if (cloak.dirty) {
-        location.reload();
-      }
-
       // Configure inserting output into dom
       cloak.configure({
         // Define custom messages sent by server to respond to.
@@ -66,14 +59,12 @@ define(function(require) {
         }
       });
 
-      cloak.dirty = true;
-
-      // Cloak wraps socket.io in a way, that we must monkey in some options.
-      io.connect.options = {
-        'resource': 'activities/' + activitySlug + '/socket.io'
-      };
       // Connect to socket
-      cloak.run();
+      cloak.run(undefined, {
+        'socket.io': {
+          resource: 'activities/' + activitySlug + '/socket.io'
+        }
+      });
 
       // Set up chat input.
       this.chatInput = new ChatInputView();
@@ -85,9 +76,6 @@ define(function(require) {
 
     // Stop the network.
     cleanup: function() {
-      // cloak.stop will disconnect but does not clean up configuration. A
-      // later multi-user connection will need to force a fresh load of the app
-      // to clear that away.
       cloak.stop();
     },
 

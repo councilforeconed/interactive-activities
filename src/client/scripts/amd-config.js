@@ -16,7 +16,7 @@ require({
     jquery: 'jquery/jquery',
     'jquery.pep': 'jquery.pep/src/jquery.pep',
     rangeslider: 'rangeslider.js/dist/rangeslider',
-    'socket.io': 'socket.io-client/dist/socket.io',
+    'socket.io-client': 'socket.io-client/dist/socket.io',
 
     // AMD loader plugins
     jade: 'require-jade/jade',
@@ -58,10 +58,6 @@ require({
     }
   ],
   shim: {
-    cloak: {
-      deps: ['lodash', 'socket.io'],
-      exports: 'cloak'
-    },
     d3: {
       exports: 'd3',
     },
