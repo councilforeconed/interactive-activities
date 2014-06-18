@@ -1,3 +1,5 @@
+/*jshint indent:false */
+
 define(function (require) {
   'use strict';
   var Layout = require('layoutmanager');
@@ -68,7 +70,7 @@ define(function (require) {
         .attr('transform', 'translate(20,130)')
         .call(this.xAxis);
 
-      this.updateChart()
+      this.updateChart();
     },
 
     updateScale: function() {
@@ -102,14 +104,14 @@ define(function (require) {
         .enter()
         .append('rect')
           .attr({
-            x: function (d, i) {
+            x: function () {
               return  _this.scale(_this.data.slice(0, -1)
                 .reduce(function (a, b) {
                   return a + b;
                 }, 0)) + _this.margin;
             },
             y: '10px',
-            width: function (d, i) {
+            width: function (d) {
               return _this.scale(d);
             },
             height: '115px',
@@ -129,7 +131,7 @@ define(function (require) {
                 return a + b;
               }, 0)) + _this.margin;
           },
-          width: function (d, i) {
+          width: function (d) {
             return _this.scale(d);
           }
         });
