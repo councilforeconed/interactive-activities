@@ -1,12 +1,12 @@
 /* Column widths for 6 column responsive fluid layout */
-.one-wide { 13.6%; }
-.two-wide { 30.9%; }
-.three-wide { 48.2%; }
-.four-wide { 65.5%; }
-.five-wide { 82.7%; }
-.six-wide { 100%; }
-.quarter-wide { 22.2%; }
-.three-quarters-wide { 74.1%; }
+.one-wide { width: 13.6%; }
+.two-wide { width: 30.9%; }
+.three-wide { width: 48.2%; }
+.four-wide { width: 65.5%; }
+.five-wide { width: 82.7%; }
+.six-wide { width: 100%; }
+.quarter-wide { width: 22.2%; }
+.three-quarters-wide { width: 74.1%; }
 
 /* apply a natural box layout model to all elements */
 *,
