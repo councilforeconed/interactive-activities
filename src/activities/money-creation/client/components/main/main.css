@@ -1,9 +1,11 @@
-.mc-supply-container {
-  float: left;
-  width: 50%;
-}
+@media screen and (min-width: 800px) {
+  .mc-supply-container {
+    float: left;
+    width: 50%;
+  }
 
-.mc-controls-container {
-  float: right;
-  width: 45%;
+  .mc-controls-container {
+    float: right;
+    width: 45%;
+  }
 }

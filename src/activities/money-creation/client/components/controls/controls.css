@@ -5,3 +5,31 @@
 .mc-controls .rangeslider__fill {
   background-color: #333;
 }
+
+.mc-controls .change-round:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.mc-controls .current-round {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.mc-controls .total-money {
+  display: inline-block;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 800px) {
+  .mc-controls .round-control, .mc-controls .round-information {
+    display: inline-block;
+  }
+  
+  .mc-controls .round-control {
+    padding: 1rem 1rem 1rem 0;
+  }
+  
+  .mc-controls {
+    margin-bottom: 1.5em;
+  }
+}

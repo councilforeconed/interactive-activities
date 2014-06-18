@@ -1,14 +1,17 @@
 .ratio-slider
 
-button.change-round(data-dir='prev',
-    // Ensure the `disabled` attribute is only rendered when no rounds have
-    // have been simulated.
-    disabled=(rounds.length > 0 ? undefined : 'disabled')
-  )
-  | Previous Round
+.round-control
+  button.change-round.previous(data-dir='prev',
+      // Ensure the `disabled` attribute is only rendered when no rounds have
+      // have been simulated.
+      disabled=(rounds.length > 0 ? undefined : 'disabled')
+    )
+    | Previous Round
 
-button.change-round(data-dir='next') Next Round
+  button.change-round.next(data-dir='next') Next Round
 
 if rounds.length > 0
-  h3='Round ' + (rounds.length)
-  h3.total-money=formatters.usd(total + totalCreated)
+  .round-information
+    h3.current-round='Round ' + (rounds.length)
+    h3.total-money=formatters.usd(total + totalCreated)
+  
