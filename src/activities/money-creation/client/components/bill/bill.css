@@ -18,11 +18,11 @@
   right: 0;
 
   box-sizing: border-box;
-  border-width: 0 0 0.3rem 0;
+  border-width: 0 0.1rem 0 0;
   border-color: #333;;
   border-style: solid;
 
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   text-align: center;
 }
 
@@ -32,12 +32,22 @@
 
 .bill-container .reserved-overlay .amount {
   position: absolute;
-  top: 50%;
+  top: 0.5rem;
+  right: 0;
 
   padding: 0.2rem;
 
   background-color: #fff;
   border-radius: 0.3rem;
+}
+
+.bill-container .reserved-overlay:not(:last-child) .amount {
+  display: none;
+}
+
+.bill-container .reserved-overlay:not(:last-child).focus .amount {
+  display: block;
+  opacity: 0.6;
 }
 
 .bill-slice-container .inner,
