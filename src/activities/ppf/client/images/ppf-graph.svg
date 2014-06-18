@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="687px" height="649px" viewBox="0 0 687 649" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>Production Possibilities Frontier</title>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Group" sketch:type="MSLayerGroup" transform="translate(0.000000, 1.000000)">
+            <path d="M64.3088912,-0.187761283 L64.3088912,623.78641 L686.457085,623.78641" id="Path-1" stroke="#303030" stroke-width="4" sketch:type="MSShapeGroup"></path>
+            <path d="M65.2584336,166.004771 C65.2584336,166.004771 496.286019,166.686164 522.733158,623.479496" id="Path-3" stroke="#303030" stroke-width="4" sketch:type="MSShapeGroup"></path>
+            <g transform="translate(65.111481, 193.852364)" stroke="#303030" stroke-width="2" stroke-dasharray="6" sketch:type="MSShapeGroup">
+                <path d="M1.29907528,199.122564 L395.009649,199.122563 M391.662687,199.46043 L391.662687,428.694724" id="Path-3"></path>
+                <path d="M2.00710745,3.07470881 L149.378529,3.07470881 M150.323194,2.33994384 L150.323194,429.685025" id="Path-5"></path>
+                <path d="M265.555365,56.294301 L265.555365,423.85774 M0.0960846503,60.3524644 L267.292908,60.3524644" id="Path-7"></path>
+            </g>
+            <text id="Chalk" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="10" y="10.9648438">Chalk</tspan>
+            </text>
+            <text id="200" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="18.8099833" y="168.679319">200</tspan>
+            </text>
+            <text id="Erasers" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="625.070214" y="646.16351">Erasers</tspan>
+            </text>
+            <text id="190" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="18.8099833" y="197.617755">190</tspan>
+            </text>
+            <text id="160" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="18.8099833" y="254.047705">160</tspan>
+            </text>
+            <text id="100" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="18.8099833" y="388.611431">100</tspan>
+            </text>
+            <text id="100" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="202.569051" y="646.16351">100</tspan>
+            </text>
+            <text id="250" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="318.322794" y="646.16351">250</tspan>
+            </text>
+            <text id="350" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="445.651912" y="646.16351">350</tspan>
+            </text>
+            <text id="400" sketch:type="MSTextLayer" font-family="Open Sans, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#000000">
+                <tspan x="507.869549" y="646.16351">400</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
