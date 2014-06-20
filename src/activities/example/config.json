@@ -1,5 +1,5 @@
 {
-  "title": "Example multi user activity",
-  "shortDesc": "This activity demonstrates a multi user application",
-  "roomBased": true
+  "title": "Example Multi-user Activity",
+  "shortDesc": "This activity demonstrates a multi-user application",
+  "roomBased": false
 }
