@@ -1,15 +1,16 @@
-h1 Create Room
+.container
+  h1 Create Room
 
-if typeof errorMessage !== 'undefined'
-  p.error= errorMessage
+  if typeof errorMessage !== 'undefined'
+    p.error= errorMessage
 
-p.
-  From here you can create a room for the selected activity. This room will have
-  a list of groups you can assign your students to.
+  p.
+    From here you can create a room for the selected activity. This room will have
+    a list of groups you can assign your students to.
 
-form
-  select(name='activity')
-    each activity in activities
-      option(value=activity.slug)= activity.slug
+  form
+    select(name='activity')
+      each activity in activities
+        option(value=activity.slug)= activity.config.title
 
-  input(type='submit', value='Create')
+    input(type='submit', value='Create')
