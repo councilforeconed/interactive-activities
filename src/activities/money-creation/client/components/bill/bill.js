@@ -27,8 +27,10 @@ define(function(require) {
         markup = sliceTemplate(context);
 
         $slice = $(markup).css({
-          top: (100 * (total - round.get('deposit')) / total) + '%',
-          height: (100 * round.get('reserves') / total) + '%'
+          left: (100 * (total - round.get('deposit')) / total) + '%',
+          width: (100 * round.get('reserves') / total) + '%',
+          height: '100%',
+          top: 0
         });
 
         slices.appendChild($slice[0]);

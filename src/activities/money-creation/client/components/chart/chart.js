@@ -50,7 +50,13 @@ define(function (require) {
           .attr("width", this.width)
           .attr("height", 150);
 
-      this.margin = 20;
+      this.margin = {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 2.75
+      };
+      
       this.startingMaximum = this.baseAmount * 5;
 
       this.scale = d3.scale.linear()
@@ -67,8 +73,14 @@ define(function (require) {
       // Append the x-axis to the chart.
       this.svg.append('g')
         .attr('class', 'axis')
-        .attr('transform', 'translate(20,130)')
+        .attr('transform', 'translate(' + this.margin.left + ',130)')
         .call(this.xAxis);
+        
+      this.svg.selectAll(".tick").each(function (d) {
+        if ( d === 0 ) {
+            this.remove();
+        }
+      });
 
       this.updateChart();
     },
@@ -80,7 +92,7 @@ define(function (require) {
       if (sum < 500000) sum = 500000;
       this.scale = d3.scale.linear()
         .domain([0,sum])
-        .range([0, this.width - this.margin * 2]);
+        .range([0, this.width - (this.margin.right + this.margin.left)]);
     },
 
     updateChart: function() {
@@ -108,7 +120,7 @@ define(function (require) {
               return  _this.scale(_this.data.slice(0, -1)
                 .reduce(function (a, b) {
                   return a + b;
-                }, 0)) + _this.margin;
+                }, 0)) + _this.margin.left;
             },
             y: '10px',
             width: function (d) {
@@ -129,7 +141,7 @@ define(function (require) {
             return  _this.scale(_this.data.slice(0, i)
               .reduce(function (a, b) {
                 return a + b;
-              }, 0)) + _this.margin;
+              }, 0)) + _this.margin.left;
           },
           width: function (d) {
             return _this.scale(d);

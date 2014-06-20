@@ -1,11 +1,17 @@
+.ledger {
+  width: 100%;
+  max-width: 100%;
+}
+
 .ledger .round {
   height: 2rem;
 }
 
-.ledger .institution {
-  text-align: center;
+.ledger th {
+  font-weight: 400;
+  text-align: left;
 }
 
-.ledger .excess {
-  text-align: right;
+.ledger td {
+  font-weight: 300;
 }

@@ -1,9 +1,11 @@
-.mc-supply-container {
-  float: left;
+@media screen and (min-width: 800px) {
+  .mc-supply-container {
+    float: left;
+    width: 50%;
+  }
 
-  width: 20rem;
-}
-
-.mc-controls-container, .mc-ledger-container {
-  margin-left: 22rem;
+  .mc-controls-container {
+    float: right;
+    width: 45%;
+  }
 }
