@@ -2,26 +2,21 @@
   position: absolute;
 
   display: inline-block;
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
 
-  border-radius: 3rem;
-  border: solid 0.4rem #EEC591;
-  background-color: #EEC591;
-  color: #444;
+  background: url(/images/pizza/conveyor-dough.png) no-repeat;
   cursor: pointer;
-  font-family: sans-serif;
-  line-height: 3rem;
-  text-align: center;
 }
+
 .pizza-queue-pizza[data-foodstate="dough"] {
-  border-width: 0;
-  margin: 0.4rem;
 }
+
 .pizza-queue-pizza[data-foodstate="sauce"] {
   background-color: #a00;
   color: #fff;
 }
+
 .pizza-queue-pizza[data-foodstate="cheese"],
 .pizza-queue-pizza[data-foodstate="anchovies"],
 .pizza-queue-pizza[data-foodstate="olives"] {

@@ -46,7 +46,8 @@ define(function(require) {
       return {
         game: this.gameState.toJSON(),
         player: this.playerModel.toJSON(),
-        timeRemaining: this.timeRemaining
+        timeRemaining: this.timeRemaining,
+        image: this.image
       };
     }
   });

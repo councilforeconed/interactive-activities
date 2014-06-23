@@ -1,12 +1,31 @@
-.pizza-topping.pizza-topping-dough {
+.pizza-topping-dough,
+.pizza-topping-anchovie,
+.pizza-topping-cheese,
+.pizza-topping-sauce,
+.pizza-topping-olive {
   padding: 0.2rem;
-  height: 4rem;
-  width: 4rem;
-
-  background-color: #222;
-  border-radius: 0.5rem;
-  color: #FFE39B;
+  height: 60px;
+  width: 60px;
 }
-.pizza-topping.pizza-topping-dough:after {
-  content: '(dough)';
+
+.pizza-topping-dough {
+  background: url(/images/pizza/dough.png) no-repeat;
+  background-size: 70%;
+}
+
+.pizza-topping-cheese {
+  background: url(/images/pizza/cheese.png) no-repeat;
+  background-size: 70%;
+}
+
+.pizza-topping-sauce {
+  background: url(/images/pizza/sauce.png) no-repeat;
+  background-size: 70%;
+}
+
+.pizza-topping-olive {
+  border: 2px solid black;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
 }

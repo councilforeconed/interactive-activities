@@ -33,10 +33,14 @@
   width: 40rem;
 
   overflow-y: scroll;
-  max-height: 300px;
+  /*max-height: 300px;*/
 
   background-color: #FFF;
   box-shadow: 0 0 10px #666;
+}
+
+.round-ready-body {
+  text-align: center;
 }
 
 /*

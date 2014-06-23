@@ -1,10 +1,16 @@
+.pizza-workstation {
+  width: 520px;
+  margin: 0 auto;
+}
+
 .pizza-workstation-surface {
   width: 70%;
-  min-height: 10rem;
-  margin: 3rem 5%;
+  margin: 3rem auto;
 
   float: left;
-  background-color: teal;
+  background: url(/images/pizza/pizza-workstation.png) no-repeat;
+  height: 520px;
+  width: 520px;
   text-align: center;
 }
 
@@ -13,10 +19,10 @@
   left: 0;
   bottom: 0;
 
-  width: 30%;
-  height: 10rem;
+  width: 250px;
+  height: 200px;
 
-  background-color: papayawhip;
+  background: url(/images/pizza/platter.png);
 }
 
 .pizza-workstation[data-move] .pizza-workstation-surface {
