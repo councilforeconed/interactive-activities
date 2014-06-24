@@ -5,11 +5,12 @@
   width: 5rem;
   height: 5rem;
 
-  background: url(/images/pizza/conveyor-dough.png) no-repeat;
+  background: url(/images/pizza/conveyor-plate.png) no-repeat;
   cursor: pointer;
 }
 
 .pizza-queue-pizza[data-foodstate="dough"] {
+  background: url(/images/pizza/conveyor-dough.png) no-repeat;
 }
 
 .pizza-queue-pizza[data-foodstate="sauce"] {

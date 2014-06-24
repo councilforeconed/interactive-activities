@@ -54,8 +54,4 @@
   padding: 0px 10px;
 }
 
-.activity .activity-stage {
-  min-height: 700px;
-}
-
-.modal-title-description { margin: 17px; }
+.activity .activity-stage { min-height: 700px; }
