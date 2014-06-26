@@ -15,3 +15,7 @@
 .ledger td {
   font-weight: 300;
 }
+
+.ledger td.bill-slice-container {
+  display: inline-block;
+}
