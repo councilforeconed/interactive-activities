@@ -40,7 +40,14 @@ p {
   font-weight: 300;
 }
 
-a { text-decoration: none; }
+a { 
+  color: #74bee9;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #5186AF;
+}
 
 li { list-style: none; }
 
