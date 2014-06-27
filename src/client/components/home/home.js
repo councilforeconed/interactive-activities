@@ -12,6 +12,14 @@ define(function(require) {
 
     initialize: function(options) {
       this.activities = options.activities;
+      this.browserIsInternetExplorer = !!navigator.userAgent.match('Trident');
+    },
+
+    afterRender: function() {
+      if (this.browserIsInternetExplorer) {
+        var activitiesThatDoNotSupportIE = $('.no-ie');
+        activitiesThatDoNotSupportIE.addClass('disabled');
+      }
     },
 
     setLoading: function(event) {
