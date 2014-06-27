@@ -1,5 +1,6 @@
 button,
-input[type="submit"] {
+input[type="submit"],
+a.button {
   color: white;
   background-color: rgb(29, 178, 212);
   font-size: 0.8rem;
@@ -8,41 +9,55 @@ input[type="submit"] {
   padding: 0.8rem 2rem;
 }
 
+
+button:not(:last-child),
+input[type="submit"]:not(:last-child),
+a.button:not(:last-child) {
+  margin-right: 1rem;
+}
+
 button:hover,
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+a.button:hover {
   background-color: rgb(36, 190, 235);
 }
 
 button:active,
-input[type="submit"]:active {
+input[type="submit"]:active,
+a.button:active {
   background-color: rgb(28, 151, 187);
 }
 
 button.forward:after,
-input[type="submit"].forward:after {
+input[type="submit"].forward:after,
+a.button.forward:after {
   content: ' →';
 }
 
 button.deactivated,
-input[type="submit"].deactivated {
+input[type="submit"].deactivated,
+a.button.deactivated {
   background-color: rgb(189, 225, 235);
   pointer-events: none;
 }
 
 button.secondary,
-input[type="submit"].secondary {
+input[type="submit"].secondary,
+a.button.secondary {
   background-color: white;
   box-sizing: border-box;
   color: rgb(29, 178, 212);
 }
 
 button.secondary:hover,
-input[type="submit"].secondary:hover {
+input[type="submit"].secondary:hover,
+a.button.secondary:hover {
   background-color: #F9F9F9;
   color: rgb(36, 190, 235);
 }
 
 button.secondary:active,
-input[type="submit"].secondary:active {
+input[type="submit"].secondary:active,
+a.button.secondary:active {
   background-color: #EEE;
 }

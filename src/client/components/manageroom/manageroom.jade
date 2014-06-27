@@ -1,33 +1,50 @@
-h1= 'Manage Room: ' + id
-
-if typeof activity !== 'undefined'
-  p= 'Created on: ' + new Date(created_at).toLocaleDateString()
-  p= 'Expires at: ' + new Date(expires_at).toLocaleString()
-
-  h2= 'Activity: ' + activity
-
-  p= activityData.config.shortDesc
-
-if typeof error !== 'undefined'
-  p.error= error
-
-if typeof groups !== 'undefined'
-  h2 Groups
+.container
+  h1= 'Manage Room: ' + id
+  
+  p.
+    From this page you can control a collaborative activity's room and groups.
+    You can assign your students to groups as you prefer by giving them the URL
+    for the group you'd like them to be in. Each room exists for a short
+    period of time. You may use this span of time to create a room ahead of
+    time and prepare whatever you need to use the generated group names to help
+    your students set up.
 
   p.
-    Instruct your students to enter the one of the following urls to have them join the group you want them in.
+    You may want to bookmark this page or copy the URL so you can return back 
+    here at a later date.
 
-  table
-    each group in groups
-      tr
-        td
+  if typeof activity !== 'undefined'
+    p 
+      | This room was created on <strong>
+      | #{new Date(created_at).toLocaleDateString()}</strong> and it will
+      | expire at <strong>#{new Date(expires_at).toLocaleString()}</strong>.
+
+    h2= 'Activity: ' + activityData.config.title
+
+    p= activityData.config.shortDesc
+
+  if typeof error !== 'undefined'
+    p.error= error
+
+  if typeof groups !== 'undefined'
+    h2 Groups
+
+    p.
+      Instruct your students to enter the one of the following urls to have
+      them join the group you want them in.  If there are not enough groups or
+      you would prefer not to use specific groups you can click the <code>Add
+      Group</code> link to add and use more.
+
+    ol.groups
+      each group in groups
+        li
           a(href='/#/group/' + group.name + '/')= location.protocol + '//' + location.host + '/group/' + group.name + '/'
 
-  div
-    a(class='add-group', href='javascript:;') Add Group
+    .controls
+      a.button(href='javascript:;') Add Group
 
-  div
-    a(href='/activities/' + activity + '/report/' + room + '/download').
-      Download Report
-else
-  p Loading ...
+      a.button(href='/activities/' + activity + '/report/' + room + '/download').
+        Download Report
+
+  else
+    p Loading ...
