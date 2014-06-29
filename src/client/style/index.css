@@ -11,7 +11,17 @@ html.initial-load-complete .initial-loading {
 
 footer {
   background-color: #eae9d6;
-  height: 100px;
+  color: #808070;
+  min-height: 100px;
+}
+
+footer a {
+  color: #808070;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  color: #A77F64;
 }
 
 .initial-loading {

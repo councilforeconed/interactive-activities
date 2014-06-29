@@ -81,6 +81,29 @@
   z-index: auto;
 }
 
+.activity-container a.disabled {
+  filter: grayscale(100%); /* Current draft standard */
+  -webkit-filter: grayscale(100%); /* New WebKit */
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%); /* Not yet supported in Gecko, Opera or IE */
+  filter: url(resources.svg#desaturate); /* Gecko */
+  filter: gray; /* IE */
+  -webkit-filter: grayscale(1); /* Old WebKit */
+  pointer-events: none;
+  cursor: default;
+}
+
+.activity-container a.disabled .activity-title {
+  color: gray;
+}
+
+.activity-container a.disabled .activity-title:after {
+  content: ' (Not supported in IE)';
+  font-weight: 300;
+  font-size: 0.6em;
+}
+
 /*RESPONSIVE STYLES*/
 @media screen and (max-width: 1024px) {
   .activity-container {
