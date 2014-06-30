@@ -1,6 +1,7 @@
 define(function(require) {
   'use strict';
 
+  var $ = require('jquery');
   var Layout = require('layoutmanager');
   require('css!./home');
 
