@@ -41,23 +41,17 @@
 
 .activity-help-icon {
   position: absolute;
-  top: 3px;
-  left: 2px;
+  top: 5px;
+  left: 5px;
   border-radius: 100%;
   background-color: #eadd3f;
   color: white;
   font-weight: bold;
   margin: 0;
   font-size: 18px;
-  width: 30px;
-  height: 30px;
-  padding: 4px 12px;
+  width: 25px;
+  height: 25px;
+  padding: 0px 10px;
 }
 
-.activity .activity-stage {
-  padding-top: 3rem;
-  min-height: 100%;
-  box-sizing: border-box;
-}
-
-.modal-title-description { margin: 17px; }
+.activity .activity-stage { min-height: 700px; }

@@ -1,11 +1,11 @@
 .header.clearfix
   img(src=image).activity-image.left
-  div.modal-title-description
+  div.modal-title-description.right
     h1.title=title
     != description
 
-.body
-  h2 Instructions
+.body.clearfix
+  img(src="/images/help-icon.png").left.help-icon
   != instructions
 
 .footer

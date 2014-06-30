@@ -17,7 +17,7 @@ define(function(require) {
      *           - {String} [yLabel] Name for y axis
      */
     initialize: function(options) {
-      var axisLabelSpacing = '0.71em';
+      var axisLabelSpacing = '-1.5em';
       var clipId;
 
       if (!this.base) {

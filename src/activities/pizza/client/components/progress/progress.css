@@ -1,23 +1,31 @@
 .pizza-progress {
+  background: url(/images/pizza-progress-background.png) no-repeat;
+  height: 255px;
+  width: 185px;
   position: fixed;
-  right: 0;
-  bottom: 0;
+  right: 40px;
+  bottom: 40px;
 
   padding: 1rem;
-  width: 20%;
 
-  text-align: right;
-  background-color: #fff;
-  border-radius: 2rem 0 0 0;
+  text-align: center;
+  border-radius: 1rem;
 }
 
-.pizza-counter .pizza-counter-count {
-  font-size: 2rem;
+.pizza-counter-count-time {
+  background-color: white;
+  width: 90px;
+  height: 60px;
+  margin: 25px auto 0 auto;
+  font-size: 2.5rem;
+  font-weight: bold;
 }
-.pizza-progress .pizza-time {
-  font-family: sans-serif;
-  font-size: 3rem;
+
+.count-time-label {
+  color: white;
+  font-size: 12px;
 }
+
 .pizza-progress .minutes:after {
   content: ':';
 }

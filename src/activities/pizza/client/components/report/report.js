@@ -14,8 +14,8 @@ define(function(require) {
     initialize: function(options) {
       this.gameState = options.gameState;
       this.barChart = new BarChart(null, {
-        xLabel: '# of Chefs',
-        yLabel: '# Pizzas Completed',
+        xLabel: 'Number of Chefs',
+        yLabel: 'Average Number of Pizzas Completed',
         omitZero: true
       });
 
