@@ -1,0 +1,9 @@
+[data-cocoa-status] .cocoa-message {
+  display: none;
+}
+
+[data-cocoa-status="pending"] .cocoa-txn-pending,
+[data-cocoa-status="success"] .cocoa-txn-success,
+[data-cocoa-status="failure"] .cocoa-txn-failure {
+  display: block;
+}

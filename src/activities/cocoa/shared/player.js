@@ -17,12 +17,12 @@ define(function(require) {
       // floating-point values) by the source material.
       if (price !== +priceStr) {
         throw new Error(
-          'CEE Cacao activity: Prices must be integer values. ' +
+          'CEE Cocoa activity: Prices must be integer values. ' +
           '(Could not cast "' + priceStr + '" to an integer.)'
         );
       } else if (price <= 0) {
         throw new Error(
-          'CEE Cacao activity: Prices must be greater than 0. ' +
+          'CEE Cocoa activity: Prices must be greater than 0. ' +
           '(Encountered value "' + price + '".)'
         );
       }
