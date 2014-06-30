@@ -1,18 +1,18 @@
-.cacao-label {
+.cocoa-label {
   display: block;
 
   font-size: 1rem;
 }
 
-.cacao-player-name,
-.cacao-player-role,
-.cacao-player-earnings,
-.cacao-player-target-price {
+.cocoa-player-name,
+.cocoa-player-role,
+.cocoa-player-earnings,
+.cocoa-player-target-price {
   margin: 0 0 1rem 0;
   display: block;
 }
 
-.cacao-target-description {
+.cocoa-target-description {
   margin: 0 0 0.5rem 0;
   padding: 0;
 
@@ -20,12 +20,12 @@
   font-style: italic;
 }
 
-.cacao fieldset {
+.cocoa fieldset {
   margin: 0;
   padding: 0;
   border: 0;
 }
-.cacao .cacao-trade-with input, .cacao-trade {
+.cocoa .cocoa-trade-with input, .cocoa-trade {
   display: block;
   padding: 0.7rem;
   width: 100%;
@@ -34,7 +34,7 @@
 
   font-size: 1rem;
 }
-.cacao-validation-error {
+.cocoa-validation-error {
   padding: 1rem;
   margin: 0 0 1rem 0;
 

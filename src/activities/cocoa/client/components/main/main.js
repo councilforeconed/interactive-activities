@@ -20,18 +20,18 @@ define(function(require) {
     description: require('jade!../../description')(),
     instructions: require('jade!../../instructions')(),
     events: {
-      'change .cacao-trade-with': 'handleTradeWithChange',
-      'submit .cacao-form': 'handleSubmit'
+      'change .cocoa-trade-with': 'handleTradeWithChange',
+      'submit .cocoa-form': 'handleSubmit'
     },
 
     initialize: function() {
       this.player = new Player();
       this.txn = new Txn();
-      this.$el.addClass('cacao');
+      this.$el.addClass('cocoa');
 
       this.txnModal = new TxnModal();
 
-      this.setView('.cacao-trade-amount', new Slider({
+      this.setView('.cocoa-trade-amount', new Slider({
         model: this.txn,
         attr: 'amount',
         label: 'Trade Amount',
@@ -86,7 +86,7 @@ define(function(require) {
 
       cloak.run(undefined, {
         'socket.io': {
-          resource: 'activities/cacao/socket.io'
+          resource: 'activities/cocoa/socket.io'
         }
       });
     },

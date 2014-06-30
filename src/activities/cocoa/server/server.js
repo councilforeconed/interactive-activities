@@ -3,7 +3,7 @@
 'use strict';
 
 // Third party libs.
-var _debug = require('debug')('cee:cacao');
+var _debug = require('debug')('cee:cocoa');
 var cloak = require('cloak');
 require('express-resource');
 var socketio = require('../../../server/socketio.monkey');
@@ -16,7 +16,7 @@ var DataAggregator = require('./dataaggregator');
 var MemoryStore = require('../../../server/storememory');
 var RoomDataCollector = require('../../../server/roomdatacollector');
 var GameManager = require('../../../server/game-manager');
-var CacaoGame = require('./cacao-game');
+var CocoaGame = require('./cocoa-game');
 
 // Create an express server.
 // @param {object} options
@@ -71,7 +71,7 @@ module.exports.createServer = function(options, debug) {
   var gameManager = new GameManager({
     dataCollector: dataCollector,
     groupManager: groupManager,
-    GameCtor: CacaoGame
+    GameCtor: CocoaGame
   });
 
   // Configure cloak. We'll start it later after server binds to a port.

@@ -1,0 +1,39 @@
+//- IDs necessary to link `label` elements with `input` elements
+- var id1 = 'cocoa-' + (new Date()).getTime() + 'a'
+- var id2 = 'cocoa-' + (new Date()).getTime() + 'b'
+
+span.cocoa-label Trader ID
+h1.cocoa-player-name= player.id
+
+span.cocoa-label Role
+h2.cocoa-player-role=player.role
+
+span.cocoa-label Earnings
+h2.cocoa-player-earnings=formatters.usd(player.earnings)
+
+span.cocoa-label Target Price
+p.cocoa-target-description
+  if player.role === 'buyer'
+    | (Try not to spend more than this amount.)
+  else
+    | (Try to sell for at least this amount.)
+h2.cocoa-player-target-price=formatters.usd(player.targetPrice)
+
+form.cocoa-form
+  fieldset.cocoa-trade-with
+    label.cocoa-label(for=id1) Trade with player
+    input(
+      type='number',
+      name=otherRole,
+      id=id1,
+      min=0,
+      value=txn[otherRole] || 0
+    )
+
+  fieldset.cocoa-trade-amount
+
+  if validationError
+    .cocoa-validation-error
+      =validationError
+
+  input.cocoa-trade(type='submit', value='Trade!')

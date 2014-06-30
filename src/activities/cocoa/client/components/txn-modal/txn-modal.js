@@ -13,7 +13,7 @@ define(function(require) {
     template: require('jade!./txn'),
 
     _setStatus: function(value) {
-      this.$el.attr('data-cacao-status', value);
+      this.$el.attr('data-cocoa-status', value);
       this.render();
     },
 

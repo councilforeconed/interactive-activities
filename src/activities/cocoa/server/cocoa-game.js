@@ -3,24 +3,24 @@
 var config = require('../shared/config.json');
 var common = require('../../../server/common');
 var requirejs = common.createRequireJS({
-  shared: '../src/activities/cacao/shared'
+  shared: '../src/activities/cocoa/shared'
 });
 
 var PlayerCollection = requirejs('shared/player-collection');
 PlayerCollection.prototype.model = require('./player');
 var TxnCollection = requirejs('shared/txn-collection');
 
-module.exports = CacaoGame;
+module.exports = CocoaGame;
 
 /**
- * Create an instance of the Cacao "game".
+ * Create an instance of the Cocoa "game".
  *
  * @argument {Object} options
  *           - {Function} options.report A function that may be invoked with
  *                        game-specific data that should be included in the
  *                        game report.
  */
-function CacaoGame(options) {
+function CocoaGame(options) {
   var report = options.report;
 
   this.players = new PlayerCollection();
@@ -32,11 +32,11 @@ function CacaoGame(options) {
   });
 }
 
-CacaoGame.messageHandlers = {
+CocoaGame.messageHandlers = {
   trade: 'trade'
 };
 
-CacaoGame.prototype.join = function(user) {
+CocoaGame.prototype.join = function(user) {
   var lastPlayer = this.players.last();
   var roles = this.players.groupBy('role');
   var buyerCount = roles.buyer && roles.buyer.length || 0;
@@ -65,7 +65,7 @@ CacaoGame.prototype.join = function(user) {
   newPlayer.save();
 };
 
-CacaoGame.prototype.leave = function(user) {
+CocoaGame.prototype.leave = function(user) {
   var player = this.players.findWhere({ cloakID: user.id });
   if (!player) {
     return;
@@ -74,7 +74,7 @@ CacaoGame.prototype.leave = function(user) {
   this.players.remove(player);
 };
 
-CacaoGame.prototype.trade = function(txnData, user) {
+CocoaGame.prototype.trade = function(txnData, user) {
   var pending = this.pendingTxns.find(function(txn) {
     return txn.fuzzyMatch(txnData);
   });

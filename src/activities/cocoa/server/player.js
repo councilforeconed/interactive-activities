@@ -4,7 +4,7 @@ var cloak = require('cloak');
 
 var common = require('../../../server/common');
 var requirejs = common.createRequireJS({
-  shared: '../src/activities/cacao/shared'
+  shared: '../src/activities/cocoa/shared'
 });
 
 var Player = requirejs('shared/player');
