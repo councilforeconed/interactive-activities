@@ -9,17 +9,34 @@
   cursor: pointer;
 }
 
-.pizza-queue-pizza[data-foodstate="dough"] {
+.pizza-queue-pizza[data-foodstate="flat"] {
   background: url(/images/pizza/conveyor-dough.png) no-repeat;
 }
 
-.pizza-queue-pizza[data-foodstate="sauce"] {
-  background-color: #a00;
-  color: #fff;
+.pizza-queue-pizza[data-foodstate="dough"] {
+  background: url(/images/pizza/conveyor-flat.png) no-repeat;
 }
 
+.pizza-queue-pizza[data-foodstate="sauce"] {
+  background: url(/images/pizza/conveyor-sauce.png) no-repeat;
+}
+
+.pizza-queue-pizza[data-foodstate="cheese"] {
+  background: url(/images/pizza/conveyor-cheese.png) no-repeat;
+}
+
+.pizza-queue-pizza[data-foodstate="olives"] {
+  background: url(/images/pizza/conveyor-olives.png) no-repeat;
+}
+
+.pizza-queue-pizza[data-foodstate="flat"],
+.pizza-queue-pizza[data-foodstate="dough"],
+.pizza-queue-pizza[data-foodstate="sauce"],
 .pizza-queue-pizza[data-foodstate="cheese"],
+.pizza-queue-pizza[data-foodstate="olives"] { background-size: 100%; }
+
+/*.pizza-queue-pizza[data-foodstate="cheese"],
 .pizza-queue-pizza[data-foodstate="anchovies"],
 .pizza-queue-pizza[data-foodstate="olives"] {
   background-color: #FFE39B;
-}
+}*/
