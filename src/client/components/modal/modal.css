@@ -41,7 +41,17 @@
 
 .round-ready-body {
   text-align: center;
+  position: relative;
 }
+
+.round-ready-body h2 { margin: 0; }
+
+.round-ready-body h3 {
+  display: inline;
+  position: absolute;
+}
+
+.round-ready-body img { float: none; }
 
 /*
   Adapt the set the max-height of the modal depending on the window height.
