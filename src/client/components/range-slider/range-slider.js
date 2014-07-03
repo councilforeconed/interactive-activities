@@ -34,7 +34,8 @@ define(function(require) {
         event.preventDefault();
         event.stopPropagation();
       },
-      'change': 'handleChange'
+      'change': 'handleChange',
+      'change .ui-slider-input': 'handleChange'
     },
 
     initialize: function(options) {

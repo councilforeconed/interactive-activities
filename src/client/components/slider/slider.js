@@ -41,7 +41,8 @@ define(function(require) {
       'click .ui-slider-handle': function(event) {
         event.preventDefault();
         event.stopPropagation();
-      }
+      },
+      'change .ui-slider-input': 'handleChange'
     },
 
     initialize: function(options) {
