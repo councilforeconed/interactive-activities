@@ -6,10 +6,8 @@ define(function(require) {
   var foodStatesConfig = require('json!./food-states-config.json');
   var workstationsConfig = require('json!./workstations-config.json');
 
-  var foodStateKeys = [
-    'dough', 'flat', 'sauce', 'cheese', 'anchovies', 'olives'
-  ];
-  var workstationKeys = ['rolling', 'sauce', 'cheese', 'anchovies', 'olives'];
+  var foodStateKeys = ['dough', 'flat', 'sauce', 'cheese', 'olives'];
+  var workstationKeys = ['rolling', 'sauce', 'cheese', 'olives'];
 
 
   var assert = function(value, message) {
