@@ -12,10 +12,6 @@
     "minToppingCount": 2
   },
   {
-    "title": "Anchovies",
-    "minToppingCount": 3
-  },
-  {
     "title": "Olives",
     "minToppingCount": 4
   }

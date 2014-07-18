@@ -16,7 +16,6 @@ define(function(require) {
     rolling: require('../workstation/rolling-workstation'),
     sauce: require('../workstation/sauce-workstation'),
     cheese: require('../workstation/cheese-workstation'),
-    anchovies: require('../workstation/anchovies-toppings-workstation'),
     olives: require('../workstation/olives-toppings-workstation')
   };
 

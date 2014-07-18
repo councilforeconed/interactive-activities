@@ -12,7 +12,7 @@ define(function(require) {
     template: require('jade!./workstation-pizza'),
 
     initialize: function() {
-      this.$el.attr('src', '/activities/pizza/client/images/circle.svg');
+      this.listenTo(this.model, 'change:foodState', this.render);
 
       this.$el.pep({
         shouldEase: false,
@@ -25,6 +25,12 @@ define(function(require) {
       // 100%`). Explicitly over-ride this setting, which is not necessary when
       // easing is disabled.
       this.$el.css('position', '');
+    },
+
+    afterRender: function() {
+      var imgSrc = '/activities/pizza/client/images/workstation-pizzas/' +
+        this.model.get('foodState') + '.png';
+      this.$('img').attr('src', imgSrc);
     },
 
     /**
