@@ -1,5 +1,5 @@
 .pizza-queue-pizza {
-  position: absolute;
+  position: relative;
 
   display: inline-block;
   width: 5rem;
