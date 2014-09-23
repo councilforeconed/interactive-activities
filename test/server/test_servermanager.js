@@ -35,21 +35,60 @@ suite('ServerManager', function() {
     });
   };
 
-  test('launch example', function(done) {
-    manager.launch('example', examplePath())
-      // In resolve state, don't pass arguments to done, that'll cause an error.
-      .yield(undefined)
-      .always(done);
+  suite('#launch', function() {
+    test('`childrenChange` event emitted', function(done) {
+      var args = [];
+
+      manager.addListener('childrenChange', function() {
+        args.push(arguments);
+      });
+
+      manager.launch('example', examplePath())
+        .always(function() {
+          assert.equal(args.length, 1);
+          assert.equal(args[0].length, 1);
+          done();
+        });
+    });
+
+    test('error-free operation with a valid path', function(done) {
+      manager.launch('example', examplePath())
+        // In resolve state, don't pass arguments to done, that'll cause an
+        // error.
+        .yield(undefined)
+        .always(done);
+    });
   });
 
-  test('kill example', function(done) {
-    manager.launch('example', examplePath())
-      // Don't want to pass any extra arguments to manager.kill
-      .yield(undefined)
-      .then(manager.kill.bind(manager, 'example'))
-      // In resolve state, don't pass arguments to done, that'll cause an error.
-      .yield(undefined)
-      .always(done);
+  suite('#kill', function(done) {
+    test('`childrenChange` event emitted', function(done) {
+      var args = [];
+
+      manager.launch('example', examplePath())
+        .then(function() {
+          manager.on('childrenChange', function(pids) {
+            args.push(pids);
+          });
+
+          return manager.kill('example');
+        }).then(function() {
+          assert.equal(args.length, 1);
+          assert.equal(args[0].length, 0);
+
+          done();
+        });
+    });
+
+    test('error-free operation with a running process', function() {
+      manager.launch('example', examplePath())
+        // Don't want to pass any extra arguments to manager.kill
+        .yield(undefined)
+        .then(manager.kill.bind(manager, 'example'))
+        // In resolve state, don't pass arguments to done, that'll cause an
+        // error.
+        .yield(undefined)
+        .always(done);
+    });
   });
 
   test('example is relaunched', function(done) {

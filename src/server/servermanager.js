@@ -5,6 +5,7 @@
 // Node included libs.
 var child_process = require('child_process');
 var path = require('path');
+var EventEmitter = require('events').EventEmitter;
 
 // Third party libs.
 var _ = require('lodash');
@@ -82,10 +83,27 @@ ServerChild.prototype.kill = function(signal) {
 };
 
 // Manage sub servers. Launch, auto-relaunch on exit, kill, send messages, and
-// proxy web traffic to them by a given name.
+// proxy web traffic to them by a given name. Implements the Node.js
+// `EventEmitter` API, and emits the following events:
+//
+// - "childrenChange": when a child process is created or destroyed, this even
+//   is emitted with an array of all active process identifiers
 function ServerManager() {
+  EventEmitter.call(this);
+
   this._children = {};
 }
+
+ServerManager.prototype = Object.create(EventEmitter.prototype);
+
+// Retrieve an array of process identifiers for all child processes
+//
+// @returns {Array} identifiers for active child processes
+ServerManager.prototype.pids = function() {
+  return _.map(this._children, function(child) {
+    return child.process.pid;
+  });
+};
 
 // Launch a sub server at path with a name.
 // @param name
@@ -101,6 +119,8 @@ ServerManager.prototype.launch = function(name, path) {
 
   // On exit, relaunch this child.
   child.process.on('exit', child._relaunch);
+
+  this.emit('childrenChange', this.pids());
 
   return child.whenLaunched;
 };
@@ -120,6 +140,8 @@ ServerManager.prototype.kill = function(name, signal) {
     promise = child.kill(signal);
 
     delete this._children[name];
+
+    this.emit('childrenChange', this.pids());
 
     return promise;
   }
