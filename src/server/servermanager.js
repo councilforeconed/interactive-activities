@@ -16,7 +16,7 @@ var when = require('when');
 module.exports = ServerManager;
 
 // Wrap a sub server process for easier communicataion.
-function ServerChild(manager, name, indexFile) {
+function ServerChild(name, indexFile) {
   var self = this;
 
   this.name = name;
@@ -36,12 +36,6 @@ function ServerChild(manager, name, indexFile) {
       debug('%s - received port server is listening on %d', name, data.port);
       self._setPort(data.port);
     });
-
-  // Have a bound version stored that can be easily removed as a listener.
-  this._relaunch = manager.launch.bind(manager, name, indexFile);
-
-  // On exit, relaunch this child.
-  this.process.on('exit', this._relaunch);
 }
 
 // Set the port and create an object to proxy traffic with.
@@ -79,7 +73,6 @@ ServerChild.prototype.kill = function(signal) {
   return when.promise(function(resolve) {
     debug('kill %s', self.name);
     var process = self.process;
-    process.removeListener('exit', self._relaunch);
     process.on('exit', function() {
       debug('stopped %s (pid %d)', self.name, process.pid);
       resolve();
@@ -101,7 +94,13 @@ function ServerManager() {
 ServerManager.prototype.launch = function(name, path) {
   debug('%s - launch', name);
 
-  var child = this._children[name] = new ServerChild(this, name, path);
+  var child = this._children[name] = new ServerChild(name, path);
+
+  // Have a bound version stored that can be easily removed as a listener.
+  child._relaunch = this.launch.bind(this, name, path);
+
+  // On exit, relaunch this child.
+  child.process.on('exit', child._relaunch);
 
   return child.whenLaunched;
 };
@@ -111,12 +110,17 @@ ServerManager.prototype.launch = function(name, path) {
 // @param signal optional. Send a kill signal of the given type. eg. 'SIGINT'
 // @returns {Promise} promise that resolves when the server has exited.
 ServerManager.prototype.kill = function(name, signal) {
-  var self = this;
-  if (self._children[name] === undefined) {
+  var child = this._children[name];
+  var promise;
+
+  if (child === undefined) {
     return when.resolve();
   } else {
-    var promise = self._children[name].kill(signal);
-    self._children[name] = undefined;
+    child.process.removeListener('exit', child._relaunch);
+    promise = child.kill(signal);
+
+    delete this._children[name];
+
     return promise;
   }
 };
