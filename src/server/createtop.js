@@ -51,7 +51,7 @@ module.exports.createTop = function(options, debug) {
     .then(function(pids) {
       pids.forEach(function(pid) {
         try {
-          process.kill(pid);
+          process.kill(pid, 'SIGTERM');
         } catch (err) {}
       });
 
