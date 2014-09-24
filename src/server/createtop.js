@@ -20,6 +20,7 @@ var MemoryStore = require('./storememory');
 var namegen = require('./namegen');
 var ServerManager = require('./servermanager');
 var whenListening = require('./common').whenListening;
+var pidFile = require('./pid-file');
 
 // Start a server and return a promise of when that server is ready.
 //
@@ -27,6 +28,7 @@ var whenListening = require('./common').whenListening;
 //   - port port to server on
 //   - hostname hostname to attach to (eg. '0.0.0.0')
 //   - scriptFilter function to filter scripts with
+//   - pidfile string to store process identifiers for children
 // @param debug debug module instance to use
 // @returns {Promise} promise for server
 module.exports.createTop = function(options, debug) {
@@ -39,8 +41,25 @@ module.exports.createTop = function(options, debug) {
   // Create the manager instance.
   var manager = new ServerManager();
 
+  manager.on('childrenChange', function(pids) {
+    pidFile.write(options.pidfile, pids);
+  });
+
   // Find scripts to boot, then launch those with the manager instance.
-  var whenChildren = getActivities()
+  var whenChildren = pidFile.read(options.pidfile)
+    .catch(function() { return []; })
+    .then(function(pids) {
+      pids.forEach(function(pid) {
+        try {
+          process.kill(pid);
+        } catch (err) {}
+      });
+
+      // Now that any previously-existing processes have been killed, the pid
+      // file should be emptied.
+      return pidFile.write(options.pidfile, []);
+    })
+    .then(getActivities)
     .then(function(activities) {
       if (options.scriptFilter) {
         activities = activities.filter(function(activity) {

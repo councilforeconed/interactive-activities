@@ -17,7 +17,7 @@ suite('top server', function() {
 
   // Setup the server to test against.
   suiteSetup(function(done) {
-    server = createTop()
+    server = createTop({ pidfile: 'test/.child-pids' })
       .then(function(_server) {
         server = _server;
         // In case we are shutting down due to an error, make sure the servers
