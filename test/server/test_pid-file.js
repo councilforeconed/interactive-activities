@@ -27,27 +27,24 @@ suite('pidFile', function() {
         unlink('.test-pids-empty')
       ]);
     });
-    test('reads file from disk', function(done) {
-      pidFile.read('.test-pids-good').then(function(pids) {
+    test('reads file from disk', function() {
+      return pidFile.read('.test-pids-good').then(function(pids) {
         assert.equal(pids.length, 3);
         assert.equal(pids[0], 1);
         assert.equal(pids[1], 2);
         assert.equal(pids[2], 3);
-        done();
       });
     });
-    test('bad data', function(done) {
-      pidFile.read('.test-pids-bad').then(function(pids) {
+    test('bad data', function() {
+      return pidFile.read('.test-pids-bad').then(function(pids) {
         assert.equal(pids.length, 2);
         assert.equal(pids[0], 1);
         assert.equal(pids[1], 3);
-        done();
       });
     });
-    test('empty files', function(done) {
-      pidFile.read('.test-pids-empty').then(function(pids) {
+    test('empty files', function() {
+      return pidFile.read('.test-pids-empty').then(function(pids) {
         assert.equal(pids.length, 0);
-        done();
       });
     });
   });
