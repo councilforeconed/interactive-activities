@@ -112,7 +112,7 @@ define(function(require) {
     },
 
     resize: function() {
-      this.chart.width($window.width());
+      this.chart.width($window.width() - 80);
     },
 
     afterRender: function() {
