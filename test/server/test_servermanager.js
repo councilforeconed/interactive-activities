@@ -35,21 +35,65 @@ suite('ServerManager', function() {
     });
   };
 
-  test('launch example', function(done) {
-    manager.launch('example', examplePath())
-      // In resolve state, don't pass arguments to done, that'll cause an error.
-      .yield(undefined)
-      .always(done);
+  suite('#launch', function() {
+    test('`childrenChange` event emitted', function() {
+      var args = [];
+      var launchPromise;
+
+      manager.addListener('childrenChange', function() {
+        args.push(arguments);
+      });
+
+      launchPromise = manager.launch('example', examplePath());
+
+      launchPromise.then(function() {
+        assert.equal(args.length, 1);
+        assert.equal(args[0].length, 1);
+      });
+
+      assert.typeOf(launchPromise.then, 'function');
+
+      return launchPromise;
+    });
+
+    test('error-free operation with a valid path', function() {
+      var launchPromise = manager.launch('example', examplePath());
+      assert.typeOf(launchPromise.then, 'function');
+
+      return launchPromise;
+    });
   });
 
-  test('kill example', function(done) {
-    manager.launch('example', examplePath())
-      // Don't want to pass any extra arguments to manager.kill
-      .yield(undefined)
-      .then(manager.kill.bind(manager, 'example'))
-      // In resolve state, don't pass arguments to done, that'll cause an error.
-      .yield(undefined)
-      .always(done);
+  suite('#kill', function() {
+    test('`childrenChange` event emitted', function() {
+      var args = [];
+      var killPromise = manager.launch('example', examplePath())
+        .then(function() {
+          manager.on('childrenChange', function(pids) {
+            args.push(pids);
+          });
+
+          return manager.kill('example');
+        }).then(function() {
+          assert.equal(args.length, 1);
+          assert.equal(args[0].length, 0);
+        });
+
+      assert.typeOf(killPromise.then, 'function');
+
+      return killPromise;
+    });
+
+    test('error-free operation with a running process', function() {
+      var killPromise = manager.launch('example', examplePath())
+        // Don't want to pass any extra arguments to manager.kill
+        .yield(undefined)
+        .then(manager.kill.bind(manager, 'example'));
+
+      assert.typeOf(killPromise.then, 'function');
+
+      return killPromise;
+    });
   });
 
   test('example is relaunched', function(done) {

@@ -15,6 +15,11 @@ var argv = require('commander')
   .option('-p, --port <n>', 'Port to listen on.', parseInt)
   .option('-b, --hostname <a>', 'Address to bind to. (eg. "0.0.0.0")')
   .option(
+    '-i, --pidfile <filename>',
+    'File to store child process identifiers',
+    '.child-pids'
+  )
+  .option(
     '-a, --activities <a>',
     'Comma separated list of activities to start.'
   )
