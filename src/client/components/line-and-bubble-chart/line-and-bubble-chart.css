@@ -8,3 +8,7 @@
 .point {
   fill: white;
 }
+
+.y.axis {
+  font-size: 0.7em;
+}
