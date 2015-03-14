@@ -56,10 +56,9 @@ define(function(require) {
         }
       );
 
-      this._initConnection();
     },
 
-    _initConnection: function() {
+    initConnection: function() {
       cloak.configure({
 
         // Define custom messages sent by server to respond to.

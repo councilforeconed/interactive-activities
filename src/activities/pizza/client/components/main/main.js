@@ -34,7 +34,6 @@ define(function(require) {
 
     initialize: function() {
       this.gameState = new GameModel();
-      this.ready = this._initConnection();
 
       Backbone.sync = sync;
     },
@@ -72,7 +71,12 @@ define(function(require) {
     },
 
     setConfig: function() {
-      this.ready.then(_.bind(this.finishInit, this));
+      if (!('whenReady' in this)) {
+        throw new Error(
+          'Cannot set configuration before attempting to initialize connection'
+        );
+      }
+      this.whenReady.then(_.bind(this.finishInit, this));
     },
 
     // TODO: Re-name this method `handleRoundChange`, add a modal for when
@@ -87,8 +91,7 @@ define(function(require) {
       this.round.begin();
     },
 
-    _initConnection: function() {
-
+    initConnection: function() {
       var dfd = when.defer();
       var pizzas = this.gameState.get('pizzas');
       var players = this.gameState.get('players');
@@ -132,7 +135,7 @@ define(function(require) {
         }
       });
 
-      return dfd.promise;
+      this.whenReady = dfd.promise;
     },
 
     handleComplete: function() {
