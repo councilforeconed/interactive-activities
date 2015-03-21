@@ -18,7 +18,7 @@ var ServerGameModel = GameModel.extend({
     this.pizzaID = 0;
 
     this.on('roundStart', this.handleRoundStart, this);
-    this.get('players').on('add', this.handleAddPlayer, this);
+    this.get('players').on('change:isReady', this.handleReadyPlayer, this);
 
     this.get('pizzas').on('change:foodState', function(pizza) {
       if (pizza.isComplete()) {
@@ -51,8 +51,8 @@ var ServerGameModel = GameModel.extend({
     this.save();
   },
 
-  handleAddPlayer: function() {
-    if (this.get('players').length < MinPlayers) {
+  handleReadyPlayer: function() {
+    if (this.countReadyPlayers() < MinPlayers) {
       return;
     }
     if (this.hasBegun()) {

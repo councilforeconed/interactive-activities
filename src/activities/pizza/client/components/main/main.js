@@ -57,6 +57,8 @@ define(function(require) {
       this.listenTo(this.gameState, 'roundStart', this.handleRoundStart);
       this.listenTo(this.gameState, 'complete', this.handleComplete);
 
+      this.playerModel.set('isReady', true).save();
+
       // Update the layout according to the current game state
       if (!this.gameState.hasBegun()) {
         playerWait = new PlayerWait({

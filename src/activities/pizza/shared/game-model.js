@@ -134,6 +134,17 @@ define(function(require) {
       }
 
       return ms;
+    },
+
+    /**
+     * Calculate the number of players who are ready to play.
+     *
+     * @return {Number}
+     */
+    countReadyPlayers: function() {
+      return this.get('players').reduce(function(count, player) {
+        return count + (player.get('isReady') ? 1 : 0);
+      }, 0);
     }
   });
 
