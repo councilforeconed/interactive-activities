@@ -64,13 +64,11 @@ define(function(require) {
               groupName + ' is a group for a different activity. It is a group for the ' + groupData.activity + ' activity.'
             );
           }
-          return groupData;
-        })
-        // All is good, navigate to the group.
-        .then(function() {
+
+          // All is good, navigate to the group.
+          self.trigger('join', groupName);
           Backbone.history.navigate(
-            '/activity/' + expectActivity  + '/group/' + groupName + '/',
-            true
+            '/activity/' + expectActivity  + '/group/' + groupName + '/'
           );
         })
         // Something went wrong, present the error.

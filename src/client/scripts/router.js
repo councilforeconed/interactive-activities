@@ -50,7 +50,7 @@ define(function(require) {
         if (self._loadId !== loadId) {
           return;
         }
-        self.setView(View, { group: group });
+        self.setView(View, { group: group, activitySlug: activity });
       });
     },
 

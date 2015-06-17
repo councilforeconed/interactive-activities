@@ -59,19 +59,21 @@ define(function(require) {
         }
       });
 
-      // Connect to socket
-      cloak.run(undefined, {
-        'socket.io': {
-          resource: 'activities/' + activitySlug + '/socket.io'
-        }
-      });
-
       // Set up chat input.
       this.chatInput = new ChatInputView();
       this.chatInput.on('chat', function(obj) {
         cloak.message('chat', obj);
       });
       this.setView('.input', this.chatInput.render());
+    },
+
+    initConnection: function() {
+      // Connect to socket
+      cloak.run(undefined, {
+        'socket.io': {
+          resource: 'activities/' + activitySlug + '/socket.io'
+        }
+      });
     },
 
     // Stop the network.
