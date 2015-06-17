@@ -79,6 +79,7 @@ if (argv.activities) {
 
 createTop(argv, debug)
   .then(function(server) {
+    console.log('Server running on port ' + server.address().port);
     common.atTermination(server.close.bind(server), debug);
   })
   .catch(function(e) {
