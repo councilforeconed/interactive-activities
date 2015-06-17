@@ -9,6 +9,7 @@ define(function(require) {
   var PlayerModel = Backbone.Model.extend({
     defaults: {
       workstation: null,
+      isReady: false,
       activatedRound: -1
     },
 

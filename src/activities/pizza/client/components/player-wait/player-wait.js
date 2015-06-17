@@ -12,12 +12,14 @@ define(function(require) {
     initialize: function(options) {
       this.gameState = options.gameState;
 
-      this.listenTo(this.gameState.get('players'), 'add remove', this.render);
+      this.listenTo(
+        this.gameState.get('players'), 'add change:isReady remove', this.render
+      );
     },
 
     serialize: function() {
       return {
-        playerCount: this.gameState.get('players').size(),
+        playerCount: this.gameState.countReadyPlayers(),
         MinPlayers: MinPlayers
       };
     }
