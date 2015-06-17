@@ -16,7 +16,6 @@ define(function(require) {
     instructions: require('jade!./../../instructions')(),
 
     afterRender: function() {
-      var currentEl;
       var $slopeElems = this.$('.ppf-slope');
 
       // The jQuery.pep plugin dynamically infers the position of draggable
@@ -53,31 +52,14 @@ define(function(require) {
               bCenter.y > a.top && bCenter.y < a.bottom;
           },
 
-          /**
-           * Because jQuery.pep [1] does not invoke the `revertIf` method with
-           * any contextual data, the current drag target and drop target must
-           * be found with other mechanisms (the DOM must be queried for the
-           * drop target, and the drag target must be tracked using the
-           * plugin's `start` and `end` hooks.
-           *
-           * [1] http://pep.briangonzalez.org/
-           */
           revertIf: function() {
-            var currentSlope = $(currentEl).data('slope-val');
+            var currentSlope = this.$el.data('slope-val');
             var $target = $('.ppf-graph-target-active');
             var targetSlope = $target.data('slope-val');
 
             $target.removeClass('ppf-graph-target-active');
 
             return $target.length < 1 || currentSlope !== targetSlope;
-          },
-
-          start: function(event) {
-            currentEl = event.target;
-          },
-
-          end: function() {
-            currentEl = null;
           }
         });
     }

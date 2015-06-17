@@ -18,7 +18,7 @@
     "require-jade": "~0.0.3",
     "requirejs": "~2.1.11",
     "requirejs-json": "~0.0.3",
-    "jquery.pep": "~0.5.12",
+    "jquery.pep": "~0.5.20",
     "when": "~2.8.0"
   }
 }
