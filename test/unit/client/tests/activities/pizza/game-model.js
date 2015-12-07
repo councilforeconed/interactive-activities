@@ -3,6 +3,8 @@ define(function(require) {
 
   var sinon = require('sinon');
 
+  var COMPLETED_STATE = 'olives';
+
   var GameModel = require('activities/pizza/shared/game-model');
 
   suite('Pizza Productivity: GameModel', function() {
@@ -74,6 +76,125 @@ define(function(require) {
 
         assert.equal(m.countReadyPlayers(), 6);
       });
+    });
+
+    suite('#report', function() {
+      function create(playerCounts, pizzas) {
+        var m = new GameModel({ activePlayerCounts: playerCounts });
+
+        m.get('pizzas').reset(pizzas);
+
+        return m;
+      }
+
+      test('zero pizzas', function() {
+        var m = create([1, 2, 2, 3], []);
+        var expected = [
+          { playerCount: 1, pizzaCount: 0 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 3, pizzaCount: 0 }
+        ];
+
+        assert.deepEqual(expected, m.report());
+      });
+
+      test('zero pizzas (with absent players)', function() {
+        var m = create([1, 2, 0, 0], []);
+        var expected = [
+          { playerCount: 1, pizzaCount: 0 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 0, pizzaCount: 0 },
+          { playerCount: 0, pizzaCount: 0 }
+        ];
+
+        assert.deepEqual(expected, m.report());
+      });
+
+      test('zero pizzas completed', function() {
+        var m = create([1, 2, 2, 3], [
+            { activeRound: 1, foodState: null },
+            { activeRound: 2, foodState: null },
+            { activeRound: 2, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 3, foodState: null }
+          ]);
+        var expected = [
+          { playerCount: 1, pizzaCount: 0 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 3, pizzaCount: 0 }
+        ];
+
+        assert.deepEqual(expected, m.report());
+      });
+
+      test('zero pizzas completed (with absent players)', function() {
+        var m = create([1, 2, 0, 0], [
+            { activeRound: 1, foodState: null },
+            { activeRound: 2, foodState: null },
+            { activeRound: 2, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 3, foodState: null }
+          ]);
+        var expected = [
+          { playerCount: 1, pizzaCount: 0 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 0, pizzaCount: 0 },
+          { playerCount: 0, pizzaCount: 0 }
+        ];
+
+        assert.deepEqual(expected, m.report());
+      });
+
+      test('all pizzas completed', function() {
+        var m = create([1, 2, 2, 3], [
+            { activeRound: 1, foodState: COMPLETED_STATE },
+            { activeRound: 2, foodState: COMPLETED_STATE },
+            { activeRound: 2, foodState: COMPLETED_STATE },
+            { activeRound: 3, foodState: COMPLETED_STATE },
+            { activeRound: 3, foodState: COMPLETED_STATE },
+            { activeRound: 3, foodState: COMPLETED_STATE },
+            { activeRound: 4, foodState: COMPLETED_STATE },
+            { activeRound: 4, foodState: COMPLETED_STATE },
+            { activeRound: 4, foodState: COMPLETED_STATE },
+            { activeRound: 4, foodState: COMPLETED_STATE }
+          ]);
+        var expected = [
+          { playerCount: 1, pizzaCount: 1 },
+          { playerCount: 2, pizzaCount: 2 },
+          { playerCount: 2, pizzaCount: 3 },
+          { playerCount: 3, pizzaCount: 4 }
+        ];
+
+        assert.deepEqual(expected, m.report());
+      });
+
+      test('some pizzas completed', function() {
+        var m = create([1, 2, 2, 3], [
+            { activeRound: 1, foodState: COMPLETED_STATE },
+            { activeRound: 2, foodState: COMPLETED_STATE },
+            { activeRound: 2, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 3, foodState: null },
+            { activeRound: 4, foodState: null },
+            { activeRound: 4, foodState: COMPLETED_STATE },
+            { activeRound: 4, foodState: COMPLETED_STATE },
+            { activeRound: 4, foodState: null }
+          ]);
+        var expected = [
+          { playerCount: 1, pizzaCount: 1 },
+          { playerCount: 2, pizzaCount: 1 },
+          { playerCount: 2, pizzaCount: 0 },
+          { playerCount: 3, pizzaCount: 2 }
+        ];
+
+        assert.deepEqual(expected, m.report());
+      });
+
     });
 
     suite('#timeRemaining', function() {
