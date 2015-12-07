@@ -85,9 +85,9 @@ define(function(require) {
     };
   };
 
-  var resetWidths = function(reports) {
+  var resetWidths = function(reports, width) {
     _.forEach(reports, function(report) {
-      report.barChart.width($window.width());
+      report.barChart.width(width);
     });
   };
 
@@ -100,10 +100,10 @@ define(function(require) {
       $body.append(report.$container);
     });
 
-    resetWidths(reports);
+    resetWidths(reports, $body.width());
 
     $window.on('resize', _.throttle(function() {
-      resetWidths(reports);
+      resetWidths(reports, $body.width());
     }, 300));
   });
 });
