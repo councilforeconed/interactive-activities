@@ -9,7 +9,7 @@ GIT_URL=${GIT_URL:-git@github.com:councilforeconed/cee.git}
 
 # Install package dependencies
 apt-get install git authbind
-npm install -g grunt-cli bower forever
+npm install -g grunt-cli forever
 
 # Create a user for the Node.js process
 adduser node
