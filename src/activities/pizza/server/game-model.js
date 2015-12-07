@@ -18,6 +18,7 @@ var ServerGameModel = GameModel.extend({
     this.pizzaID = 0;
 
     this.on('roundStart', this.handleRoundStart, this);
+    this.on('roundEnd', this.handleRoundEnd, this);
     this.get('players').on('change:isReady', this.handleReadyPlayer, this);
 
     this.get('pizzas').on('change:foodState', function(pizza) {
@@ -110,6 +111,16 @@ var ServerGameModel = GameModel.extend({
     }
   },
 
+  /**
+   * Ensure that all pizzas ("active" or "inactive") are unassigned.
+   */
+  releasePizzas: function() {
+    this.get('pizzas')
+      .forEach(function(pizza) {
+        pizza.set('ownerID', null);
+      });
+  },
+
   handleRoundStart: function() {
     this.timeRemaining(RoundDuration);
 
@@ -117,6 +128,13 @@ var ServerGameModel = GameModel.extend({
     this.allocatePizzas();
 
     setTimeout(this.advance.bind(this), RoundDuration);
+  },
+
+  handleRoundEnd: function() {
+    // Release all pizzas at the termination of each round so that players who
+    // are in possession of a pizza as a round ends are able to navigate
+    // immediately at the onset of the following round.
+    this.releasePizzas();
   }
 });
 
