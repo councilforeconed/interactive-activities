@@ -16,7 +16,7 @@ git checkout origin/master
 CI=true npm install
 
 # Build the project
-grunt build
+npm run build
 
 # Kill the active server (this command may fail if the server has just been
 # rebooted)

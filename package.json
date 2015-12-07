@@ -4,7 +4,10 @@
   "description": "Interactive educational activities by Bocoup and the Council for Economic Education",
   "main": "src/index.js",
   "scripts": {
+    "build": "grunt build",
     "install": "bower install",
+    "start": "grunt prod",
+    "start-dev": "grunt dev",
     "test": "grunt test"
   },
   "repository": {
@@ -39,6 +42,7 @@
     "bower": "^1.7.0",
     "chai": "~1.9.0",
     "grunt": "~0.4.2",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-testem": "~0.5.15",

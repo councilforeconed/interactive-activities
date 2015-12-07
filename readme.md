@@ -9,11 +9,6 @@ Install this project's external dependencies:
 
    $ npm install
 
-(*Optional*) Install the [Grunt](http://gruntjs.com) CLI globally. This enable
-the use of the `grunt` commands detailed below:
-
-    $ npm install -g grunt-cli
-
 ## Usage
 
 This application supports two usage modes: development and production.
@@ -42,20 +37,15 @@ Options:
   --activities, -a  Comma separated list of activities to start.
 ```
 
-Alternatively, you may use [Grunt](http://gruntjs.com) to execute the same
-task:
+Alternatively, you may use [npm](https://npmjs.com) to execute the same task:
 
-```sh
-grunt dev
-```
+    $ npm run start-dev
 
 ### Production Mode
 
 To build a production-ready version of the project, run the following command:
 
-```sh
-grunt build
-```
+    $ npm run build
 
 Then, you may run the server from the `out/` directory, using the same flags
 that are available when running in production (see above):
@@ -67,9 +57,7 @@ cd out && node . [options]
 Alternatively, you may use [Grunt](http://gruntjs.com) to build and run the
 server in production mode:
 
-```sh
-grunt prod
-```
+    $ npm start
 
 ## Testing
 
