@@ -54,8 +54,12 @@ define(function(require) {
       });
       var initialState;
 
-      chart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
-      chart.height(300);
+      chart
+        .yAxisWidth(90)
+        .yAxisPadding(5)
+        .xAxisHeight(40)
+        .xAxisPadding(20)
+        .height(300);
       chart.xAxis.tickFormat(yearFormat);
 
       this.chartState = new ChartState();

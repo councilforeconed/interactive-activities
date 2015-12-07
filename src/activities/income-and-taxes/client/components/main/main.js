@@ -26,7 +26,10 @@ define(function(require) {
       });
       this.setExtent();
 
-      chart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
+      chart
+        .yAxisWidth(70)
+        .xAxisHeight(45)
+        .xAxisPadding(30);
       chart.height(300);
 
       this.chartState = new ChartState();

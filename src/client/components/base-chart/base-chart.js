@@ -17,7 +17,6 @@ define(function(require) {
      *           - {String} [yLabel] Name for y axis
      */
     initialize: function(options) {
-      var axisLabelSpacing = '-1.5em';
       var clipId;
 
       if (!this.base) {
@@ -39,9 +38,8 @@ define(function(require) {
       this.xAxisg = this.content.append('g')
         .classed('x axis', true);
 
-      this.xAxisLabel = this.xAxisg.append('text')
-        .style('text-anchor', 'end')
-        .attr('dy', '-' + axisLabelSpacing);
+      this.xAxisLabel = this.base.append('text')
+        .style('text-anchor', 'end');
 
       if (options.xLabel) {
         this.xAxisLabel.text(options.xLabel);
@@ -50,11 +48,10 @@ define(function(require) {
       this.yAxisg = this.content.append('g')
         .classed('y axis', true);
 
-      this.yAxisLabel = this.yAxisg.append('text')
+      this.yAxisLabel = this.base.append('text')
         .attr('transform', 'rotate(-90)')
         .style('text-anchor', 'end')
-        .attr('y', 6)
-        .attr('dy', axisLabelSpacing);
+        .attr('y', '1em');
 
       if (options.yLabel) {
         this.yAxisLabel.text(options.yLabel);
@@ -70,75 +67,116 @@ define(function(require) {
       this.fieldGroup.attr('clip-path', 'url(#' + clipId + ')');
     },
 
-    margin: function(val) {
-      var margin = this._margin;
-      if (!margin) {
-        margin = this._margin = {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        };
-      }
-
+    xAxisHeight: function(val) {
       if (!arguments.length) {
-        return margin;
+        return this._xAxisHeight || 0;
       }
 
-      if ('top' in val) {
-        margin.top = val.top;
-      }
-      if ('right' in val) {
-        margin.right = val.right;
-      }
-      if ('bottom' in val) {
-        margin.bottom = val.bottom;
-      }
-      if ('left' in val) {
-        margin.left = val.left;
+      this._xAxisHeight = val;
+
+      this._handleContentHeightChange();
+
+      return this;
+    },
+
+    /**
+     * Get or set the horizontal "bleed", or distance in pixels between the
+     * right edge of the data field and the corresponding edge of the chart's
+     * SVG element. Setting this to a positive value introduces padding that
+     * may be occupied by the text of x-axis labels.
+     *
+     * @param {number} [val] - new bleed value to set; if unspecified, the
+     *                         current bleed value will be returned
+     *
+     * @returns {mixed} - either the current bleed value (when no argument has
+     *                    been specified), or a reference to the chart instance
+     *                    (when an argument has been specified) to facilitate
+     *                    method chaining.
+     */
+    xAxisPadding: function(val) {
+      if (!arguments.length) {
+        return this._xAxisPadding || 0;
       }
 
-      if (('top' in val) || ('left' in val)) {
-        this.content.attr(
-          'transform',
-          'translate(' + margin.left + ', ' + margin.top + ')'
-        );
+      this._xAxisPadding = val;
+
+      this._handleContentWidthChange();
+
+      return this;
+    },
+
+    yAxisWidth: function(val) {
+      if (!arguments.length) {
+        return this._yAxisWidth || 0;
       }
-      if (('top' in val) || ('bottom' in val)) {
-        this._handleContentHeightChange();
+
+      this._yAxisWidth = val;
+
+      this._handleContentWidthChange();
+
+      return this;
+    },
+
+    /**
+     * Get or set the vertical "bleed", or distance in pixels between the top
+     * edge of the data field and the corresponding edge of the chart's SVG
+     * element. Setting this to a positive value introduces padding that may be
+     * occupied by the text of y-axis labels.
+     *
+     * @param {number} [val] - new bleed value to set; if unspecified, the
+     *                         current bleed value will be returned
+     *
+     * @returns {mixed} - either the current bleed value (when no argument has
+     *                    been specified), or a reference to the chart instance
+     *                    (when an argument has been specified) to facilitate
+     *                    method chaining.
+     */
+    yAxisPadding: function(val) {
+      if (!arguments.length) {
+        return this._yAxisPadding || 0;
       }
-      if (('left' in val) || ('right' in val)) {
-        this._handleContentWidthChange();
-      }
+
+      this._yAxisPadding = val;
+
+      this._handleContentHeightChange();
+
+      return this;
     },
 
     _handleContentWidthChange: function() {
-      var margin = this.margin();
-      var width = this.width() - margin.left - margin.right;
+      var yAxisWidth = this.yAxisWidth();
+      var width = this.width() - yAxisWidth - this.xAxisPadding();
+
       this.x.range([0, width]);
-      this.xAxisLabel.attr('x', width);
       this.xAxisg.call(this.xAxis);
       this.clipField.attr('width', width);
+      this.content.attr(
+        'transform',
+        'translate(' + yAxisWidth + ', ' + this.yAxisPadding() + ')'
+      );
       this.redraw();
     },
 
     _handleContentHeightChange: function() {
-      var margin = this.margin();
-      var height = this.height() - margin.top - margin.bottom;
+      var xAxisHeight = this.xAxisHeight();
+      var yAxisPadding = this.yAxisPadding();
+      var height = this.height() - xAxisHeight - yAxisPadding;
       this.y.range([height, 0]);
       this.xAxisg.attr('transform', 'translate(0, ' + height + ')');
       this.yAxisg.call(this.yAxis);
       this.clipField.attr('height', height);
+      this.content.attr(
+        'transform',
+        'translate(' + this.yAxisWidth() + ', ' + yAxisPadding + ')'
+      );
       this.redraw();
     },
 
     width: function(val) {
-      var margin;
-
       if (arguments.length) {
-        margin = this.margin();
         this._width = val;
         this.base.attr('width', val);
+        this.xAxisLabel.attr('x', val);
         this._handleContentWidthChange();
       }
 
@@ -146,12 +184,10 @@ define(function(require) {
     },
 
     height: function(val) {
-      var margin;
-
       if (arguments.length) {
-        margin = this.margin();
         this._height = val;
         this.base.attr('height', val);
+        this.xAxisLabel.attr('y', val);
         this._handleContentHeightChange();
       }
 

@@ -28,7 +28,10 @@ define(function(require) {
 
   barChart.height(300);
   barChart.width(500);
-  barChart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
+  barChart
+    .yAxisWidth(60)
+    .yAxisPadding(10)
+    .xAxisHeight(35);
 
   $(function() {
     $('#bar-chart').append(barChart.base.node());
