@@ -62,6 +62,10 @@ define(function(require) {
      * - 'complete': when transitioning out of the final round
      */
     handleRoundChange: function(model, roundNumber) {
+      if (roundNumber > 0) {
+        this.trigger('roundEnd', roundNumber - 1);
+      }
+
       if (this.isOver()) {
         this.trigger('complete');
       } else {
