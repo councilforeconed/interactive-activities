@@ -73,7 +73,7 @@ define(function(require) {
       // less than zero), artificially insert a zero into the set used to
       // calculate the Y domain.
       var withZero = [0].concat(data);
-      var xDomain = [-1 * padPct, data.length];
+      var xDomain = [-1 * padPct, data.length - padPct];
       var tickCount = data.length;
 
       if (this.omitZero) {
