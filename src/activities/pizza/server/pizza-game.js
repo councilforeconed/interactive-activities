@@ -12,7 +12,9 @@ requirejs('backbone').sync = require('../../../server/sync');
 module.exports = PizzaGame;
 
 function PizzaGame(options) {
-  var state = this.state = new GameModel();
+  // Initialize the Game model with an ID so that future invocations of `save`
+  // generate "update" messages (not "create" messages)
+  var state = this.state = new GameModel({ id: options.cloakRoom.id });
   var pizzas = state.get('pizzas');
   var players = state.get('players');
   this.report = options.report;
@@ -49,7 +51,7 @@ PizzaGame.prototype.join = function(user) {
     station: null
   });
 
-  user.message('game/update', this.state.toJSON());
+  user.message('game/create', this.state.toJSON());
   user.message('player/set-local', newPlayer.get('id'));
 };
 
