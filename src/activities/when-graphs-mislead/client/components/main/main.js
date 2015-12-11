@@ -34,7 +34,6 @@ define(function(require) {
     return { y: 1 + ((current.y - previous.y) / previous.y), x: current.x };
   });
 
-  var $window = $(window);
   var yearFormat = d3.format('4');
 
   var tickFormatters = {
@@ -107,16 +106,17 @@ define(function(require) {
         this.chartState.fromUrl(fragmentData.get());
       }
 
-      this.resize();
       this.drawChart();
     },
 
     resize: function() {
-      this.chart.width($window.width() - 80);
+      this.chart.width(this.$('.wgdu-chart').width());
     },
 
     afterRender: function() {
       this.$('.wgdu-chart').append(this.chart.base.node());
+
+      this.resize();
     },
 
     drawChart: function() {
