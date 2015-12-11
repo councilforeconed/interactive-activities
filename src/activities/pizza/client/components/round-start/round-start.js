@@ -6,6 +6,8 @@ define(function(require) {
 
   var Modal = require('components/modal/modal');
 
+  require('css!./round-start');
+
   var RoundStart = Layout.extend({
     className: 'pizza-round-start',
     template: require('jade!./round-start'),

@@ -1,0 +1,148 @@
+.overview {
+  position: relative;
+  color: white;
+}
+
+.overview .title {
+  line-height: 1.6rem;
+  font-weight: 400;
+}
+
+.overview .overview-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+}
+
+/**
+ * -------------
+ *    Header
+ * -------------
+ */
+.overview .help {
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  position: relative;
+  margin: 2rem 0;
+}
+
+.overview .help-icon {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  border-radius: 100%;
+  background-color: #eadd3f;
+  font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+  width: 25px;
+  height: 25px;
+  padding: 0px 10px;
+}
+
+
+.overview header {
+  padding: 1em;
+
+  background-color: #62caae;
+
+  transform: rotateX(0);
+  transform-origin: 0 100%;
+}
+
+.overview header .title {
+  margin: 1.3em 0;
+}
+
+.overview.notify header {
+  transform: rotateX(90deg);
+}
+
+.overview header .activity-image,
+.overview .notification .notif-icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  font-size: 6.25em;
+}
+
+/**
+ * ------------------
+ *    Notification
+ * ------------------
+ */
+.overview .notification {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.overview header,
+.overview .notification {
+  transition: transform 0.3s, height 0s 0.3s;
+}
+
+.overview .notification {
+  padding: 1em;
+  margin: auto;
+
+  background-color: #ff8200;
+  color: #333;
+
+  /**
+   * The `height` attribute is set as a fallback mechanism for showing/hiding
+   * the notification. It is animated here so that the fallback does not
+   * interfere with the animation in modern browsers.
+   */
+  transform: rotateX(90deg);
+  transform-origin: 0 0;
+  height: 0;
+}
+
+.overview.notify .notification {
+  transition: transform 0.3s;
+  transform: rotateX(0);
+  height: 100%;
+}
+
+.overview .notif-icon {
+  display: inline-block;
+  border-width: 0.1em;
+
+  border-color: white;
+  border-radius: 1em;
+  border-style: solid;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.overview .notif-glyph {
+  display: block;
+
+  font-size: 0.8em;
+  line-height: 1em;
+  font-weight: bold;
+}
+
+.overview .error .notif-icon {
+  color: white;
+  border-color: white;
+}
+
+.overview .notification .message {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.overview .notification .title {
+  margin: 0 0 0.3em;
+}
+
+.overview .notification p {
+  margin: 0;
+  font-size: 1.2em;
+}
