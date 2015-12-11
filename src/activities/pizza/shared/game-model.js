@@ -94,20 +94,12 @@ define(function(require) {
       var completedPizzasByRound = this.get('pizzas').completedByRound();
       var activePlayersByRound = this.get('activePlayerCounts').slice();
 
-      _.forEach(activePlayersByRound, function(roundPlayers, idx, allRounds) {
-        var alreadyActive = allRounds[idx - 1];
-
-        if (alreadyActive) {
-          allRounds[idx] += alreadyActive;
-        }
-      });
-
       return _.map(
           _.zip(activePlayersByRound, completedPizzasByRound),
           function(pair) {
             return {
               playerCount: pair[0],
-              pizzaCount: pair[1]
+              pizzaCount: pair[1] || 0
             };
           });
     },

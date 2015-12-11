@@ -56,5 +56,28 @@ define(function(require) {
       assert.deepEqual(_.pluck(c.complete(3), 'id'), [11, 14]);
       assert.deepEqual(_.pluck(c.complete(4), 'id'), []);
     });
+
+    test('#completedByRound', function() {
+      var c = new PizzaCollection([
+        { id: 1, activeRound: 0, foodState: null },
+        { id: 2, activeRound: 0, foodState: COMPLETED_STATE },
+        { id: 3, activeRound: 0, foodState: null },
+        { id: 4, activeRound: 1, foodState: null },
+        { id: 5, activeRound: 1, foodState: null },
+        { id: 6, activeRound: 1, foodState: null },
+        { id: 7, activeRound: 1, foodState: null },
+        { id: 8, activeRound: 2, foodState: COMPLETED_STATE },
+        { id: 9, activeRound: 2, foodState: COMPLETED_STATE },
+        { id: 10, activeRound: 2, foodState: COMPLETED_STATE },
+        { id: 11, activeRound: 3, foodState: COMPLETED_STATE },
+        { id: 12, activeRound: 3, foodState: null },
+        { id: 13, activeRound: 3, foodState: null },
+        { id: 14, activeRound: 3, foodState: COMPLETED_STATE },
+      ]);
+      var expected = [1, 0, 3, 2];
+
+
+      assert.deepEqual(c.completedByRound(), expected);
+    });
   });
 });

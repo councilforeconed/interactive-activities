@@ -2,6 +2,7 @@ define(function(require) {
   'use strict';
 
   var Backbone = require('backbone');
+  var _ = require('lodash');
 
   var PizzaModel = require('./pizza-model');
 
@@ -20,16 +21,26 @@ define(function(require) {
       });
     },
 
+    /**
+     * Create an array describing the integer number of pizzas completed in
+     * each round. Each element of the array describes the number of pizzas for
+     * the round at that element's offset.
+     *
+     * For example, if the collection contains two pizzas that were completed
+     * in the second round and three pizzas created in the third round, this
+     * method would return the following array:
+     *
+     *     [0, 2, 3]
+     */
     completedByRound: function() {
       return this.chain()
-        .filter(function(pizza) {
-          return pizza.isComplete();
-        })
         .groupBy(function(pizza) {
           return pizza.get('activeRound');
         })
         .map(function(pizzas) {
-          return pizzas.length;
+          return _.filter(pizzas, function(pizza) {
+              return pizza.isComplete();
+            }).length;
         })
         .toArray()
         .value();

@@ -5,7 +5,6 @@ define(function(require) {
   require('../base-chart/base-chart');
   require('css!./bar-chart');
 
-  var offset = 0;
   // Amount of a bar's maximum available horitontal space to use to draw the
   // bar.
   var widthPct = 0.5;
@@ -45,11 +44,11 @@ define(function(require) {
           merge: function() {
             var chart = this.chart();
             var omitZero = chart.omitZero ? 1 : 0;
-            var barWidth = chart.x(offset - padPct + widthPct + omitZero);
+            var barWidth = chart.x(widthPct + omitZero - padPct);
 
             this.attr('width', barWidth)
               .attr('x', function(d, i) {
-                return chart.x(i + offset) - (barWidth / 2);
+                return chart.x(i) - (barWidth / 2);
               });
           },
           'merge:transition': function() {
@@ -74,7 +73,7 @@ define(function(require) {
       // less than zero), artificially insert a zero into the set used to
       // calculate the Y domain.
       var withZero = [0].concat(data);
-      var xDomain = [offset - padPct, data.length + (offset * padPct)];
+      var xDomain = [-1 * padPct, data.length - padPct];
       var tickCount = data.length;
 
       if (this.omitZero) {

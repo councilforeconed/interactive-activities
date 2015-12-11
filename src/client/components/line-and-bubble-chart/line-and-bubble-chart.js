@@ -33,10 +33,6 @@ define(function(require) {
 
       this.height(300);
       this.width(200);
-
-      this.yAxisLabel
-          .attr('transform', 'rotate(-90) translate(0,40)');
-
     },
 
     extent: function(data) {
