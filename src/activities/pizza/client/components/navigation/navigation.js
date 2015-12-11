@@ -20,6 +20,13 @@ define(function(require) {
 
     navigate: function(event) {
       if (this.$el.hasClass('pizza-disabled')) {
+        this.trigger('notification', {
+          type: 'error',
+          title: 'Whoops!',
+          details:
+            'You can\'t switch workstations while you\'re working on a pizza.'
+        });
+
         return;
       }
       var direction = $(event.target).data('pizza-dir');
