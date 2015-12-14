@@ -1,6 +1,5 @@
 define(function(require) {
   'use strict';
-  var $ = require('jquery');
   var _ = require('lodash');
   var d3 = require('d3');
 
