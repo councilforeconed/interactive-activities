@@ -8,50 +8,8 @@
   background-color: #fff;
 }
 
-.activity-nav {
-  padding: 1em;
-  background-color: #62caae;
-}
-
-.activity-nav-container {
-  width: 90%;
-  max-width: 900px;
-  margin: auto;
-}
-
 .activity-nav .activity-home {
   font-size: 2rem;
-}
-
-.activity-title-light {
-  line-height: 1.6rem;
-  font-weight: 400;
-  color: white;
-  margin: 2rem 0;
-}
-
-.activity-help {
-  cursor: pointer;
-  background-color: white;
-  width: 35px;
-  height: 35px;
-  position: relative;
-  margin: 2rem 0;
-}
-
-.activity-help-icon {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  border-radius: 100%;
-  background-color: #eadd3f;
-  color: white;
-  font-weight: bold;
-  margin: 0;
-  font-size: 18px;
-  width: 25px;
-  height: 25px;
-  padding: 0px 10px;
 }
 
 .activity .activity-stage { min-height: 700px; }
