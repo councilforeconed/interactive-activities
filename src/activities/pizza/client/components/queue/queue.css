@@ -10,11 +10,18 @@
 }
 
 .pizza-queue-pizza-container {
+  position: relative;
 
   display: inline-block;
 }
 .pizza-queue-pizza-container.pizza-taken .pizza-queue-pizza {
-  display: none;
+  /**
+   * Pizzas that are taken should not be visible within the queue, but the
+   * space they would normally occupy should be reserved. This allows all other
+   * pizzas to maintain a consistent position across these changes of
+   * ownership.
+   */
+  visibility: hidden;
 }
 .pizza-queue-pizza-container.pizza-ready {
   animation-name: pizza-ready-glow;
