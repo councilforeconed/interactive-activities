@@ -70,6 +70,12 @@ define(function(require) {
       this.$el.removeAttr('style');
       this.$el.pep({
         deferPlacement: true,
+        // Dragging removes the element from the document flow; alert the
+        // parent view of this event so it may take any precautions necessary
+        // to preserve layout geometry.
+        initiate: _.bind(function() {
+          this.trigger('startDrag');
+        }, this),
         revert: true,
         shouldEase: false,
         revertIf: this.revertIf,
