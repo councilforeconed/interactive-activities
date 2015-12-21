@@ -15,18 +15,10 @@ define(function(require) {
     initialize: function(options) {
       this.isDraggable = true;
 
-      this.revertIf = _.bind(function() {
-        return !this.mayTake();
-      }, this);
       this.onStop = _.bind(this.onStop, this);
 
       this.playerModel = options.playerModel;
       this.listenTo(this.model, 'change:foodState', this.render);
-    },
-
-    mayTake: function() {
-      return this.isOverWorkstation() &&
-        this.model.mayPlaceIn(this.playerModel.get('workstation'));
     },
 
     onStop: function() {
@@ -36,7 +28,16 @@ define(function(require) {
         return;
       }
 
-      if (!this.mayTake()) {
+      if (!this.isOverWorkstation()) {
+        return;
+      }
+
+      if (!this.model.mayPlaceIn(this.playerModel.get('workstation'))) {
+        this.trigger('notification', {
+          type: 'error',
+          title: 'Whoops!',
+          details: 'You can\'t work on that pizza in this workstation.'
+        });
         return;
       }
 
@@ -78,7 +79,9 @@ define(function(require) {
         }, this),
         revert: true,
         shouldEase: false,
-        revertIf: this.revertIf,
+        // The "queue pizza" is hidden after it is placed, so it may be
+        // reverted to the queue in all cases.
+        revertIf: function() { return true; },
         droppable: '.pizza-workstation-surface',
         droppableActiveClass: 'pizza-workstation-active',
         stop: this.onStop
