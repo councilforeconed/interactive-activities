@@ -45,6 +45,10 @@ define(function(require) {
         $container.width(view.$el.width());
       });
 
+      this.listenTo(view, 'notification', function(data) {
+        this.trigger('notification', data);
+      });
+
       this.insertView(containerSelector, view);
     },
 

@@ -46,6 +46,9 @@ define(function(require) {
       this.listenTo(this.navigation, 'notification', function(data) {
         this.trigger('notification', data);
       });
+      this.listenTo(this.queue, 'notification', function(data) {
+        this.trigger('notification', data);
+      });
 
       this.listenTo(this.pizzas, 'localOwnerTake', function(pizza) {
         this.workstation.setPizza(pizza);
