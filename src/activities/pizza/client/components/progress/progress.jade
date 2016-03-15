@@ -1,8 +1,19 @@
+mixin padLeft(value, width)
+  - var numZeros = Math.max(0, width - value.toFixed().length);
+  - var zeros = new Array(numZeros + 1).join('0')
+  = zeros + value
+
+mixin duration(ms, classNames)
+  //- The `datetime` attribute recognizes durations specified via the "P"
+  //- prefix http://www.w3.org/TR/html-markup/time.html
+  time(class=classNames, datetime='PT' + Math.floor(ms / 1000) + 'S')
+    span.minutes= Math.floor(ms / (60 * 1000))
+    span.seconds
+      +padLeft(Math.floor(ms / 1000) % 60, 2)
+
 .pizza-counter
   .pizza-counter-count-time= completeCount
   label.count-time-label Completed
 .pizza-time
-  div.pizza-counter-count-time
-    span.minutes= Math.floor(timeRemaining / (60 * 1000))
-    span.seconds= Math.floor(timeRemaining / 1000) % 60
+  +duration(timeRemaining, ['pizza-counter-count-time'])
   label.count-time-label Time Left

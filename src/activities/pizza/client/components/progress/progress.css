@@ -13,6 +13,7 @@
 }
 
 .pizza-counter-count-time {
+  display: block;
   background-color: white;
   width: 90px;
   height: 60px;

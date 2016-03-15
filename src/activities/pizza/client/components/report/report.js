@@ -21,8 +21,17 @@ define(function(require) {
 
       this.barChart.height(300);
       this.barChart.width(500);
-      this.barChart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
+      this.barChart
+        .yAxisWidth(60)
+        .yAxisPadding(10)
+        .xAxisHeight(40);
       this.listenTo(WindowEmitter, 'resize', this.resize);
+      /**
+       * Last-minute pizza completions may not propagate to all clients by the
+       * time the endgame report is rendered. Listen for such changes and
+       * re-render the chart as they occur.
+       */
+      this.listenTo(this.gameState.get('pizzas'), 'change', this.draw);
     },
 
     draw: function() {

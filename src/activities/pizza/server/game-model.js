@@ -18,6 +18,7 @@ var ServerGameModel = GameModel.extend({
     this.pizzaID = 0;
 
     this.on('roundStart', this.handleRoundStart, this);
+    this.on('roundEnd', this.handleRoundEnd, this);
     this.get('players').on('change:isReady', this.handleReadyPlayer, this);
 
     this.get('pizzas').on('change:foodState', function(pizza) {
@@ -31,6 +32,14 @@ var ServerGameModel = GameModel.extend({
     // be sent to clients and remains constant even after the original
     // participants have left the game.
     this.set('activePlayerCounts', []);
+
+    // Override the model's `toJSON` method but store a reference to the
+    // original implementation. This allows the overriding method to delegate
+    // to the original implementation. The definition is done dynamically
+    // within the model's `initialize` method in order to honor the prototype
+    // chain when locating the original implementation.
+    this.originalToJSON = this.toJSON;
+    this.toJSON = this.toJSONOverride;
   },
 
   /**
@@ -110,6 +119,16 @@ var ServerGameModel = GameModel.extend({
     }
   },
 
+  /**
+   * Ensure that all pizzas ("active" or "inactive") are unassigned.
+   */
+  releasePizzas: function() {
+    this.get('pizzas')
+      .forEach(function(pizza) {
+        pizza.set('ownerID', null);
+      });
+  },
+
   handleRoundStart: function() {
     this.timeRemaining(RoundDuration);
 
@@ -117,6 +136,29 @@ var ServerGameModel = GameModel.extend({
     this.allocatePizzas();
 
     setTimeout(this.advance.bind(this), RoundDuration);
+  },
+
+  handleRoundEnd: function() {
+    // Release all pizzas at the termination of each round so that players who
+    // are in possession of a pizza as a round ends are able to navigate
+    // immediately at the onset of the following round.
+    this.releasePizzas();
+  },
+
+  /**
+   * Prepare the game state for transmission to remote clients. This method is
+   * redefined on each instance as `toJSON` during initialization.
+   */
+  toJSONOverride: function() {
+    var serialized = this.originalToJSON();
+
+    // The `roundEndTime` attribute is interpreted in terms of the system clock
+    // and is therefore inappropriate for transmission to the client. Clients
+    // will calculate an equivalent value using the relative `timeRemaing`
+    // attribute--see the shared Game model's `parse` method for details.
+    delete serialized.roundEndTime;
+
+    return serialized;
   }
 });
 

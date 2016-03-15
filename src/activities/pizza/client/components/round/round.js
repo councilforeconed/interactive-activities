@@ -43,6 +43,12 @@ define(function(require) {
       });
 
       this.navigation = new Navigation({ playerModel: this.playerModel });
+      this.listenTo(this.navigation, 'notification', function(data) {
+        this.trigger('notification', data);
+      });
+      this.listenTo(this.queue, 'notification', function(data) {
+        this.trigger('notification', data);
+      });
 
       this.listenTo(this.pizzas, 'localOwnerTake', function(pizza) {
         this.workstation.setPizza(pizza);

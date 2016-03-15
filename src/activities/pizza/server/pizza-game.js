@@ -12,7 +12,9 @@ requirejs('backbone').sync = require('../../../server/sync');
 module.exports = PizzaGame;
 
 function PizzaGame(options) {
-  var state = this.state = new GameModel();
+  // Initialize the Game model with an ID so that future invocations of `save`
+  // generate "update" messages (not "create" messages)
+  var state = this.state = new GameModel({ id: options.cloakRoom.id });
   var pizzas = state.get('pizzas');
   var players = state.get('players');
   this.report = options.report;
@@ -49,12 +51,33 @@ PizzaGame.prototype.join = function(user) {
     station: null
   });
 
-  user.message('game/update', this.state.toJSON());
+  user.message('game/create', this.state.toJSON());
   user.message('player/set-local', newPlayer.get('id'));
 };
 
 PizzaGame.prototype.updatePizza = function(obj) {
   var pizza = this.state.get('pizzas').get(obj.id);
+  var currentOwner = pizza.get('ownerID');
+  var newOwner = obj.ownerID;
+
+  /**
+   * Players may only retrieve a pizza from the queue; they may not take
+   * directly from one another. If the server receives a message to set the
+   * `ownerID` to a non-null value (i.e. a request to "take") but the pizza
+   * already belongs to a player, this state transition should be rejected.
+   *
+   * This event may originate from a dishonest client, but it may also occur
+   * when two clients attempt to take the same pizza concurrently.
+   */
+  if (currentOwner && newOwner && currentOwner !== newOwner) {
+    // Because clients behave "optimistically" (assuming that `save` operations
+    // will complete successfully), the client that issued the faulty request
+    // is in an invalid state. Save the pizza model to synchronize the client's
+    // pizza model with the canonical version on the server.
+    pizza.save();
+
+    return;
+  }
 
   if (pizza.parse) {
     obj = pizza.parse(obj);

@@ -26,7 +26,10 @@ define(function(require) {
       });
       this.setExtent();
 
-      chart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
+      chart
+        .yAxisWidth(70)
+        .xAxisHeight(45)
+        .xAxisPadding(30);
       chart.height(300);
 
       this.chartState = new ChartState();
@@ -36,7 +39,6 @@ define(function(require) {
       this._throttledResize = _.throttle(_.bind(this.resize, this, 500));
       $window.on('resize', this._throttledResize);
 
-      this.resize();
       this.drawChart();
 
       this.insertView('.it-controls', new Slider(_.extend({
@@ -69,11 +71,13 @@ define(function(require) {
     },
 
     resize: function() {
-      this.chart.width($window.width());
+      this.chart.width(this.$('.it-chart').width());
     },
 
     afterRender: function() {
       this.$('.it-chart').append(this.chart.base.node());
+
+      this.resize();
     },
 
     drawChart: function() {

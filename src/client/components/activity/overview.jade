@@ -1,0 +1,24 @@
+header
+  .overview-container.clearfix
+    if image
+      img(src=image).activity-image.left
+    h2.left.title=title
+
+    .help.right
+      p.help-icon i
+
+.notification(class=message.type)
+  .overview-container
+    if message.type
+      span.notif-icon
+        span.notif-glyph
+          if message.type === 'error'
+            | !
+          else
+            | &#x2713;
+
+    .message
+      h2.title=message.title
+
+      if (message.details)
+        p=message.details

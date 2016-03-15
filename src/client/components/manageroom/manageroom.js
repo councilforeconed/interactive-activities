@@ -18,7 +18,7 @@ define(function(require) {
       title: 'Manage Room'
     },
     events: {
-      'click .add-group': 'addGroup',
+      'click .js-add-group': 'addGroup',
     },
 
     initialize: function() {

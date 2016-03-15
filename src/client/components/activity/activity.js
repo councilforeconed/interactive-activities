@@ -7,6 +7,7 @@ define(function(require) {
   var JoinGroupView = require('components/joingroup/joingroup');
   var Modal = require('components/modal/modal');
   var WelcomeView = require('components/welcome/welcome');
+  var OverView = require('./overview');
   var formatters = require('scripts/formatters');
 
   require('css!./activity');
@@ -18,9 +19,6 @@ define(function(require) {
    */
   var ActivityView = Layout.extend({
     className: 'activity',
-    events: {
-      'click .activity-help': 'showWelcome'
-    },
     chromeTemplate: require('jade!./activity'),
 
     /**
@@ -35,10 +33,7 @@ define(function(require) {
     },
 
     template: function(data) {
-      var $markup = $('<div>').html(this.chromeTemplate({
-        title: this.config.title,
-        image: this.config.image
-      }));
+      var $markup = $('<div>').html(this.chromeTemplate());
 
       data.formatters = formatters;
       $markup.find('.activity-stage').html(this.homeTemplate(data));
@@ -48,6 +43,7 @@ define(function(require) {
 
     constructor: function(options) {
 
+      this.on('notification', this.showNotification);
       // When a child view define custom `events` hash, explicitly copy the
       // events defined by this view *into* the child (they would otherwise be
       // shadowed).
@@ -59,6 +55,10 @@ define(function(require) {
       this.group = options.group;
 
       Layout.prototype.constructor.apply(this, arguments);
+
+      this.overview = new OverView(this.config);
+      this.setView('.activity-overview-container', this.overview);
+      this.listenTo(this.overview, 'help', this.showWelcome);
 
       // Track when the activity has begun so the modal can be redrawn as
       // appropriate.
@@ -142,10 +142,15 @@ define(function(require) {
       this.setView('.activity-modals', this.welcomeModal);
 
       this.showWelcome();
+
     },
 
     showWelcome: function() {
       this.welcomeModal.summon({ mayDismiss: this.hasBegun });
+    },
+
+    showNotification: function(message) {
+      this.overview.notify(message);
     }
   });
 

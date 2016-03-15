@@ -62,6 +62,10 @@ define(function(require) {
      * - 'complete': when transitioning out of the final round
      */
     handleRoundChange: function(model, roundNumber) {
+      if (roundNumber > 0) {
+        this.trigger('roundEnd', roundNumber - 1);
+      }
+
       if (this.isOver()) {
         this.trigger('complete');
       } else {
@@ -90,20 +94,12 @@ define(function(require) {
       var completedPizzasByRound = this.get('pizzas').completedByRound();
       var activePlayersByRound = this.get('activePlayerCounts').slice();
 
-      _.forEach(activePlayersByRound, function(roundPlayers, idx, allRounds) {
-        var alreadyActive = allRounds[idx - 1];
-
-        if (alreadyActive) {
-          allRounds[idx] += alreadyActive;
-        }
-      });
-
       return _.map(
           _.zip(activePlayersByRound, completedPizzasByRound),
           function(pair) {
             return {
               playerCount: pair[0],
-              pizzaCount: pair[1]
+              pizzaCount: pair[1] || 0
             };
           });
     },

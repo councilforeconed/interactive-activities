@@ -46,6 +46,10 @@ define(function(require) {
         pizzas: this.gameState.get('pizzas'),
         gameState: this.gameState
       });
+      this.listenTo(this.round, 'notification', function(data) {
+        this.trigger('notification', data);
+      });
+
       this.roundStart = new RoundStart({
         gameState: this.gameState,
         playerModel: this.playerModel,

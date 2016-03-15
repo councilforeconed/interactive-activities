@@ -1,6 +1,5 @@
 define(function(require) {
   'use strict';
-  var $ = require('jquery');
   var _ = require('lodash');
   var d3 = require('d3');
 
@@ -34,7 +33,6 @@ define(function(require) {
     return { y: 1 + ((current.y - previous.y) / previous.y), x: current.x };
   });
 
-  var $window = $(window);
   var yearFormat = d3.format('4');
 
   var tickFormatters = {
@@ -54,8 +52,12 @@ define(function(require) {
       });
       var initialState;
 
-      chart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
-      chart.height(300);
+      chart
+        .yAxisWidth(90)
+        .yAxisPadding(5)
+        .xAxisHeight(40)
+        .xAxisPadding(20)
+        .height(300);
       chart.xAxis.tickFormat(yearFormat);
 
       this.chartState = new ChartState();
@@ -107,16 +109,17 @@ define(function(require) {
         this.chartState.fromUrl(fragmentData.get());
       }
 
-      this.resize();
       this.drawChart();
     },
 
     resize: function() {
-      this.chart.width($window.width() - 80);
+      this.chart.width(this.$('.wgdu-chart').width());
     },
 
     afterRender: function() {
       this.$('.wgdu-chart').append(this.chart.base.node());
+
+      this.resize();
     },
 
     drawChart: function() {

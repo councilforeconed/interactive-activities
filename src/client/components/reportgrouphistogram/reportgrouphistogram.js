@@ -42,7 +42,10 @@ define(function(require) {
 
     barChart.height(300);
     barChart.width(500);
-    barChart.margin({ top: 10, right: 40, bottom: 25, left: 60 });
+    barChart
+      .yAxisWidth(60)
+      .yAxisPadding(10)
+      .xAxisHeight(35);
     barChart.extent(binned);
     barChart.draw(binned);
 
@@ -85,9 +88,9 @@ define(function(require) {
     };
   };
 
-  var resetWidths = function(reports) {
+  var resetWidths = function(reports, width) {
     _.forEach(reports, function(report) {
-      report.barChart.width($window.width());
+      report.barChart.width(width);
     });
   };
 
@@ -100,10 +103,10 @@ define(function(require) {
       $body.append(report.$container);
     });
 
-    resetWidths(reports);
+    resetWidths(reports, $body.width());
 
     $window.on('resize', _.throttle(function() {
-      resetWidths(reports);
+      resetWidths(reports, $body.width());
     }, 300));
   });
 });

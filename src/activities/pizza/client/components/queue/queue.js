@@ -33,7 +33,23 @@ define(function(require) {
         model: model,
         playerModel: this.playerModel
       });
-      this.insertView('[data-pizza-id="' + model.get('id') + '"]', view);
+      var containerSelector = '[data-pizza-id="' + model.get('id') + '"]';
+
+      // During drag operations, the "queue pizza" elements are removed from
+      // the document flow and positioned absolutely. Explicitly set the
+      // dimensions of the containing element at that time so the queue does
+      // not "collapse."
+      this.listenTo(view, 'startDrag', function() {
+        var $container = this.$(containerSelector);
+        $container.height(view.$el.height());
+        $container.width(view.$el.width());
+      });
+
+      this.listenTo(view, 'notification', function(data) {
+        this.trigger('notification', data);
+      });
+
+      this.insertView(containerSelector, view);
     },
 
     removePizza: function(model) {
@@ -41,10 +57,8 @@ define(function(require) {
       this.render();
     },
 
-    handleTake: function(pizza) {
+    handleTake: function() {
       this.toggleDraggables(false);
-      this.getView('[data-pizza-id="' + pizza.get('id') + '"]')
-        .$el.hide();
     },
 
     handleDrop: function() {
